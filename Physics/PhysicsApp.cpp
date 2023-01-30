@@ -100,6 +100,27 @@ void PhysicsApp::DemoStartUp(int _num)
 	m_physicsScene->AddActor(ball1);
 	m_physicsScene->AddActor(ball2);
 #endif
+
+#ifdef SimulatingCollisions
+	m_physicsScene->SetGravity(glm::vec2(0));
+
+	Circle* ball1 = new Circle(glm::vec2(-20, 0), glm::vec2(0), 4.0f, 4, glm::vec4(1, 0, 0, 1));
+	Circle* ball2 = new Circle(glm::vec2(10, 0), glm::vec2(0), 4.0f, 4, glm::vec4(0, 1, 0, 1));
+
+	m_physicsScene->AddActor(ball1);
+	m_physicsScene->AddActor(ball2);
+
+	ball1->ApplyForce(glm::vec2(30, 0));
+	ball2->ApplyForce(glm::vec2(-15, 0));
+#endif
+
+#ifdef SimulatingRockets
+	m_physicsScene->SetGravity(glm::vec2(0, -10));
+
+	Circle* ball = new Circle(glm::vec2(0), glm::vec2(0), 250.0f, 5, glm::vec4(1, 0, 0, 1));
+
+	m_physicsScene->AddActor(ball);
+#endif
 }
 
 void PhysicsApp::DemoUpdates(aie::Input* _input, float _dt)
@@ -124,6 +145,38 @@ void PhysicsApp::DemoUpdates(aie::Input* _input, float _dt)
 		Circle* ball1 = dynamic_cast<Circle*>(m_physicsScene->GetActors()->at(0));
 		Circle* ball2 = dynamic_cast<Circle*>(m_physicsScene->GetActors()->at(1));
 		ball1->ApplyForceToActor(ball2, glm::vec2(2, 0));
+	}
+#endif
+
+#ifdef SimulatingCollisions
+	Circle* ball1 = dynamic_cast<Circle*>(m_physicsScene->GetActors()->at(0));
+	Circle* ball2 = dynamic_cast<Circle*>(m_physicsScene->GetActors()->at(1));
+	
+	if(PhysicsScene::Circle2Circle(ball1, ball2))
+	{
+		ball1->SetVelocity(glm::vec2(0));
+		ball2->SetVelocity(glm::vec2(0));
+	}
+#endif
+
+#ifdef SimulatingRockets
+	static float accumulatedTime = 0.0f;
+	accumulatedTime += _dt;
+
+	Circle* rocket = dynamic_cast<Circle*>(m_physicsScene->GetActors()->at(0));
+	
+	if (accumulatedTime >= 0.25f && rocket->GetMass() > 0)
+	{
+		accumulatedTime = 0.0f;
+		
+		float fuelMass = 25.f;
+		glm::vec2 fuelPos = rocket->GetPosition() - glm::vec2(0, rocket->GetRadius());
+		
+		Circle* fuel = new Circle(fuelPos, glm::vec2(0), fuelMass, 0.35f, glm::vec4(0, 1, 0, 1));
+		m_physicsScene->AddActor(fuel);
+		
+		rocket->SetMass(rocket->GetMass() - fuelMass);
+		rocket->ApplyForceToActor(fuel, glm::vec2(0, -10 * fuelMass));
 	}
 #endif
 }
