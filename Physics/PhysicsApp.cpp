@@ -85,7 +85,7 @@ void PhysicsApp::DemoStartUp(int _num)
 #endif
 	
 #ifdef NewtonsSecondLaw
-	m_physicsScene->SetGravity(glm::vec2(0, -10));
+	m_physicsScene->SetGravity(glm::vec2(0, -15));
 	
 	Circle* ball = new Circle(glm::vec2(-40, 0), glm::vec2(10, 30), 3.0f, 1, glm::vec4(1, 0, 0, 1));
 	m_physicsScene->AddActor(ball);
@@ -94,8 +94,8 @@ void PhysicsApp::DemoStartUp(int _num)
 #ifdef NewtonsThirdLaw
 	m_physicsScene->SetGravity(glm::vec2(0));
 
-	Circle* ball1 = new Circle(glm::vec2(-4, 0), glm::vec2(0, 0), 0.5f, 4, glm::vec4(1, 0, 0, 1));
-	Circle* ball2 = new Circle(glm::vec2(4, 0), glm::vec2(0, 0), 4.0f, 4, glm::vec4(0, 1, 0, 1));
+	Circle* ball1 = new Circle(glm::vec2(-4, 0), glm::vec2(0, 0), 0.1f, 4, glm::vec4(1, 0, 0, 1));
+	Circle* ball2 = new Circle(glm::vec2(4, 0), glm::vec2(0, 0), 0.1f, 4, glm::vec4(0, 1, 0, 1));
 
 	m_physicsScene->AddActor(ball1);
 	m_physicsScene->AddActor(ball2);
@@ -104,7 +104,21 @@ void PhysicsApp::DemoStartUp(int _num)
 
 void PhysicsApp::DemoUpdates(aie::Input* _input, float _dt)
 {
-#ifdef NewtonsThirdLaw
+#ifdef NewtonsSecondLaw // Switches gravity to the corresponding arrow key direction
+	if (_input->wasKeyPressed(aie::INPUT_KEY_LEFT))
+		m_physicsScene->SetGravity(glm::vec2(-15, 0));
+	
+	else if (_input->wasKeyPressed(aie::INPUT_KEY_RIGHT))
+		m_physicsScene->SetGravity(glm::vec2(15, 0));
+	
+	else if (_input->wasKeyPressed(aie::INPUT_KEY_DOWN))
+		m_physicsScene->SetGravity(glm::vec2(0, -15));
+	
+	else if (_input->wasKeyPressed(aie::INPUT_KEY_UP))
+		m_physicsScene->SetGravity(glm::vec2(0, 15));
+#endif
+	
+#ifdef NewtonsThirdLaw // Mock 'collision' between 2 balls of different masses
 	if (_input->wasKeyPressed(aie::INPUT_KEY_SPACE))
 	{
 		Circle* ball1 = dynamic_cast<Circle*>(m_physicsScene->GetActors()->at(0));
