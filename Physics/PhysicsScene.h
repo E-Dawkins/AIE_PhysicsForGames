@@ -24,6 +24,9 @@ public:
     
     float GetTimeStep() const
         { return m_timeStep; }
+
+    std::vector<PhysicsObject*>* GetActors()
+        { return &m_actors; }
     
     // Setters
     void SetGravity(const glm::vec2 _gravity)

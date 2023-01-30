@@ -94,19 +94,24 @@ void PhysicsApp::DemoStartUp(int _num)
 #ifdef NewtonsThirdLaw
 	m_physicsScene->SetGravity(glm::vec2(0));
 
-	Circle* ball1 = new Circle(vec2(-4, 0), vec2(0, 0), 4.0f, 4, vec4(1, 0, 0, 1));
-	Circle* ball2 = new Circle(vec2(4, 0), vec2(0, 0), 4.0f, 4, vec4(0, 1, 0, 1));
+	Circle* ball1 = new Circle(glm::vec2(-4, 0), glm::vec2(0, 0), 0.5f, 4, glm::vec4(1, 0, 0, 1));
+	Circle* ball2 = new Circle(glm::vec2(4, 0), glm::vec2(0, 0), 4.0f, 4, glm::vec4(0, 1, 0, 1));
 
 	m_physicsScene->AddActor(ball1);
 	m_physicsScene->AddActor(ball2);
-
-	ball1->ApplyForceToActor(ball2, vec2(-2,0 ));
 #endif
 }
 
 void PhysicsApp::DemoUpdates(aie::Input* _input, float _dt)
 {
-	
+#ifdef NewtonsThirdLaw
+	if (_input->wasKeyPressed(aie::INPUT_KEY_SPACE))
+	{
+		Circle* ball1 = dynamic_cast<Circle*>(m_physicsScene->GetActors()->at(0));
+		Circle* ball2 = dynamic_cast<Circle*>(m_physicsScene->GetActors()->at(1));
+		ball1->ApplyForceToActor(ball2, glm::vec2(2, 0));
+	}
+#endif
 }
 
 float PhysicsApp::DegreeToRadian(const float _degree) const
