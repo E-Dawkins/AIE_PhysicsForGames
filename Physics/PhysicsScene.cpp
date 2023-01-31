@@ -2,6 +2,7 @@
 
 #include "Circle.h"
 #include "PhysicsObject.h"
+#include "Plane.h"
 
 typedef bool(*fn)(PhysicsObject*, PhysicsObject*);
 
@@ -65,6 +66,16 @@ void PhysicsScene::Update(float _dt)
                 {
                     PhysicsObject* object1 = m_actors[outer];
                     PhysicsObject* object2 = m_actors[inner];
+
+                    int SHAPE_COUNT = 2;
+
+                    int functionIdx = (object1->GetShapeId() * SHAPE_COUNT) + object2->GetShapeId();
+                    fn collisionFunctionPtr = collisionFunctionArray[functionIdx];
+
+                    if (collisionFunctionPtr != nullptr)
+                    {
+                        collisionFunctionPtr(object1, object2);
+                    }
                     
                     Circle2Circle(object1, object2);
                 }
@@ -90,16 +101,54 @@ bool PhysicsScene::Circle2Circle(PhysicsObject* _obj1, PhysicsObject* _obj2)
     if (circle1 != nullptr && circle2 != nullptr)
     {
         float dist = distance(circle1->GetPosition(), circle2->GetPosition());
-        
-        if (dist < circle1->GetRadius() + circle2->GetRadius()) // they collided
+
+        // If the distance between the two spheres is less
+        // than the radius sum, they are colliding
+        if (dist < circle1->GetRadius() + circle2->GetRadius())
         {
-            // Apply each circles velocity to other circle
-            circle1->ApplyForce(circle2->GetVelocity());
-            circle2->ApplyForce(circle1->GetVelocity());
+            circle1->SetVelocity(glm::vec2(0));
+            circle2->SetVelocity(glm::vec2(0));
             
             return true;
         }
     }
 
     return false;
+}
+
+bool PhysicsScene::Plane2Plane(PhysicsObject* _obj1, PhysicsObject* _obj2)
+{
+    return false;
+}
+
+bool PhysicsScene::Circle2Plane(PhysicsObject* _obj1, PhysicsObject* _obj2)
+{
+    Circle* circle = dynamic_cast<Circle*>(_obj1);
+    Plane* plane = dynamic_cast<Plane*>(_obj2);
+
+    // Both objects are of type plane
+    if (circle != nullptr && plane != nullptr)
+    {
+        // Dot product represents which side of the plane the sphere is on
+        // i.e. -1 is below, 1 is above and 0 is on the surface
+        float sphereToPlane = dot(circle->GetPosition(), plane->GetNormal()) - plane->GetDistance();
+
+        float intersection = circle->GetRadius() - sphereToPlane;
+        float velocityOutOfPlane = dot(circle->GetVelocity(), plane->GetNormal());
+
+        // Colliding if the sphere is intersecting the plane and
+        // the velocity of the sphere is towards the plane's surface
+        if (intersection > 0 && velocityOutOfPlane < 0)
+        {
+            circle->SetVelocity(glm::vec2(0));
+            
+            return true;
+        }
+    }
+    return false;
+}
+
+bool PhysicsScene::Plane2Circle(PhysicsObject* _obj1, PhysicsObject* _obj2)
+{
+    return Circle2Plane(_obj2, _obj1);
 }

@@ -39,6 +39,9 @@ public:
         { m_doCollisions = _doCollisions; }
 
     static bool Circle2Circle(PhysicsObject* _obj1, PhysicsObject* _obj2);
+    static bool Plane2Plane(PhysicsObject* _obj1, PhysicsObject* _obj2);
+    static bool Circle2Plane(PhysicsObject* _obj1, PhysicsObject* _obj2);
+    static bool Plane2Circle(PhysicsObject* _obj1, PhysicsObject* _obj2);
 
 private:
     glm::vec2 m_gravity;

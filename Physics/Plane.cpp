@@ -21,7 +21,8 @@ void Plane::Draw(float _alpha)
     float lineSegmentLength = 300;
     glm::vec2 centerPoint = m_normal * m_distToOrigin;
     
-    // easy to rotate normal through 90 degrees around z
+    // Parallel is just the normal rotated 90 degrees through
+    // its' z-axis to be in line (parallel) with the plane
     glm::vec2 parallel(m_normal.y, -m_normal.x);
 
     // Color fade is a zero-alpha copy of m_color
@@ -31,7 +32,6 @@ void Plane::Draw(float _alpha)
     glm::vec2 start = centerPoint + (parallel * lineSegmentLength);
     glm::vec2 end = centerPoint - (parallel * lineSegmentLength);
     
-    //aie::Gizmos::add2DLine(start, end, colour);
     aie::Gizmos::add2DTri(start, end, start - m_normal*10.0f, m_color, m_color, colourFade);
     aie::Gizmos::add2DTri(end, end - m_normal * 10.0f, start - m_normal * 10.0f, m_color, colourFade, colourFade);
 }
