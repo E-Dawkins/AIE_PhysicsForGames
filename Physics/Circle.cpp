@@ -18,5 +18,6 @@ Circle::~Circle() = default;
 
 void Circle::Draw(float _alpha)
 {
+    m_color.a = _alpha;
     aie::Gizmos::add2DCircle(m_position, m_radius, 12, m_color);
 }

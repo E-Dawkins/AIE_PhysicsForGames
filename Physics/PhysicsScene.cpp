@@ -3,6 +3,14 @@
 #include "Circle.h"
 #include "PhysicsObject.h"
 
+typedef bool(*fn)(PhysicsObject*, PhysicsObject*);
+
+static fn collisionFunctionArray[] =
+{
+    PhysicsScene::Plane2Plane, PhysicsScene::Plane2Circle,
+    PhysicsScene::Circle2Plane, PhysicsScene::Circle2Circle,
+};
+
 PhysicsScene::PhysicsScene()
 {
     m_timeStep = 0.01f;
@@ -45,18 +53,21 @@ void PhysicsScene::Update(float _dt)
 
         accumulatedTime -= m_timeStep;
 
-        // check for collisions
-        int actorCount = m_actors.size();
-
-        // check for collisions against all objects except this one
-        for (int outer = 0; outer < actorCount - 1; outer++)
+        if(m_doCollisions)
         {
-            for (int inner = outer + 1; inner < actorCount; inner++)
+            // check for collisions
+            int actorCount = m_actors.size();
+            
+            // check for collisions against all objects except this one
+            for (int outer = 0; outer < actorCount - 1; outer++)
             {
-                PhysicsObject* object1 = m_actors[outer];
-                PhysicsObject* object2 = m_actors[inner];
-
-                Circle2Circle(object1, object2);
+                for (int inner = outer + 1; inner < actorCount; inner++)
+                {
+                    PhysicsObject* object1 = m_actors[outer];
+                    PhysicsObject* object2 = m_actors[inner];
+                    
+                    Circle2Circle(object1, object2);
+                }
             }
         }
     }
@@ -75,12 +86,19 @@ bool PhysicsScene::Circle2Circle(PhysicsObject* _obj1, PhysicsObject* _obj2)
     Circle* circle1 = dynamic_cast<Circle*>(_obj1);
     Circle* circle2 = dynamic_cast<Circle*>(_obj2);
 
-    // both objects are of type circle
+    // Both objects are of type circle
     if (circle1 != nullptr && circle2 != nullptr)
     {
         float dist = distance(circle1->GetPosition(), circle2->GetPosition());
-
-        return dist < (circle1->GetRadius() + circle2->GetRadius());
+        
+        if (dist < circle1->GetRadius() + circle2->GetRadius()) // they collided
+        {
+            // Apply each circles velocity to other circle
+            circle1->ApplyForce(circle2->GetVelocity());
+            circle2->ApplyForce(circle1->GetVelocity());
+            
+            return true;
+        }
     }
 
     return false;

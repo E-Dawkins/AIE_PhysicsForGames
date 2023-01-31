@@ -102,10 +102,10 @@ void PhysicsApp::DemoStartUp(int _num)
 #endif
 
 #ifdef SimulatingCollisions
-	m_physicsScene->SetGravity(glm::vec2(0));
+	m_physicsScene->SetGravity(glm::vec2(0, -10));
 
-	Circle* ball1 = new Circle(glm::vec2(-20, 0), glm::vec2(0), 4.0f, 4, glm::vec4(1, 0, 0, 1));
-	Circle* ball2 = new Circle(glm::vec2(10, 0), glm::vec2(0), 4.0f, 4, glm::vec4(0, 1, 0, 1));
+	Circle* ball1 = new Circle(glm::vec2(40, 0), glm::vec2(-20, 20), 4.0f, 4, glm::vec4(1, 0, 0, 1));
+	Circle* ball2 = new Circle(glm::vec2(-40, 0), glm::vec2(20, 20), 4.0f, 4, glm::vec4(0, 1, 0, 1));
 
 	m_physicsScene->AddActor(ball1);
 	m_physicsScene->AddActor(ball2);
@@ -115,10 +115,11 @@ void PhysicsApp::DemoStartUp(int _num)
 #endif
 
 #ifdef SimulatingRockets
-	m_physicsScene->SetGravity(glm::vec2(0, -10));
-
-	Circle* ball = new Circle(glm::vec2(0), glm::vec2(0), 250.0f, 5, glm::vec4(1, 0, 0, 1));
-
+	// m_physicsScene->SetGravity(glm::vec2(0, -10));
+	m_physicsScene->SetDoCollisions(false);
+	
+	Circle* ball = new Circle(glm::vec2(0), glm::vec2(0), 1000.f, 5, glm::vec4(1, 0, 0, 1));
+	ball->SetOrientation(90);
 	m_physicsScene->AddActor(ball);
 #endif
 }
@@ -148,36 +149,46 @@ void PhysicsApp::DemoUpdates(aie::Input* _input, float _dt)
 	}
 #endif
 
-#ifdef SimulatingCollisions
-	Circle* ball1 = dynamic_cast<Circle*>(m_physicsScene->GetActors()->at(0));
-	Circle* ball2 = dynamic_cast<Circle*>(m_physicsScene->GetActors()->at(1));
-	
-	if(PhysicsScene::Circle2Circle(ball1, ball2))
-	{
-		ball1->SetVelocity(glm::vec2(0));
-		ball2->SetVelocity(glm::vec2(0));
-	}
-#endif
-
 #ifdef SimulatingRockets
-	static float accumulatedTime = 0.0f;
-	accumulatedTime += _dt;
+	static Circle* rocket = dynamic_cast<Circle*>(m_physicsScene->GetActors()->at(0));
+	static float fuelStorage = rocket->GetMass() * 0.75f;
+	static float rocketMass = rocket->GetMass() - fuelStorage;
 
-	Circle* rocket = dynamic_cast<Circle*>(m_physicsScene->GetActors()->at(0));
+	const float rads = DegreeToRadian(rocket->GetOrientation());
+	const float actualFuelMass = fuelStorage >= 20.f ? 20.f : fuelStorage;
 	
-	if (accumulatedTime >= 0.25f && rocket->GetMass() > 0)
+	const glm::vec2 forceDir = normalize(glm::vec2(cos(rads), sin(rads)));
+	const glm::vec2 fuelPos = rocket->GetPosition() - forceDir * rocket->GetRadius();
+
+	static float accumulatedTime = 0.0f;
+
+	// Expel fuel and apply the force to the rocket to make it launch
+	if (accumulatedTime >= 0.15f && fuelStorage > 0)
 	{
-		accumulatedTime = 0.0f;
-		
-		float fuelMass = 25.f;
-		glm::vec2 fuelPos = rocket->GetPosition() - glm::vec2(0, rocket->GetRadius());
-		
-		Circle* fuel = new Circle(fuelPos, glm::vec2(0), fuelMass, 0.35f, glm::vec4(0, 1, 0, 1));
+		Circle* fuel = new Circle(fuelPos, glm::vec2(0), actualFuelMass, 0.35f, glm::vec4(0, 1, 0, 1));
 		m_physicsScene->AddActor(fuel);
+
+		fuelStorage -= actualFuelMass;
 		
-		rocket->SetMass(rocket->GetMass() - fuelMass);
-		rocket->ApplyForceToActor(fuel, glm::vec2(0, -10 * fuelMass));
+		rocket->ApplyForceToActor(fuel, forceDir * -30.f * actualFuelMass);
+		rocket->SetMass(rocketMass + fuelStorage);
+
+		accumulatedTime = 0.0f;
 	}
+
+	// turn the rocket
+	float addOrientation = 0.f;
+	const float turnSpeed = 2.5f;
+	
+	if (_input->isKeyDown(aie::INPUT_KEY_LEFT))
+		addOrientation += turnSpeed;
+
+	if (_input->isKeyDown(aie::INPUT_KEY_RIGHT))
+		addOrientation -= turnSpeed;
+
+	rocket->SetOrientation(rocket->GetOrientation() + addOrientation);
+	
+	accumulatedTime += _dt;
 #endif
 }
 

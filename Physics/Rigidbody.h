@@ -8,7 +8,7 @@ class Rigidbody : public PhysicsObject
 public:
     Rigidbody(ShapeType _shapeId, glm::vec2 _position,
         glm::vec2 _velocity, float _orientation, float _mass);
-    virtual ~Rigidbody() = default;
+    ~Rigidbody() override = default;
 
     virtual void FixedUpdate(glm::vec2 _gravity, float _timeStep) override;
     void ApplyForce(glm::vec2 _force);

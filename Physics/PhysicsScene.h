@@ -35,10 +35,14 @@ public:
     void SetTimeStep(const float _timeStep)
         { m_timeStep = _timeStep; }
 
+    void SetDoCollisions(const bool _doCollisions)
+        { m_doCollisions = _doCollisions; }
+
     static bool Circle2Circle(PhysicsObject* _obj1, PhysicsObject* _obj2);
 
 private:
     glm::vec2 m_gravity;
     float m_timeStep;
     std::vector<PhysicsObject*> m_actors;
+    bool m_doCollisions = true;
 };
