@@ -13,13 +13,13 @@ class PhysicsApp : public aie::Application {
 public:
 
 	PhysicsApp();
-	virtual ~PhysicsApp();
+	~PhysicsApp() override;
 
-	virtual bool startup();
-	virtual void shutdown();
+	bool startup() override;
+	void shutdown() override;
 
-	virtual void update(float deltaTime);
-	virtual void draw();
+	void update(float deltaTime) override;
+	void draw() override;
 
 protected:
 

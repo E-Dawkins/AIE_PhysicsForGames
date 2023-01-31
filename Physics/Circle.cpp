@@ -5,6 +5,7 @@
 Circle::Circle() : Rigidbody(CIRCLE, glm::vec2(0), glm::vec2(0), 0, 0)
 {
     m_radius = 0;
+    m_color = glm::vec4(0);
 }
 
 Circle::Circle(glm::vec2 _position, glm::vec2 _velocity, float _mass, float _radius, glm::vec4 _color):

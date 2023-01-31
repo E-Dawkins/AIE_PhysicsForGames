@@ -66,9 +66,7 @@ void PhysicsScene::Update(float _dt)
                 {
                     PhysicsObject* object1 = m_actors[outer];
                     PhysicsObject* object2 = m_actors[inner];
-
-                    int SHAPE_COUNT = 2;
-
+                    
                     int functionIdx = (object1->GetShapeId() * SHAPE_COUNT) + object2->GetShapeId();
                     fn collisionFunctionPtr = collisionFunctionArray[functionIdx];
 
@@ -106,9 +104,7 @@ bool PhysicsScene::Circle2Circle(PhysicsObject* _obj1, PhysicsObject* _obj2)
         // than the radius sum, they are colliding
         if (dist < circle1->GetRadius() + circle2->GetRadius())
         {
-            circle1->SetVelocity(glm::vec2(0));
-            circle2->SetVelocity(glm::vec2(0));
-            
+            circle1->ResolveCollision(circle2);
             return true;
         }
     }
@@ -118,6 +114,7 @@ bool PhysicsScene::Circle2Circle(PhysicsObject* _obj1, PhysicsObject* _obj2)
 
 bool PhysicsScene::Plane2Plane(PhysicsObject* _obj1, PhysicsObject* _obj2)
 {
+    // Planes are static, so they should never collide
     return false;
 }
 
@@ -140,11 +137,12 @@ bool PhysicsScene::Circle2Plane(PhysicsObject* _obj1, PhysicsObject* _obj2)
         // the velocity of the sphere is towards the plane's surface
         if (intersection > 0 && velocityOutOfPlane < 0)
         {
-            circle->SetVelocity(glm::vec2(0));
+            plane->ResolveCollision(circle);
             
             return true;
         }
     }
+    
     return false;
 }
 

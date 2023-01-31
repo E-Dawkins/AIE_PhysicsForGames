@@ -1,6 +1,6 @@
 ﻿#pragma once
 
-#define PI 3.14159265359f
+#define Pi 3.14159265359f
 
 // #define NewtonsFirstLaw
 // #define NewtonsSecondLaw
@@ -8,4 +8,5 @@
 // #define SimulatingCollisions
 // #define SimulatingRockets
 
+// #define CircleToCircle
 #define CircleToPlane

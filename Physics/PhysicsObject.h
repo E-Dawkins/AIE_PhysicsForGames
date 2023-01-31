@@ -1,11 +1,14 @@
 ﻿#pragma once
-#include <glm/vec2.hpp>
+#include <glm/glm.hpp>
+
+class Rigidbody;
 
 enum ShapeType
 {
-    PLANE = 0,
-    CIRCLE = 1,
-    BOX = 2
+    PLANE,
+    CIRCLE,
+    // BOX = 2,
+    SHAPE_COUNT
 };
 
 class PhysicsObject
@@ -18,10 +21,11 @@ public:
     virtual void FixedUpdate(glm::vec2 _gravity, float _timeStep) = 0;
     virtual void Draw(float _alpha) = 0;
     virtual void ResetPosition() {}
+    virtual void ResolveCollision(Rigidbody* _other) {}
+    virtual float GetKineticEnergy() { return 0; }
 
     // Getter
-    ShapeType GetShapeId() const
-        { return m_shapeId; }
+    ShapeType GetShapeId() const { return m_shapeId; }
 
 protected:
     ShapeType m_shapeId;

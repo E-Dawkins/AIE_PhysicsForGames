@@ -18,26 +18,20 @@ public:
     void Update(float _dt);
     void Draw();
 
-    // Getters
-    glm::vec2 GetGravity() const
-        { return m_gravity; }
-    
-    float GetTimeStep() const
-        { return m_timeStep; }
+    void DebugScene();
+    void CheckForCollisions();
 
-    std::vector<PhysicsObject*>* GetActors()
-        { return &m_actors; }
+    // Getters
+    glm::vec2 GetGravity() const                { return m_gravity; }
+    float GetTimeStep() const                   { return m_timeStep; }
+    std::vector<PhysicsObject*>* GetActors()    { return &m_actors; }
     
     // Setters
-    void SetGravity(const glm::vec2 _gravity)
-        { m_gravity = _gravity; }
-    
-    void SetTimeStep(const float _timeStep)
-        { m_timeStep = _timeStep; }
+    void SetGravity(const glm::vec2 _gravity)       { m_gravity = _gravity; }
+    void SetTimeStep(const float _timeStep)         { m_timeStep = _timeStep; }
+    void SetDoCollisions(const bool _doCollisions)  { m_doCollisions = _doCollisions; }
 
-    void SetDoCollisions(const bool _doCollisions)
-        { m_doCollisions = _doCollisions; }
-
+    // Collision functions
     static bool Circle2Circle(PhysicsObject* _obj1, PhysicsObject* _obj2);
     static bool Plane2Plane(PhysicsObject* _obj1, PhysicsObject* _obj2);
     static bool Circle2Plane(PhysicsObject* _obj1, PhysicsObject* _obj2);

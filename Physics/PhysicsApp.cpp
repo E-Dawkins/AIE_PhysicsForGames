@@ -2,7 +2,6 @@
 
 #include <glm/ext.hpp>
 
-#include "Circle.h"
 #include "Texture.h"
 #include "Font.h"
 #include "Input.h"
@@ -10,6 +9,8 @@
 #include "Demos.h"
 
 #include "PhysicsScene.h"
+
+#include "Circle.h"
 #include "Plane.h"
 
 PhysicsApp::PhysicsApp() = default;
@@ -103,13 +104,16 @@ void PhysicsApp::DemoStartUp(int _num)
 #endif
 
 #ifdef SimulatingCollisions
-	m_physicsScene->SetGravity(glm::vec2(0, -10));
+	m_physicsScene->SetGravity(glm::vec2(0, 0));
 
-	Circle* ball1 = new Circle(glm::vec2(40, 0), glm::vec2(-40, 20), 4.0f, 4, glm::vec4(1, 0, 0, 1));
-	Circle* ball2 = new Circle(glm::vec2(-40, 0), glm::vec2(20, 25), 4.0f, 4, glm::vec4(0, 1, 0, 1));
+	Circle* ball1 = new Circle(glm::vec2(-20, 0), glm::vec2(0), 4.0f, 4, glm::vec4(1, 0, 0, 1));
+	Circle* ball2 = new Circle(glm::vec2(10, 0), glm::vec2(0), 4.0f, 4, glm::vec4(0, 1, 0, 1));
 
 	m_physicsScene->AddActor(ball1);
 	m_physicsScene->AddActor(ball2);
+
+	ball1->ApplyForce(glm::vec2(30, 0));
+	ball2->ApplyForce(glm::vec2(-15, 0));
 #endif
 
 #ifdef SimulatingRockets
@@ -121,11 +125,21 @@ void PhysicsApp::DemoStartUp(int _num)
 	m_physicsScene->AddActor(ball);
 #endif
 
+#ifdef CircleToCircle
+	m_physicsScene->SetGravity(glm::vec2(0));
+
+	Circle* ball1 = new Circle(glm::vec2(-20, 0), glm::vec2(10, 0), 4.0f, 4, glm::vec4(1, 0, 0, 1));
+	Circle* ball2 = new Circle(glm::vec2(0, 0), glm::vec2(-50, 0), 10.0f, 4, glm::vec4(0, 1, 0, 1));
+
+	m_physicsScene->AddActor(ball1);
+	m_physicsScene->AddActor(ball2);
+#endif
+
 #ifdef CircleToPlane
 	m_physicsScene->SetGravity(glm::vec2(0, -10));
 
 	Circle* ball1 = new Circle(glm::vec2(-20, 0), glm::vec2(0), 4.0f, 4, glm::vec4(1, 0, 0, 1));
-	Circle* ball2 = new Circle(glm::vec2(10, 0), glm::vec2(0), 4.0f, 4, glm::vec4(0, 1, 0, 1));
+	Circle* ball2 = new Circle(glm::vec2(10, 0), glm::vec2(0), 10.0f, 4, glm::vec4(0, 1, 0, 1));
 	Plane* plane = new Plane(glm::vec2(0, 1), -40, glm::vec4(1, 1, 1, 1));
 
 	m_physicsScene->AddActor(ball1);
@@ -204,5 +218,5 @@ void PhysicsApp::DemoUpdates(aie::Input* _input, float _dt)
 
 float PhysicsApp::DegreeToRadian(const float _degree) const
 {
-	return _degree * (PI / 180.f);
+	return _degree * (Pi / 180.f);
 }

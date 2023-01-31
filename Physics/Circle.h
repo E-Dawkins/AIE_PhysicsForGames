@@ -12,13 +12,12 @@ public:
     void Draw(float _alpha) override;
 
     // Getter
-    float GetRadius() const
-        { return m_radius; }
+    float GetRadius() const { return m_radius; }
     
     // Setter
-    void SetRadius(const float _radius)
-        { m_radius = _radius; }
+    void SetRadius(const float _radius) { m_radius = _radius; }
     
 protected:
     float m_radius;
+    glm::vec4 m_color;
 };

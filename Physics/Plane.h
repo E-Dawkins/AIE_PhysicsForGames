@@ -13,11 +13,11 @@ public:
     virtual void FixedUpdate(glm::vec2 _gravity, float _timeStep) override {}
     virtual void Draw(float _alpha) override;
 
+    void ResolveCollision(Rigidbody* _other) override;
+
     // Getters
-    glm::vec2 GetNormal() const
-        { return m_normal; }
-    float GetDistance() const
-        { return m_distToOrigin; }
+    glm::vec2 GetNormal() const { return m_normal; }
+    float GetDistance() const   { return m_distToOrigin; }
 
 protected:
     glm::vec2 m_normal;
