@@ -8,5 +8,8 @@
 // #define SimulatingCollisions
 // #define SimulatingRockets
 
-// #define CircleToCircle
-#define CircleToPlane
+// #define CircleToPlane
+
+// #define NewtonsCradle1
+// #define NewtonsCradle2
+#define NewtonsCradle3

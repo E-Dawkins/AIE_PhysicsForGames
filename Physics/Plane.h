@@ -18,6 +18,10 @@ public:
     // Getters
     glm::vec2 GetNormal() const { return m_normal; }
     float GetDistance() const   { return m_distToOrigin; }
+    glm::vec4 GetColor() const { return m_color; }
+
+    // Setters
+    void SetColor(const glm::vec4 _color) { m_color = _color; }
 
 protected:
     glm::vec2 m_normal;

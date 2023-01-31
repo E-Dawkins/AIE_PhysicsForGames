@@ -125,16 +125,6 @@ void PhysicsApp::DemoStartUp(int _num)
 	m_physicsScene->AddActor(ball);
 #endif
 
-#ifdef CircleToCircle
-	m_physicsScene->SetGravity(glm::vec2(0));
-
-	Circle* ball1 = new Circle(glm::vec2(-20, 0), glm::vec2(10, 0), 4.0f, 4, glm::vec4(1, 0, 0, 1));
-	Circle* ball2 = new Circle(glm::vec2(0, 0), glm::vec2(-50, 0), 10.0f, 4, glm::vec4(0, 1, 0, 1));
-
-	m_physicsScene->AddActor(ball1);
-	m_physicsScene->AddActor(ball2);
-#endif
-
 #ifdef CircleToPlane
 	m_physicsScene->SetGravity(glm::vec2(0, -10));
 
@@ -145,6 +135,41 @@ void PhysicsApp::DemoStartUp(int _num)
 	m_physicsScene->AddActor(ball1);
 	m_physicsScene->AddActor(ball2);
 	m_physicsScene->AddActor(plane);
+#endif
+	
+#ifdef NewtonsCradle1
+	m_physicsScene->SetGravity(glm::vec2(0));
+
+	Circle* ball1 = new Circle(glm::vec2(20, 0), glm::vec2(0), 5.0f, 5, glm::vec4(1, 0, 0, 1));
+	Circle* ball2 = new Circle(glm::vec2(-20, 0), glm::vec2(20, 0), 1.0f, 5, glm::vec4(0, 1, 0, 1));
+
+	m_physicsScene->AddActor(ball1);
+	m_physicsScene->AddActor(ball2);
+#endif
+
+#if defined NewtonsCradle2 || defined NewtonsCradle3
+	Plane* plane = new Plane(glm::vec2(1, 0), -60, glm::vec4(1, 1, 1, 1));
+	Plane* plane2 = new Plane(glm::vec2(-1, 0), -60, glm::vec4(1, 1, 1, 1));
+	
+	Circle* circle = new Circle(glm::vec2(-50, 0), glm::vec2(50, 0), 1.f, 4, glm::vec4(1));
+	Circle* circle1 = new Circle(glm::vec2(-20, 0), glm::vec2(0), 1.f, 4, glm::vec4(1));
+	Circle* circle2 = new Circle(glm::vec2(0), glm::vec2(0), 1.f, 4, glm::vec4(1));
+	Circle* circle3 = new Circle(glm::vec2(20, 0), glm::vec2(0), 1.f, 4, glm::vec4(1));
+	Circle* circle4 = new Circle(glm::vec2(40, 0), glm::vec2(0), 1.f, 4, glm::vec4(1));
+
+#if defined NewtonsCradle3
+	circle1->SetMass(3.f);
+	circle1->SetRadius(6);
+	circle1->SetColor(glm::vec4(1, 0, 0, 1));
+#endif
+	
+	m_physicsScene->AddActor(plane);
+	m_physicsScene->AddActor(plane2);
+	m_physicsScene->AddActor(circle);
+	m_physicsScene->AddActor(circle1);
+	m_physicsScene->AddActor(circle2);
+	m_physicsScene->AddActor(circle3);
+	m_physicsScene->AddActor(circle4);
 #endif
 }
 
