@@ -2,6 +2,8 @@
 
 #include <iostream>
 
+#include "PhysicsScene.h"
+
 Rigidbody::Rigidbody(const ShapeType _shapeId, const glm::vec2 _position, const glm::vec2 _velocity, const float _orientation, const float _mass):
     PhysicsObject(_shapeId)
 {
@@ -57,4 +59,14 @@ void Rigidbody::ResolveCollision(Rigidbody* _other)
 float Rigidbody::GetKineticEnergy()
 {
     return m_mass * length(m_velocity) * length(m_velocity) * 0.5f;
+}
+
+float Rigidbody::GetPotentialEnergy()
+{
+    return -GetMass() * dot(PhysicsScene::GetGravity(), GetPosition());
+}
+
+float Rigidbody::GetEnergy()
+{
+    return GetKineticEnergy() + GetPotentialEnergy();
 }

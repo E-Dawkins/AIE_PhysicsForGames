@@ -128,9 +128,9 @@ void PhysicsApp::DemoStartUp(int _num)
 #ifdef CircleToPlane
 	m_physicsScene->SetGravity(glm::vec2(0, -10));
 
-	Circle* ball1 = new Circle(glm::vec2(-20, 0), glm::vec2(0), 4.0f, 4, glm::vec4(1, 0, 0, 1));
-	Circle* ball2 = new Circle(glm::vec2(10, 0), glm::vec2(0), 10.0f, 4, glm::vec4(0, 1, 0, 1));
-	Plane* plane = new Plane(glm::vec2(0, 1), -40, glm::vec4(1, 1, 1, 1));
+	Circle* ball1 = new Circle(glm::vec2(-70, 50), glm::vec2(0), 4.0f, 4, glm::vec4(1, 0, 0, 1));
+	Circle* ball2 = new Circle(glm::vec2(-60, 55), glm::vec2(0), 10.0f, 4, glm::vec4(0, 1, 0, 1));
+	Plane* plane = new Plane(glm::vec2(0.5, 0.866), -20, glm::vec4(1, 1, 1, 1));
 
 	m_physicsScene->AddActor(ball1);
 	m_physicsScene->AddActor(ball2);

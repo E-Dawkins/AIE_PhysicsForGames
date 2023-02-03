@@ -20,14 +20,15 @@ public:
 
     void DebugScene();
     void CheckForCollisions();
+    float GetTotalEnergy() const;
 
     // Getters
-    glm::vec2 GetGravity() const                { return m_gravity; }
+    static glm::vec2 GetGravity()               { return m_gravity; }
     float GetTimeStep() const                   { return m_timeStep; }
     std::vector<PhysicsObject*>* GetActors()    { return &m_actors; }
     
     // Setters
-    void SetGravity(const glm::vec2 _gravity)       { m_gravity = _gravity; }
+    void SetGravity(const glm::vec2 _gravity) const { m_gravity = _gravity; }
     void SetTimeStep(const float _timeStep)         { m_timeStep = _timeStep; }
     void SetDoCollisions(const bool _doCollisions)  { m_doCollisions = _doCollisions; }
 
@@ -37,8 +38,8 @@ public:
     static bool Circle2Plane(PhysicsObject* _obj1, PhysicsObject* _obj2);
     static bool Plane2Circle(PhysicsObject* _obj1, PhysicsObject* _obj2);
 
-private:
-    glm::vec2 m_gravity;
+protected:
+    static glm::vec2 m_gravity;
     float m_timeStep;
     std::vector<PhysicsObject*> m_actors;
     bool m_doCollisions = true;

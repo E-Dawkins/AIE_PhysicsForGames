@@ -22,7 +22,11 @@ public:
     virtual void Draw(float _alpha) = 0;
     virtual void ResetPosition() {}
     virtual void ResolveCollision(Rigidbody* _other) {}
+
+    // Diagnostics
     virtual float GetKineticEnergy() { return 0; }
+    virtual float GetPotentialEnergy() { return 0; }
+    virtual float GetEnergy() { return 0; }
 
     // Getter
     ShapeType GetShapeId() const { return m_shapeId; }

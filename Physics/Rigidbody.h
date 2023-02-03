@@ -15,7 +15,11 @@ public:
     void ApplyForce(glm::vec2 _force);
     void ApplyForceToActor(Rigidbody* _other, glm::vec2 _force);
     void ResolveCollision(Rigidbody* _other) override;
+
+    // Diagnostics
     float GetKineticEnergy() override;
+    float GetPotentialEnergy() override;
+    float GetEnergy() override;
 
     // Getters
     glm::vec2 GetPosition() const   { return m_position; }

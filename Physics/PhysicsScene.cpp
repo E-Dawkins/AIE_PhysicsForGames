@@ -12,10 +12,11 @@ static fn collisionFunctionArray[] =
     PhysicsScene::Circle2Plane, PhysicsScene::Circle2Circle,
 };
 
+glm::vec2 PhysicsScene::m_gravity = glm::vec2(0);
+
 PhysicsScene::PhysicsScene()
 {
     m_timeStep = 0.01f;
-    m_gravity = glm::vec2(0);
 }
 
 PhysicsScene::~PhysicsScene()
@@ -88,6 +89,18 @@ void PhysicsScene::Draw()
     {
         pActor->Draw(1);
     }
+}
+
+float PhysicsScene::GetTotalEnergy() const
+{
+    float total = 0;
+
+    for (const auto obj : m_actors)
+    {
+        total += obj->GetEnergy();
+    }
+
+    return total;
 }
 
 bool PhysicsScene::Circle2Circle(PhysicsObject* _obj1, PhysicsObject* _obj2)
