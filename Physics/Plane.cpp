@@ -42,11 +42,27 @@ void Plane::Draw(float _alpha)
 
 void Plane::ResolveCollision(Rigidbody* _other, glm::vec2 _contact, glm::vec2* _collisionNormal)
 {
-    glm::vec2 relativeVel = _other->GetVelocity();
+    // The position at which we will apply the force
+    // relative to the object's center of mass
+    glm::vec2 localContact = _contact - _other->GetPosition();
+
+    // The plane has no velocity, so the relative velocity
+    // is just the other object's velocity at contact point
+    glm::vec2 relativeVel = _other->GetVelocity() + _other->GetAngularVelocity()
+                                * glm::vec2(-localContact.y, localContact.x);
+    float velocityIntoPlane = dot(relativeVel, m_normal);
 
     float elasticity = 1;
-    float j = dot(-(1 + elasticity) * relativeVel, m_normal) /
-                        (1 / _other->GetMass());
+
+    // Perpendicular distance we apply the force to relative
+    // to the object's center of mass, i.e. Torque = F * r
+    float r = dot(localContact, glm::vec2(m_normal.y, -m_normal.x));
+
+    // "Effective mass" - combination of moment of inertia and mass,
+    // tells us contact points' velocity change from the applied force
+    float mass0 = 1.f / (1.f / _other->GetMass() + (r * r) / _other->GetMoment());
+    
+    float j = -(1 + elasticity) * velocityIntoPlane * mass0;
 
     glm::vec2 force = m_normal * j;
     

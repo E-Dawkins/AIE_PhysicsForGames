@@ -34,9 +34,14 @@ public:
 
     // Collision functions
     static bool Circle2Circle(PhysicsObject* _obj1, PhysicsObject* _obj2);
-    static bool Plane2Plane(PhysicsObject* _obj1, PhysicsObject* _obj2);
     static bool Circle2Plane(PhysicsObject* _obj1, PhysicsObject* _obj2);
+    static bool Circle2Box(PhysicsObject* _obj1, PhysicsObject* _obj2);
     static bool Plane2Circle(PhysicsObject* _obj1, PhysicsObject* _obj2);
+    static bool Plane2Plane(PhysicsObject* _obj1, PhysicsObject* _obj2);
+    static bool Plane2Box(PhysicsObject* _obj1, PhysicsObject* _obj2);
+    static bool Box2Circle(PhysicsObject* _obj1, PhysicsObject* _obj2);
+    static bool Box2Plane(PhysicsObject* _obj1, PhysicsObject* _obj2);
+    static bool Box2Box(PhysicsObject* _obj1, PhysicsObject* _obj2);
 
 protected:
     static glm::vec2 m_gravity;

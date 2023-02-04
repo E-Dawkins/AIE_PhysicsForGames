@@ -11,7 +11,6 @@ Rigidbody::Rigidbody(const ShapeType _shapeId, const glm::vec2 _position, const 
     m_mass = _mass;
 
     m_angularVelocity = 0;
-    m_moment = 0;
     m_lastOrientation = 0;
     m_lastPosition = _position;
     m_smoothedPosition = _position;
@@ -19,6 +18,8 @@ Rigidbody::Rigidbody(const ShapeType _shapeId, const glm::vec2 _position, const 
 
 void Rigidbody::FixedUpdate(const glm::vec2 _gravity, const float _timeStep)
 {
+    CalculateAxes();
+    
     m_lastOrientation = m_orientation;
     m_lastPosition = m_position;
     
@@ -82,9 +83,19 @@ void Rigidbody::CalculateSmoothedPosition(float _alpha)
     m_smoothedLocalY = glm::vec2(-sn, cs);
 }
 
+void Rigidbody::CalculateAxes()
+{
+    float sn = sinf(m_orientation);
+    float cs = cosf(m_orientation);
+
+    m_localX = glm::vec2(cs, sn);
+    m_localY = glm::vec2(-sn, cs);
+}
+
 float Rigidbody::GetKineticEnergy()
 {
-    return m_mass * length(m_velocity) * length(m_velocity) * 0.5f;
+    return 0.5f * (m_mass * dot(m_velocity, m_velocity) +
+        m_moment * m_angularVelocity * m_angularVelocity);
 }
 
 float Rigidbody::GetPotentialEnergy()

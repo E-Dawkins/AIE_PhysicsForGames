@@ -2,6 +2,7 @@
 
 #include <glm/ext.hpp>
 
+#include "Box.h"
 #include "Texture.h"
 #include "Font.h"
 #include "Input.h"
@@ -126,8 +127,8 @@ void PhysicsApp::DemoStartUp(int _num)
 	Circle* ball2 = new Circle(glm::vec2(20, 55), glm::vec2(0), 10.0f, 6, glm::vec4(0, 1, 0, 1));
 	Circle* ball3 = new Circle(glm::vec2(10, 35), glm::vec2(0), 7.0f, 5, glm::vec4(0, 0, 1, 1));
 	Circle* ball4 = new Circle(glm::vec2(-15, 45), glm::vec2(0), 1.0f, 2, glm::vec4(1, 0, 1, 1));
-	Plane* plane = new Plane(glm::vec2(0.866, 0.5), -20, glm::vec4(1, 1, 1, 1));
-	Plane* plane2 = new Plane(glm::vec2(-0.866, 0.5), -20, glm::vec4(1, 1, 1, 1));
+	Plane* plane = new Plane(glm::vec2(0.866, 0.5), -20, glm::vec4(1));
+	Plane* plane2 = new Plane(glm::vec2(-0.866, 0.5), -20, glm::vec4(1));
 
 	m_physicsScene->AddActor(ball1);
 	m_physicsScene->AddActor(ball2);
@@ -141,8 +142,8 @@ void PhysicsApp::DemoStartUp(int _num)
 	Circle* ball1 = new Circle(glm::vec2(20, 0), glm::vec2(0), 1.0f, 4, glm::vec4(1, 0, 0, 1));
 	Circle* ball2 = new Circle(glm::vec2(-20, 0), glm::vec2(20, 0), 1.0f, 4, glm::vec4(0, 1, 0, 1));
 
-	Plane* plane = new Plane(glm::vec2(1, 0), -40, glm::vec4(1, 1, 1, 1));
-	Plane* plane2 = new Plane(glm::vec2(-1, 0), -40, glm::vec4(1, 1, 1, 1));
+	Plane* plane = new Plane(glm::vec2(1, 0), -40, glm::vec4(1));
+	Plane* plane2 = new Plane(glm::vec2(-1, 0), -40, glm::vec4(1));
 	
 	m_physicsScene->AddActor(ball1);
 	m_physicsScene->AddActor(ball2);
@@ -151,8 +152,8 @@ void PhysicsApp::DemoStartUp(int _num)
 #endif
 
 #if defined NewtonsCradle2 || defined NewtonsCradle3
-	Plane* plane = new Plane(glm::vec2(1, 0), -60, glm::vec4(1, 1, 1, 1));
-	Plane* plane2 = new Plane(glm::vec2(-1, 0), -60, glm::vec4(1, 1, 1, 1));
+	Plane* plane = new Plane(glm::vec2(1, 0), -60, glm::vec4(1));
+	Plane* plane2 = new Plane(glm::vec2(-1, 0), -60, glm::vec4(1));
 	
 	Circle* circle = new Circle(glm::vec2(-50, 0), glm::vec2(50, 0), 1.f, 4, glm::vec4(1));
 	Circle* circle1 = new Circle(glm::vec2(-20, 0), glm::vec2(0), 1.f, 4, glm::vec4(1));
@@ -173,6 +174,30 @@ void PhysicsApp::DemoStartUp(int _num)
 	m_physicsScene->AddActor(circle2);
 	m_physicsScene->AddActor(circle3);
 	m_physicsScene->AddActor(circle4);
+#endif
+
+#ifdef FallingOnPlane
+	m_physicsScene->SetGravity(glm::vec2(0, -10));
+	
+	Plane* plane = new Plane(glm::vec2(0.707, 0.707), -40, glm::vec4(1));
+	Plane* plane2 = new Plane(glm::vec2(-0.707, 0.707), -40, glm::vec4(1));
+	Circle* circle = new Circle(glm::vec2(-50, 10), glm::vec2(0), 1.f, 4, glm::vec4(1, 0, 0, 1));
+	Circle* circle1 = new Circle(glm::vec2(30, 40), glm::vec2(0), 2.f, 5, glm::vec4(1, 0, 1, 1));
+	Circle* circle2 = new Circle(glm::vec2(-40, 20), glm::vec2(0), 3.f, 6, glm::vec4(0, 1, 1, 1));
+	Box* box = new Box(glm::vec2(50, 10), glm::vec2(0), glm::vec2(4), 1.f, 0.f, glm::vec4(0, 0, 1, 1));
+	Box* box1 = new Box(glm::vec2(20, 10), glm::vec2(0), glm::vec2(4), 1.f, 27.f, glm::vec4(0, 0, 1, 1));
+	Box* box2 = new Box(glm::vec2(30, 20), glm::vec2(0), glm::vec2(4), 1.f, 54.f, glm::vec4(0, 0, 1, 1));
+	Box* box3 = new Box(glm::vec2(10, 0), glm::vec2(0), glm::vec2(4), 1.f, 92.f, glm::vec4(0, 0, 1, 1));
+
+	m_physicsScene->AddActor(plane);
+	m_physicsScene->AddActor(plane2);
+	m_physicsScene->AddActor(circle);
+	m_physicsScene->AddActor(circle1);
+	m_physicsScene->AddActor(circle2);
+	m_physicsScene->AddActor(box);
+	m_physicsScene->AddActor(box1);
+	m_physicsScene->AddActor(box2);
+	m_physicsScene->AddActor(box3);
 #endif
 }
 
