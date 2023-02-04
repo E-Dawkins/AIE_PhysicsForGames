@@ -117,7 +117,8 @@ bool PhysicsScene::Circle2Circle(PhysicsObject* _obj1, PhysicsObject* _obj2)
         // than the radius sum, they are colliding
         if (dist < circle1->GetRadius() + circle2->GetRadius())
         {
-            circle1->ResolveCollision(circle2);
+            glm::vec2 contact = 0.5f * (circle1->GetPosition() + circle2->GetPosition());
+            circle1->ResolveCollision(circle2, contact);
             return true;
         }
     }
@@ -150,7 +151,8 @@ bool PhysicsScene::Circle2Plane(PhysicsObject* _obj1, PhysicsObject* _obj2)
         // the velocity of the sphere is towards the plane's surface
         if (intersection > 0 && velocityOutOfPlane < 0)
         {
-            plane->ResolveCollision(circle);
+            glm::vec2 contact = circle->GetPosition() + (plane->GetNormal() * -circle->GetRadius());
+            plane->ResolveCollision(circle, contact);
             
             return true;
         }

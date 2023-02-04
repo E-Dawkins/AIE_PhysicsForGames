@@ -13,7 +13,7 @@ public:
     virtual void FixedUpdate(glm::vec2 _gravity, float _timeStep) override {}
     virtual void Draw(float _alpha) override;
 
-    void ResolveCollision(Rigidbody* _other) override;
+    void ResolveCollision(Rigidbody* _other, glm::vec2 _contact, glm::vec2* _collisionNormal = nullptr) override;
 
     // Getters
     glm::vec2 GetNormal() const { return m_normal; }

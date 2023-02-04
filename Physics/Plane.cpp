@@ -40,25 +40,15 @@ void Plane::Draw(float _alpha)
     aie::Gizmos::add2DTri(end, end - m_normal * 10.0f, start - m_normal * 10.0f, m_color, colourFade, colourFade);
 }
 
-void Plane::ResolveCollision(Rigidbody* _other)
+void Plane::ResolveCollision(Rigidbody* _other, glm::vec2 _contact, glm::vec2* _collisionNormal)
 {
-    // if the objects are already moving apart, we don't need to do anything
-    if (dot(m_normal, _other->GetVelocity()) >= 0)
-        return;
+    glm::vec2 relativeVel = _other->GetVelocity();
 
     float elasticity = 1;
-    float j = dot(-(1 + elasticity) * _other->GetVelocity(), m_normal) /
-        (1 / _other->GetMass());
+    float j = dot(-(1 + elasticity) * relativeVel, m_normal) /
+                        (1 / _other->GetMass());
 
     glm::vec2 force = m_normal * j;
-
-    float kePre = GetKineticEnergy() + _other->GetKineticEnergy();
-
-    _other->ApplyForce(force);
-
-    float kePost = GetKineticEnergy() + _other->GetKineticEnergy();
-
-    float deltaKE = kePost - kePre;
-    if (deltaKE > kePost * 0.01f)
-        std::cout << "Kinetic energy discrepancy greater than 1% detected!!";
+    
+    _other->ApplyForce(force, _contact - _other->GetPosition());
 }

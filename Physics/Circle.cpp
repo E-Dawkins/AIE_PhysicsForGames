@@ -13,12 +13,15 @@ Circle::Circle(glm::vec2 _position, glm::vec2 _velocity, float _mass, float _rad
 {
     m_radius = _radius;
     m_color = _color;
+    m_moment = 0.5f * m_mass * m_radius * m_radius;
 }
 
 Circle::~Circle() = default;
 
 void Circle::Draw(float _alpha)
 {
-    m_color.a = _alpha;
-    aie::Gizmos::add2DCircle(m_position, m_radius, 12, m_color);
+    CalculateSmoothedPosition(_alpha);
+    
+    aie::Gizmos::add2DCircle(m_smoothedPosition, m_radius, 12, m_color);
+    aie::Gizmos::add2DLine(m_smoothedPosition, m_smoothedPosition + m_smoothedLocalX * m_radius, glm::vec4(1));
 }
