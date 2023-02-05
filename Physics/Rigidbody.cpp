@@ -14,6 +14,9 @@ Rigidbody::Rigidbody(const ShapeType _shapeId, const glm::vec2 _position, const 
     m_lastOrientation = 0;
     m_lastPosition = _position;
     m_smoothedPosition = _position;
+
+    m_linearDrag = 0.3f;
+    m_angularDrag = 0.3f;
 }
 
 void Rigidbody::FixedUpdate(const glm::vec2 _gravity, const float _timeStep)
@@ -22,6 +25,15 @@ void Rigidbody::FixedUpdate(const glm::vec2 _gravity, const float _timeStep)
     
     m_lastOrientation = m_orientation;
     m_lastPosition = m_position;
+
+    m_velocity -= m_velocity * m_linearDrag * _timeStep;
+    m_angularVelocity -= m_angularVelocity * m_angularDrag * _timeStep;
+
+    if (length(m_velocity) < MIN_LINEAR_THRESHOLD)
+        m_velocity = glm::vec2(0);
+
+    if (abs(m_angularVelocity) < MIN_ANGULAR_THRESHOLD)
+        m_angularVelocity = 0;
     
     m_position += m_velocity * _timeStep;
     ApplyForce(_gravity * m_mass * _timeStep, glm::vec2(0));
@@ -60,7 +72,7 @@ void Rigidbody::ResolveCollision(Rigidbody* _other, glm::vec2 _contact, glm::vec
         float mass1 = 1.f / (1.f / m_mass + (r1 * r1) / m_moment);
         float mass2 = 1.f / (1.f / _other->m_mass + (r2 * r2) / _other->m_moment);
 
-        float elasticity = 1;
+        float elasticity = (GetElasticity() + _other->GetElasticity()) * 0.5f;
 
         glm::vec2 force = (1.f + elasticity) * mass1 * mass2 /
                             (mass1 + mass2) * (v1 - v2) * normal;

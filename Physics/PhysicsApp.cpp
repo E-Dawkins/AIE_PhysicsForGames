@@ -48,10 +48,11 @@ void PhysicsApp::update(float deltaTime) {
 
 	aie::Gizmos::clear();
 
+	DemoUpdates(input, deltaTime);
+	DemoDraw();
+	
 	m_physicsScene->Update(deltaTime);
 	m_physicsScene->Draw();
-
-	DemoUpdates(input, deltaTime);
 
 	// exit the application
 	if (input->isKeyDown(aie::INPUT_KEY_ESCAPE))
@@ -177,7 +178,7 @@ void PhysicsApp::DemoStartUp(int _num)
 #endif
 
 #ifdef FallingOnPlane
-	m_physicsScene->SetGravity(glm::vec2(0, -10));
+	m_physicsScene->SetGravity(glm::vec2(0, -20));
 	
 	Plane* plane = new Plane(glm::vec2(0.707, 0.707), -40, glm::vec4(1));
 	Plane* plane2 = new Plane(glm::vec2(-0.707, 0.707), -40, glm::vec4(1));
@@ -198,6 +199,87 @@ void PhysicsApp::DemoStartUp(int _num)
 	m_physicsScene->AddActor(box1);
 	m_physicsScene->AddActor(box2);
 	m_physicsScene->AddActor(box3);
+#endif
+
+#ifdef BounceToStop
+	m_physicsScene->SetGravity(glm::vec2(0, -10));
+	
+	Plane* plane = new Plane(glm::vec2(0, 1), -40, glm::vec4(1));
+	Box* box = new Box(glm::vec2(50, 10), glm::vec2(0), glm::vec2(4), 1.f, 0.f, glm::vec4(0, 0, 1, 1));
+	Box* box1 = new Box(glm::vec2(45, 30), glm::vec2(0), glm::vec2(4), 1.f, 37.f, glm::vec4(0, 0, 1, 1));
+	Circle* circle = new Circle(glm::vec2(-50, 10), glm::vec2(0), 1.f, 4, glm::vec4(1, 0, 0, 1));
+
+	box->SetElasticity(0.3f);
+	box1->SetElasticity(0.3f);
+	circle->SetElasticity(0.3f);
+	
+	m_physicsScene->AddActor(plane);
+	m_physicsScene->AddActor(box);
+	m_physicsScene->AddActor(box1);
+	m_physicsScene->AddActor(circle);
+#endif
+
+#ifdef TestPoolTable
+	Circle* cueBall = new Circle(glm::vec2(-60, 0), glm::vec2(0), 2.f, 3.5, glm::vec4(1));
+	
+	Plane* plane = new Plane(glm::vec2(0, 1), -50, glm::vec4(0, 0.75, 0, 1));
+	Plane* plane1 = new Plane(glm::vec2(0, -1), -50, glm::vec4(0, 0.75, 0, 1));
+	Plane* plane2 = new Plane(glm::vec2(1, 0), -95, glm::vec4(0, 0.75, 0, 1));
+	Plane* plane3 = new Plane(glm::vec2(-1, 0), -95, glm::vec4(0, 0.75, 0, 1));
+
+	// 1
+	Circle* billiard = new Circle(glm::vec2(30, 0), glm::vec2(0), 3.f, 4, glm::vec4(1, 0, 0, 1));
+	// 2
+	Circle* billiard1 = new Circle(glm::vec2(37.5, 4.5), glm::vec2(0), 3.f, 4, glm::vec4(1, 1, 0, 1));
+	Circle* billiard2 = new Circle(glm::vec2(37.5, -4.5), glm::vec2(0), 3.f, 4, glm::vec4(1, 0, 0, 1));
+	// 3
+	Circle* billiard3 = new Circle(glm::vec2(45, 9), glm::vec2(0), 3.f, 4, glm::vec4(1, 0, 0, 1));
+	Circle* billiard4 = new Circle(glm::vec2(45, 0), glm::vec2(0), 3.f, 4, glm::vec4(0.15, 0.15, 0.15, 1));
+	Circle* billiard5 = new Circle(glm::vec2(45, -9), glm::vec2(0), 3.f, 4, glm::vec4(1, 1, 0, 1));
+	// 4
+	Circle* billiard6 = new Circle(glm::vec2(52.5, 13.5), glm::vec2(0), 3.f, 4, glm::vec4(1 ,0, 0, 1));
+	Circle* billiard7 = new Circle(glm::vec2(52.5, 4.5), glm::vec2(0), 3.f, 4, glm::vec4(1, 1, 0, 1));
+	Circle* billiard8 = new Circle(glm::vec2(52.5, -4.5), glm::vec2(0), 3.f, 4, glm::vec4(1, 1, 0, 1));
+	Circle* billiard9 = new Circle(glm::vec2(52.5, -13.5), glm::vec2(0), 3.f, 4, glm::vec4(1, 0, 0, 1));
+	// 5
+	Circle* billiard10 = new Circle(glm::vec2(60, 18), glm::vec2(0), 3.f, 4, glm::vec4(1, 1, 0, 1));
+	Circle* billiard11 = new Circle(glm::vec2(60, 9), glm::vec2(0), 3.f, 4, glm::vec4(1, 0, 0, 1));
+	Circle* billiard12 = new Circle(glm::vec2(60, 0), glm::vec2(0), 3.f, 4, glm::vec4(1, 1, 0, 1));
+	Circle* billiard13 = new Circle(glm::vec2(60, -9), glm::vec2(0), 3.f, 4, glm::vec4(1, 0, 0, 1));
+	Circle* billiard14 = new Circle(glm::vec2(60, -18), glm::vec2(0), 3.f, 4, glm::vec4(1, 1, 0, 1));
+	
+	m_physicsScene->AddActor(cueBall);
+	
+	m_physicsScene->AddActor(plane);
+	m_physicsScene->AddActor(plane1);
+	m_physicsScene->AddActor(plane2);
+	m_physicsScene->AddActor(plane3);
+	
+	m_physicsScene->AddActor(billiard);
+	m_physicsScene->AddActor(billiard1);
+	m_physicsScene->AddActor(billiard2);
+	m_physicsScene->AddActor(billiard3);
+	m_physicsScene->AddActor(billiard4);
+	m_physicsScene->AddActor(billiard5);
+	m_physicsScene->AddActor(billiard6);
+	m_physicsScene->AddActor(billiard7);
+	m_physicsScene->AddActor(billiard8);
+	m_physicsScene->AddActor(billiard9);
+	m_physicsScene->AddActor(billiard10);
+	m_physicsScene->AddActor(billiard11);
+	m_physicsScene->AddActor(billiard12);
+	m_physicsScene->AddActor(billiard13);
+	m_physicsScene->AddActor(billiard14);
+	
+	for (int i = 0; i < m_physicsScene->GetActors()->size(); i++)
+	{
+		PhysicsObject* obj = m_physicsScene->GetActors()->at(i);
+		
+		if (dynamic_cast<Circle*>(obj))
+			obj->SetElasticity(0.8f);
+
+		else obj->SetElasticity(0.6f);
+	}
 #endif
 }
 
@@ -266,6 +348,46 @@ void PhysicsApp::DemoUpdates(aie::Input* _input, float _dt)
 	rocket->SetOrientation(rocket->GetOrientation() + addOrientation);
 	
 	accumulatedTime += _dt;
+#endif
+
+#ifdef TestPoolTable
+	static Circle* cueBall = dynamic_cast<Circle*>(m_physicsScene->GetActors()->at(0));
+	float turnSpeed = 1.f;
+
+	float orientation = cueBall->GetOrientation();
+	
+	if (_input->isKeyDown(aie::INPUT_KEY_LEFT))
+		orientation += turnSpeed;
+
+	if (_input->isKeyDown(aie::INPUT_KEY_RIGHT))
+		orientation -= turnSpeed;
+	
+	cueBall->SetOrientation(orientation);
+
+	float rads = DegreeToRadian(cueBall->GetOrientation());
+	const glm::vec2 forceDir = normalize(glm::vec2(cos(rads), sin(rads)));
+
+	if (_input->wasKeyPressed(aie::INPUT_KEY_SPACE) && cueBall->GetVelocity() == glm::vec2(0))
+	{
+		static float forceAmount = 650.f;
+		cueBall->ApplyForce(forceDir * forceAmount, glm::vec2(0));
+	}
+#endif
+}
+
+void PhysicsApp::DemoDraw()
+{
+#ifdef TestPoolTable
+	static Circle* cueBall = dynamic_cast<Circle*>(m_physicsScene->GetActors()->at(0));
+	
+	float rads = DegreeToRadian(cueBall->GetOrientation());
+	const glm::vec2 forceDir = normalize(glm::vec2(cos(rads), sin(rads)));
+
+	glm::vec4 dirColor = cueBall->GetVelocity() == glm::vec2(0)
+							? glm::vec4(1, 0, 0, 1) : glm::vec4(1);
+
+	aie::Gizmos::add2DLine(cueBall->GetPosition(), cueBall->GetPosition()
+							+ forceDir * cueBall->GetRadius(), dirColor);
 #endif
 }
 

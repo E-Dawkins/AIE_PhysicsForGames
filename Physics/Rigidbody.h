@@ -3,6 +3,9 @@
 
 #include <glm/glm.hpp>
 
+const float MIN_LINEAR_THRESHOLD = 0.09f;
+const float MIN_ANGULAR_THRESHOLD = 0.01f;
+
 class Rigidbody : public PhysicsObject
 {
 public:
@@ -31,13 +34,16 @@ public:
     glm::vec2 GetLocalX() const         { return m_localX; }
     glm::vec2 GetLocalY() const         { return m_localY; }
     float GetAngularVelocity() const    { return m_angularVelocity; }
+    float GetLinearDrag() const         { return m_linearDrag; }
+    float GetAngularDrag() const         { return m_angularDrag; }
     
     // Setters
     void SetPosition(const glm::vec2 _position)     { m_position = _position; }
     void SetVelocity(const glm::vec2 _velocity)     { m_velocity = _velocity; }
     void SetMass(const float _mass)                 { m_mass = _mass; }
     void SetOrientation(const float _orientation)   { m_orientation = _orientation; }
-    void SetMoment(const float _moment)             { m_moment = _moment; }
+    void SetLinearDrag(const float _linearDrag)     { m_linearDrag = _linearDrag; }
+    void SetAngularDrag(const float _angularDrag)   { m_angularDrag = _angularDrag; }
     
 protected:
     glm::vec2 m_position;
@@ -56,4 +62,7 @@ protected:
 
     glm::vec2 m_localX;
     glm::vec2 m_localY;
+
+    float m_linearDrag;
+    float m_angularDrag;
 };

@@ -6,6 +6,7 @@ Circle::Circle() : Rigidbody(CIRCLE, glm::vec2(0), glm::vec2(0), 0, 0)
 {
     m_radius = 0;
     m_color = glm::vec4(0);
+    m_moment = 0.5f * m_mass * m_radius * m_radius;
 }
 
 Circle::Circle(glm::vec2 _position, glm::vec2 _velocity,
@@ -14,7 +15,7 @@ Circle::Circle(glm::vec2 _position, glm::vec2 _velocity,
 {
     m_radius = _radius;
     m_color = _color;
-    SetMoment(0.5f * m_mass * m_radius * m_radius);
+    m_moment = 0.5f * m_mass * m_radius * m_radius;
 }
 
 Circle::~Circle() = default;
@@ -24,6 +25,7 @@ void Circle::Draw(float _alpha)
     CalculateSmoothedPosition(_alpha);
     
     aie::Gizmos::add2DCircle(m_smoothedPosition, m_radius, 12, m_color);
-    aie::Gizmos::add2DLine(m_smoothedPosition, m_smoothedPosition
-                            + m_smoothedLocalX * m_radius, glm::vec4(1));
+    
+    // aie::Gizmos::add2DLine(m_smoothedPosition, m_smoothedPosition
+    //                         + m_smoothedLocalX * m_radius, glm::vec4(1));
 }

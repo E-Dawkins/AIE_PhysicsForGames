@@ -6,6 +6,7 @@ Box::Box(): Rigidbody(BOX, glm::vec2(0), glm::vec2(0), 0, 0)
 {
     m_extents = glm::vec2(0);
     m_color = glm::vec4(0);
+    m_moment = 1.f / 12.f * m_mass * (m_extents.x * 2.f) * (m_extents.y * 2.f);
 }
 
 Box::Box(glm::vec2 _position, glm::vec2 _velocity, glm::vec2 _extents,
@@ -14,7 +15,7 @@ Box::Box(glm::vec2 _position, glm::vec2 _velocity, glm::vec2 _extents,
 {
     m_extents = _extents;
     m_color = _color;
-    SetMoment(1.f / 12.f * m_mass * (m_extents.x * 2.f) * (m_extents.y * 2.f));
+    m_moment = 1.f / 12.f * m_mass * (m_extents.x * 2.f) * (m_extents.y * 2.f);
 }
 
 void Box::Draw(float _alpha)
@@ -32,9 +33,6 @@ void Box::Draw(float _alpha)
 
     aie::Gizmos::add2DTri(p1, p2, p4, m_color);
     aie::Gizmos::add2DTri(p1, p4, p3, m_color);
-    aie::Gizmos::add2DLine(m_smoothedPosition, m_smoothedPosition
-                            + m_smoothedLocalX * m_extents.x, glm::vec4(1));
-
 }
 
 bool Box::CheckBoxCorners(const Box& _box, glm::vec2& _contact, int& _numContacts, float& _pen, glm::vec2& _edgeNormal)
@@ -89,7 +87,6 @@ bool Box::CheckBoxCorners(const Box& _box, glm::vec2& _contact, int& _numContact
         return false;
 
     bool res = false;
-
     _contact += m_position + (localContact.x * m_localX + localContact.y * m_localY) /
                     (float)numLocalContacts;
     _numContacts++;
@@ -127,5 +124,5 @@ bool Box::CheckBoxCorners(const Box& _box, glm::vec2& _contact, int& _numContact
         res = true;
     }
 
-    return true;
+    return res;
 }

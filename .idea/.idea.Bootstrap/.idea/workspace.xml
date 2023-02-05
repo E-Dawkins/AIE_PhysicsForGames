@@ -199,6 +199,12 @@
       <workItem from="1675414380005" duration="526000" />
       <workItem from="1675486572079" duration="7139000" />
       <workItem from="1675500858293" duration="8433000" />
+      <workItem from="1675555896387" duration="35000" />
+      <workItem from="1675556681978" duration="7380000" />
+      <workItem from="1675569654411" duration="103000" />
+      <workItem from="1675570073445" duration="82000" />
+      <workItem from="1675577690803" duration="107000" />
+      <workItem from="1675590793362" duration="87000" />
     </task>
     <servers />
   </component>
@@ -220,22 +226,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
-          <url>file://$PROJECT_DIR$/Physics/PhysicsScene.cpp</url>
-          <line>236</line>
-          <option name="timeStamp" value="15" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
-          <url>file://$PROJECT_DIR$/Physics/PhysicsScene.cpp</url>
-          <line>73</line>
-          <option name="timeStamp" value="17" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

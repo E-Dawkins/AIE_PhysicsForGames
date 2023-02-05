@@ -22,3 +22,5 @@
 // #define NewtonsCradle3
 
 #define FallingOnPlane
+// #define BounceToStop
+// #define TestPoolTable

@@ -33,5 +33,6 @@ protected:
 public:
 	void DemoStartUp(int _num);
 	void DemoUpdates(aie::Input* _input, float _dt);
+	void DemoDraw();
 	float DegreeToRadian(float _degree) const;
 };
