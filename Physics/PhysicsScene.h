@@ -3,8 +3,12 @@
 #include <glm/vec2.hpp>
 
 #include "PhysicsObject.h"
+#include "Rigidbody.h"
 
-class PhysicsObject;
+#include "Circle.h"
+#include "Plane.h"
+#include "Box.h"
+#include "Demos.h"
 
 class PhysicsScene
 {
@@ -14,13 +18,18 @@ public:
 
     void AddActor(PhysicsObject* _actor);
     void RemoveActor(const PhysicsObject* _actor);
-    
-    void Update(float _dt);
-    void Draw();
+
+    virtual void Startup() {}
+    virtual void Update(float _dt);
+    virtual void Draw();
 
     void DebugScene();
     void CheckForCollisions();
     float GetTotalEnergy() const;
+    float DegreeToRadian(const float _degree) const
+    {
+        return _degree * (Pi / 180.f);
+    }
 
     // Getters
     static glm::vec2 GetGravity()               { return m_gravity; }
@@ -42,6 +51,8 @@ public:
     static bool Box2Circle(PhysicsObject* _obj1, PhysicsObject* _obj2);
     static bool Box2Plane(PhysicsObject* _obj1, PhysicsObject* _obj2);
     static bool Box2Box(PhysicsObject* _obj1, PhysicsObject* _obj2);
+
+    static void ApplyContactForces(Rigidbody* _body1, Rigidbody* _body2, glm::vec2 _norm, float _pen);
 
 protected:
     static glm::vec2 m_gravity;

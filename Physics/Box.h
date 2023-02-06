@@ -5,8 +5,8 @@ class Box : public Rigidbody
 {
 public:
     Box();
-    Box(glm::vec2 _position, glm::vec2 _velocity, glm::vec2 _extents,
-        float _mass, float _orientation, glm::vec4 _color);
+    Box(glm::vec2 _position, glm::vec2 _velocity, glm::vec2 _extents, float _mass,
+        float _orientation, glm::vec4 _color = glm::vec4(1), float _elasticity = 1);
 
     void Draw(float _alpha) override;
     bool CheckBoxCorners(const Box& _box, glm::vec2& _contact,
@@ -16,7 +16,7 @@ public:
     glm::vec2 GetExtents() const    { return m_extents; }
     glm::vec4 GetColor() const      { return m_color; }
     float GetWidth() const          { return m_extents.x * 2; }
-    float GetHeight() const          { return m_extents.y * 2; }
+    float GetHeight() const         { return m_extents.y * 2; }
     
     // Setters
     void SetExtents(const glm::vec2 _extents)   { m_extents = _extents; }

@@ -1,11 +1,5 @@
 ﻿#include "PhysicsScene.h"
 
-#include "PhysicsObject.h"
-
-#include "Circle.h"
-#include "Plane.h"
-#include "Box.h"
-
 typedef bool(*fn)(PhysicsObject*, PhysicsObject*);
 
 static fn collisionFunctionArray[] =
@@ -114,12 +108,14 @@ bool PhysicsScene::Circle2Circle(PhysicsObject* _obj1, PhysicsObject* _obj2)
     {
         float dist = distance(circle1->GetPosition(), circle2->GetPosition());
 
-        // If the distance between the two spheres is less
-        // than the radius sum, they are colliding
-        if (dist < circle1->GetRadius() + circle2->GetRadius())
+        // If the radius sum minus the distance between the circles
+        // is positive, then the circles are penetrating each other
+        float penetration = circle1->GetRadius() + circle2->GetRadius() - dist;
+
+        if (penetration > 0)
         {
             glm::vec2 contact = 0.5f * (circle1->GetPosition() + circle2->GetPosition());
-            circle1->ResolveCollision(circle2, contact);
+            circle1->ResolveCollision(circle2, contact, nullptr, penetration);
             return true;
         }
     }
@@ -256,14 +252,16 @@ bool PhysicsScene::Box2Circle(PhysicsObject* _obj1, PhysicsObject* _obj2)
                             * box->GetLocalX() + closestPointOnBoxBox.y * box->GetLocalY();
         glm::vec2 circleToBox = circle->GetPosition() - closestPointOnBoxWorld;
 
+        float penetration = circle->GetRadius() - length(circleToBox);
+        
         // If the closest point to the box is less than
         // the circle's radius, we have collided
-        if (length(circleToBox) < circle->GetRadius())
+        if (penetration > 0)
         {
             glm::vec2 direction = normalize(circleToBox);
             glm::vec2 contact = closestPointOnBoxWorld;
-            box->ResolveCollision(circle, contact, &direction);
-            // return true;
+            box->ResolveCollision(circle, contact, &direction, penetration);
+            return true;
         }
     }
     
@@ -284,7 +282,6 @@ bool PhysicsScene::Box2Box(PhysicsObject* _obj1, PhysicsObject* _obj2)
     // Both objects are of type box
     if (box1 != nullptr && box2 != nullptr)
     {
-        glm::vec2 boxPos = box2->GetPosition() - box1->GetPosition();
         glm::vec2 normal = glm::vec2(0);
         glm::vec2 contact = glm::vec2(0);
         float pen = 0;
@@ -299,11 +296,23 @@ bool PhysicsScene::Box2Box(PhysicsObject* _obj1, PhysicsObject* _obj2)
 
         if (pen > 0)
         {
-            box1->ResolveCollision(box2, contact / (float)numContacts, &normal);
+            box1->ResolveCollision(box2, contact / (float)numContacts, &normal, pen);
         }
 
         return true;
     }
     
     return false;
+}
+
+void PhysicsScene::ApplyContactForces(Rigidbody* _body1, Rigidbody* _body2, glm::vec2 _norm, float _pen)
+{
+    float body2Mass = _body2 ? _body2->GetMass() : INT_MAX;
+
+    float body1Factor = body2Mass / (_body1->GetMass() + body2Mass);
+
+    _body1->SetPosition(_body1->GetPosition() - body1Factor * _norm * _pen);
+
+    if (_body2)
+        _body2->SetPosition(_body2->GetPosition() + (1 - body1Factor) * _norm * _pen);
 }

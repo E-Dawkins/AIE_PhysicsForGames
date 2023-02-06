@@ -23,16 +23,8 @@ public:
 
 protected:
 
-	aie::Renderer2D*	m_2dRenderer;
-	aie::Font*			m_font;
-
-	PhysicsScene* m_physicsScene;
-
-	std::vector<PhysicsObject*> m_objects;
-
-public:
-	void DemoStartUp(int _num);
-	void DemoUpdates(aie::Input* _input, float _dt);
-	void DemoDraw();
-	float DegreeToRadian(float _degree) const;
+	aie::Renderer2D*			m_2dRenderer;
+	aie::Font*					m_font;
+	
+	PhysicsScene*				m_physicsScene;
 };

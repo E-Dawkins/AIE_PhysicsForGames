@@ -6,16 +6,18 @@ Box::Box(): Rigidbody(BOX, glm::vec2(0), glm::vec2(0), 0, 0)
 {
     m_extents = glm::vec2(0);
     m_color = glm::vec4(0);
-    m_moment = 1.f / 12.f * m_mass * (m_extents.x * 2.f) * (m_extents.y * 2.f);
+    m_moment = 1.f / 12.f * GetMass() * (m_extents.x * 2.f) * (m_extents.y * 2.f);
+    m_elasticity = 1;
 }
 
 Box::Box(glm::vec2 _position, glm::vec2 _velocity, glm::vec2 _extents,
-    float _mass, float _orientation, glm::vec4 _color):
+    float _mass, float _orientation, glm::vec4 _color, float _elasticity):
     Rigidbody(BOX, _position, _velocity, _orientation, _mass)
 {
     m_extents = _extents;
     m_color = _color;
-    m_moment = 1.f / 12.f * m_mass * (m_extents.x * 2.f) * (m_extents.y * 2.f);
+    m_moment = 1.f / 12.f * GetMass() * (m_extents.x * 2.f) * (m_extents.y * 2.f);
+    m_elasticity = _elasticity;
 }
 
 void Box::Draw(float _alpha)

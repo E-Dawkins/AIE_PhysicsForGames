@@ -17,14 +17,27 @@ Rigidbody::Rigidbody(const ShapeType _shapeId, const glm::vec2 _position, const 
 
     m_linearDrag = 0.3f;
     m_angularDrag = 0.3f;
+
+    m_isKinematic = false;
+    m_moment = 1;
+
+    CalculateAxes();
+    CalculateSmoothedPosition(1);
 }
 
 void Rigidbody::FixedUpdate(const glm::vec2 _gravity, const float _timeStep)
 {
-    CalculateAxes();
+    if (m_isKinematic)
+    {
+        m_velocity = glm::vec2(0);
+        m_angularVelocity = 0;
+        return;
+    }
     
     m_lastOrientation = m_orientation;
     m_lastPosition = m_position;
+    
+    CalculateAxes();
 
     m_velocity -= m_velocity * m_linearDrag * _timeStep;
     m_angularVelocity -= m_angularVelocity * m_angularDrag * _timeStep;
@@ -36,7 +49,7 @@ void Rigidbody::FixedUpdate(const glm::vec2 _gravity, const float _timeStep)
         m_angularVelocity = 0;
     
     m_position += m_velocity * _timeStep;
-    ApplyForce(_gravity * m_mass * _timeStep, glm::vec2(0));
+    ApplyForce(_gravity * GetMass() * _timeStep, glm::vec2(0));
 
     m_orientation += m_angularVelocity * _timeStep;
 }
@@ -47,7 +60,7 @@ void Rigidbody::ApplyForce(const glm::vec2 _force, glm::vec2 _pos)
     m_angularVelocity += (_force.y * _pos.x - _force.x * _pos.y) / GetMoment();
 }
 
-void Rigidbody::ResolveCollision(Rigidbody* _other, glm::vec2 _contact, glm::vec2* _collisionNormal)
+void Rigidbody::ResolveCollision(Rigidbody* _other, glm::vec2 _contact, glm::vec2* _collisionNormal, float _pen)
 {
     // Calculate vector between the two centres, or use the provided normal
     glm::vec2 normal = normalize(_collisionNormal ? *_collisionNormal :
@@ -69,17 +82,22 @@ void Rigidbody::ResolveCollision(Rigidbody* _other, glm::vec2 _contact, glm::vec
     {
         // Effective mass at the contact point for each object
         // i.e. how far the point will move due to the applied force
-        float mass1 = 1.f / (1.f / m_mass + (r1 * r1) / m_moment);
-        float mass2 = 1.f / (1.f / _other->m_mass + (r2 * r2) / _other->m_moment);
+        float mass1 = 1.f / (1.f / GetMass() + (r1 * r1) / GetMoment());
+        float mass2 = 1.f / (1.f / _other->GetMass() + (r2 * r2) / _other->GetMoment());
 
         float elasticity = (GetElasticity() + _other->GetElasticity()) * 0.5f;
 
         glm::vec2 force = (1.f + elasticity) * mass1 * mass2 /
                             (mass1 + mass2) * (v1 - v2) * normal;
-
+        
         // Apply equal and opposite force
         ApplyForce(-force, _contact - m_position);
         _other->ApplyForce(force, _contact - _other->m_position);
+
+        // Objects are penetrating, so apply contact
+        // forces to separate the two objects
+        if (_pen > 0)
+            PhysicsScene::ApplyContactForces(this, _other, normal, _pen);
     }
 }
 
@@ -106,8 +124,8 @@ void Rigidbody::CalculateAxes()
 
 float Rigidbody::GetKineticEnergy()
 {
-    return 0.5f * (m_mass * dot(m_velocity, m_velocity) +
-        m_moment * m_angularVelocity * m_angularVelocity);
+    return 0.5f * (GetMass() * dot(m_velocity, m_velocity) +
+        GetMoment() * m_angularVelocity * m_angularVelocity);
 }
 
 float Rigidbody::GetPotentialEnergy()

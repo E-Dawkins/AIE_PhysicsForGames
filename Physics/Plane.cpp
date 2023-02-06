@@ -2,20 +2,25 @@
 
 #include <Gizmos.h>
 #include <iostream>
+
 #include "Rigidbody.h"
+#include "PhysicsScene.h"
 
 Plane::Plane() : PhysicsObject(PLANE)
 {
     m_distToOrigin = 0;
     m_normal = glm::vec2(0, 1);
     m_color = glm::vec4(1);
+    m_elasticity = 1;
 }
 
-Plane::Plane(const glm::vec2 _normal, const float _distance, const glm::vec4 _color): PhysicsObject(PLANE)
+Plane::Plane(const glm::vec2 _normal, const float _distance,
+    const glm::vec4 _color, const float _elasticity): PhysicsObject(PLANE)
 {
     m_normal = _normal;
     m_distToOrigin = _distance;
     m_color = _color;
+    m_elasticity = _elasticity;
 }
 
 void Plane::Draw(float _alpha)
@@ -36,11 +41,11 @@ void Plane::Draw(float _alpha)
     const glm::vec2 start = centerPoint + (parallel * lineSegmentLength);
     const glm::vec2 end = centerPoint - (parallel * lineSegmentLength);
     
-    aie::Gizmos::add2DTri(start, end, start - m_normal*10.0f, m_color, m_color, colourFade);
+    aie::Gizmos::add2DTri(start, end, start - m_normal * 10.0f, m_color, m_color, colourFade);
     aie::Gizmos::add2DTri(end, end - m_normal * 10.0f, start - m_normal * 10.0f, m_color, colourFade, colourFade);
 }
 
-void Plane::ResolveCollision(Rigidbody* _other, glm::vec2 _contact, glm::vec2* _collisionNormal)
+void Plane::ResolveCollision(Rigidbody* _other, glm::vec2 _contact, glm::vec2* _collisionNormal, float _pen)
 {
     // The position at which we will apply the force
     // relative to the object's center of mass
@@ -50,8 +55,8 @@ void Plane::ResolveCollision(Rigidbody* _other, glm::vec2 _contact, glm::vec2* _
     // is just the other object's velocity at contact point
     glm::vec2 relativeVel = _other->GetVelocity() + _other->GetAngularVelocity()
                                 * glm::vec2(-localContact.y, localContact.x);
+    
     float velocityIntoPlane = dot(relativeVel, m_normal);
-
     float elasticity = (GetElasticity() + _other->GetElasticity()) * 0.5f;
 
     // Perpendicular distance we apply the force to relative
@@ -67,4 +72,7 @@ void Plane::ResolveCollision(Rigidbody* _other, glm::vec2 _contact, glm::vec2* _
     glm::vec2 force = m_normal * j;
     
     _other->ApplyForce(force, _contact - _other->GetPosition());
+
+    float penetration = dot(_contact, m_normal) - m_distToOrigin;
+    PhysicsScene::ApplyContactForces(_other, nullptr, m_normal, penetration);
 }

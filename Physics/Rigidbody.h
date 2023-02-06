@@ -16,7 +16,7 @@ public:
     virtual void FixedUpdate(glm::vec2 _gravity, float _timeStep) override;
 
     void ApplyForce(glm::vec2 _force, glm::vec2 _pos);
-    void ResolveCollision(Rigidbody* _other, glm::vec2 _contact, glm::vec2* _collisionNormal = nullptr) override;
+    void ResolveCollision(Rigidbody* _other, glm::vec2 _contact, glm::vec2* _collisionNormal = nullptr, float _pen = 0) override;
     void CalculateSmoothedPosition(float _alpha);
     void CalculateAxes();
     
@@ -28,14 +28,15 @@ public:
     // Getters
     glm::vec2 GetPosition() const       { return m_position; }
     glm::vec2 GetVelocity() const       { return m_velocity; }
-    float GetMass()         const       { return m_mass; }
+    float GetMass()         const       { return m_isKinematic ? INT_MAX : m_mass; }
     float GetOrientation()  const       { return m_orientation; }
-    float GetMoment() const             { return m_moment; }
+    float GetMoment() const             { return m_isKinematic ? INT_MAX : m_moment; }
     glm::vec2 GetLocalX() const         { return m_localX; }
     glm::vec2 GetLocalY() const         { return m_localY; }
     float GetAngularVelocity() const    { return m_angularVelocity; }
     float GetLinearDrag() const         { return m_linearDrag; }
-    float GetAngularDrag() const         { return m_angularDrag; }
+    float GetAngularDrag() const        { return m_angularDrag; }
+    bool IsKinematic() const            { return m_isKinematic; }
     
     // Setters
     void SetPosition(const glm::vec2 _position)     { m_position = _position; }
@@ -44,6 +45,7 @@ public:
     void SetOrientation(const float _orientation)   { m_orientation = _orientation; }
     void SetLinearDrag(const float _linearDrag)     { m_linearDrag = _linearDrag; }
     void SetAngularDrag(const float _angularDrag)   { m_angularDrag = _angularDrag; }
+    void SetKinematic(const bool _state)            { m_isKinematic = _state;}
     
 protected:
     glm::vec2 m_position;
@@ -65,4 +67,6 @@ protected:
 
     float m_linearDrag;
     float m_angularDrag;
+
+    bool m_isKinematic;
 };

@@ -5,8 +5,8 @@ class Circle : public Rigidbody
 {
 public:
     Circle();
-    Circle(glm::vec2 _position, glm::vec2 _velocity,
-            float _mass, float _radius, glm::vec4 _color);
+    Circle(glm::vec2 _position, glm::vec2 _velocity, float _mass, float _radius,
+                glm::vec4 _color = glm::vec4(1), float _elasticity = 1);
     ~Circle() override;
 
     void Draw(float _alpha) override;

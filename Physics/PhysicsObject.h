@@ -25,7 +25,7 @@ public:
     virtual void FixedUpdate(glm::vec2 _gravity, float _timeStep) = 0;
     virtual void Draw(float _alpha) = 0;
     virtual void ResetPosition() {}
-    virtual void ResolveCollision(Rigidbody* _other, glm::vec2 _contact, glm::vec2* _collisionNormal = nullptr) {}
+    virtual void ResolveCollision(Rigidbody* _other, glm::vec2 _contact, glm::vec2* _collisionNormal = nullptr, float _pen = 0) {}
 
     // Diagnostics
     virtual float GetKineticEnergy()    { return 0; }
