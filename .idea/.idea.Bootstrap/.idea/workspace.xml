@@ -6,42 +6,14 @@
     <projectFile>Project3D/Project3D.vcxproj</projectFile>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3f42d6cf-72c4-4b40-a4a1-a632254f03a2" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/Physics/Collisions.cpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Physics/Collisions.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Physics/NewtonsCradle.cpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Physics/NewtonsCradle.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Physics/NewtonsLaws.cpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Physics/NewtonsLaws.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Physics/PoolTable.cpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Physics/PoolTable.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Physics/Simulations.cpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Physics/Simulations.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.Bootstrap/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Bootstrap/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Physics/Box.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Physics/Box.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Physics/Box.h" beforeDir="false" afterPath="$PROJECT_DIR$/Physics/Box.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Physics/Circle.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Physics/Circle.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Physics/Circle.h" beforeDir="false" afterPath="$PROJECT_DIR$/Physics/Circle.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Physics/Demos.h" beforeDir="false" afterPath="$PROJECT_DIR$/Physics/Demos.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Physics/Physics.vcxproj" beforeDir="false" afterPath="$PROJECT_DIR$/Physics/Physics.vcxproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Physics/PhysicsApp.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Physics/PhysicsApp.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Physics/PhysicsApp.h" beforeDir="false" afterPath="$PROJECT_DIR$/Physics/PhysicsApp.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Physics/PhysicsObject.h" beforeDir="false" afterPath="$PROJECT_DIR$/Physics/PhysicsObject.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Physics/PhysicsScene.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Physics/PhysicsScene.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Physics/PhysicsScene.h" beforeDir="false" afterPath="$PROJECT_DIR$/Physics/PhysicsScene.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Physics/Plane.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Physics/Plane.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Physics/Plane.h" beforeDir="false" afterPath="$PROJECT_DIR$/Physics/Plane.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Physics/Rigidbody.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Physics/Rigidbody.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Physics/Rigidbody.h" beforeDir="false" afterPath="$PROJECT_DIR$/Physics/Rigidbody.h" afterDir="false" />
-    </list>
+    <list default="true" id="3f42d6cf-72c4-4b40-a4a1-a632254f03a2" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="HighlightingSettingsPerFile">
-    <setting file="file://$PROJECT_DIR$/../../../../../Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.33.31629/include/vector" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/../../../../../Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.33.31629/include/xutility" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Physics/PoolTable.cpp" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/dependencies/glm/glm/detail/type_vec.hpp" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/dependencies/glm/glm/detail/type_vec2.hpp" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/dependencies/glm/glm/detail/type_vec2.inl" root0="SKIP_HIGHLIGHTING" />
@@ -234,7 +206,7 @@
       <workItem from="1675570073445" duration="82000" />
       <workItem from="1675577690803" duration="107000" />
       <workItem from="1675590793362" duration="87000" />
-      <workItem from="1675634626848" duration="24991000" />
+      <workItem from="1675671314798" duration="344000" />
     </task>
     <servers />
   </component>
