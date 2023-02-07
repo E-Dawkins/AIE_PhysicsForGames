@@ -1,4 +1,7 @@
 ﻿#pragma once
+#include <functional>
+#include <list>
+
 #include "PhysicsObject.h"
 
 #include <glm/glm.hpp>
@@ -19,6 +22,13 @@ public:
     void ResolveCollision(Rigidbody* _other, glm::vec2 _contact, glm::vec2* _collisionNormal = nullptr, float _pen = 0) override;
     void CalculateSmoothedPosition(float _alpha);
     void CalculateAxes();
+    glm::vec2 ToWorld(glm::vec2 _point);
+    glm::vec2 ToWorldSmoothed(glm::vec2 _localPos);
+    
+    std::function<void(PhysicsObject*)> collisionCallback;
+    std::function<void(PhysicsObject*)> triggerEnter;
+    std::function<void(PhysicsObject*)> triggerExit;
+    void TriggerEnter(PhysicsObject* _other);
     
     // Diagnostics
     float GetKineticEnergy() override;
@@ -37,6 +47,7 @@ public:
     float GetLinearDrag() const         { return m_linearDrag; }
     float GetAngularDrag() const        { return m_angularDrag; }
     bool IsKinematic() const            { return m_isKinematic; }
+    bool IsTrigger() const              { return m_isTrigger; }
     
     // Setters
     void SetPosition(const glm::vec2 _position)     { m_position = _position; }
@@ -46,6 +57,7 @@ public:
     void SetLinearDrag(const float _linearDrag)     { m_linearDrag = _linearDrag; }
     void SetAngularDrag(const float _angularDrag)   { m_angularDrag = _angularDrag; }
     void SetKinematic(const bool _state)            { m_isKinematic = _state;}
+    void SetTrigger(const bool _state)              { m_isTrigger = _state; }
     
 protected:
     glm::vec2 m_position;
@@ -69,4 +81,8 @@ protected:
     float m_angularDrag;
 
     bool m_isKinematic;
+
+    bool m_isTrigger;
+    std::list<PhysicsObject*> m_objectsInside;
+    std::list<PhysicsObject*> m_objectsInsideThisFrame;
 };

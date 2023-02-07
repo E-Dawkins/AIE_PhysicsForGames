@@ -1,10 +1,13 @@
 ﻿#pragma once
-#include "PhysicsScene.h"
+#include "../PhysicsScene.h"
 
-class PoolTable : public PhysicsScene
+class Pool_Table : public PhysicsScene
 {
 public:
     void Startup() override;
     void Update(float _dt) override;
     void Draw() override;
+
+protected:
+    Circle* m_cueBall = nullptr;
 };

@@ -73,6 +73,9 @@ void Plane::ResolveCollision(Rigidbody* _other, glm::vec2 _contact, glm::vec2* _
     
     _other->ApplyForce(force, _contact - _other->GetPosition());
 
+    if (_other->collisionCallback)
+        _other->collisionCallback(this);
+
     float penetration = dot(_contact, m_normal) - m_distToOrigin;
     PhysicsScene::ApplyContactForces(_other, nullptr, m_normal, penetration);
 }

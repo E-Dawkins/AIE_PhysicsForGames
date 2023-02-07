@@ -1,6 +1,6 @@
-﻿#include "NewtonsCradle.h"
+﻿#include "Newtons_Cradle.h"
 
-void NewtonsCradle::Startup()
+void Newtons_Cradle::Startup()
 {
 	Plane* plane = new Plane(glm::vec2(1, 0), -60, glm::vec4(1));
 	Plane* plane2 = new Plane(glm::vec2(-1, 0), -60, glm::vec4(1));
@@ -18,4 +18,9 @@ void NewtonsCradle::Startup()
 	AddActor(circle2);
 	AddActor(circle3);
 	AddActor(circle4);
-}	
+
+	for (int i = 2; i < m_actors.size(); i++)
+	{
+		dynamic_cast<Circle*>(m_actors.at(i))->SetLinearDrag(0);
+	}
+}

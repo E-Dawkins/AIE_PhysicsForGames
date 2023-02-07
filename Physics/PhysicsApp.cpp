@@ -7,14 +7,24 @@
 #include "Input.h"
 #include "Gizmos.h"
 #include "Demos.h"
+#include "PhysicsScene.h"
 
 // Physics Scenes
-#include "NewtonsCradle.h"
-#include "NewtonsLaws.h"
-#include "PhysicsScene.h"
-#include "Simulations.h"
-#include "Collisions.h"
-#include "PoolTable.h"
+#include "Scenes/Newtons_First_Law.h"
+#include "Scenes/Newtons_Second_Law.h"
+#include "Scenes/Newtons_Third_Law.h"
+#include "Scenes/Simulating_Collisions.h"
+#include "Scenes/Simulating_Rockets.h"
+#include "Scenes/Newtons_Cradle.h"
+#include "Scenes/Circle_To_Plane.h"
+#include "Scenes/Falling_On_Plane.h"
+#include "Scenes/Bounce_To_Stop.h"
+#include "Scenes/Bounce_Pads.h"
+#include "Scenes/Physics_Bucket.h"
+#include "Scenes/Pool_Table.h"
+#include "Scenes/Spring_Test.h"
+#include "Scenes/SoftBody_Test.h"
+#include "Scenes/Trigger_Test.h"
 
 PhysicsApp::PhysicsApp() = default;
 PhysicsApp::~PhysicsApp() = default;
@@ -30,29 +40,35 @@ bool PhysicsApp::startup() {
 	m_font = new aie::Font("./font/consolas.ttf", 32);
 
 	#if defined NewtonsFirstLaw
-		m_physicsScene = new NewtonsLaws();
+		m_physicsScene = new Newtons_First_Law();
 	#elif defined NewtonsSecondLaw
-		m_physicsScene = new NewtonsLaws();
+		m_physicsScene = new Newtons_Second_Law();
 	#elif defined NewtonsThirdLaw
-		m_physicsScene = new NewtonsLaws();
+		m_physicsScene = new Newtons_Third_Law();
 	#elif defined SimulatingCollisions
-		m_physicsScene = new Simulations();
+		m_physicsScene = new Simulating_Collisions();
 	#elif defined SimulatingRockets
-		m_physicsScene = new Simulations();
+		m_physicsScene = new Simulating_Rockets();
 	#elif defined NewtonCradle
-		m_physicsScene = new NewtonsCradle();
+		m_physicsScene = new Newtons_Cradle();
 	#elif defined CircleToPlane
-		m_physicsScene = new Collisions();
+		m_physicsScene = new Circle_To_Plane();
 	#elif defined FallingOnPlane
-		m_physicsScene = new Collisions();
+		m_physicsScene = new Falling_On_Plane();
 	#elif defined BounceToStop
-		m_physicsScene = new Collisions();
+		m_physicsScene = new Bounce_To_Stop();
 	#elif defined BouncePads
-		m_physicsScene = new Collisions();
+		m_physicsScene = new Bounce_Pads();
 	#elif defined PhysicsBucket
-		m_physicsScene = new Collisions();
-	#elif defined TestPoolTable
-		m_physicsScene = new PoolTable();
+		m_physicsScene = new Physics_Bucket();
+	#elif defined PoolTable
+		m_physicsScene = new Pool_Table();
+	#elif defined SpringTest
+		m_physicsScene = new Spring_Test();
+	#elif defined SoftbodyTest
+		m_physicsScene = new SoftBody_Test();
+	#elif defined TriggerTest
+		m_physicsScene = new Trigger_Test();
 	#endif
 	
 	m_physicsScene->Startup();
@@ -92,7 +108,6 @@ void PhysicsApp::draw() {
 	static float aspectRatio = 16.0f / 9.0f;
 	aie::Gizmos::draw2D(glm::ortho<float>(-100, 100,
 		-100 / aspectRatio, 100 / aspectRatio, -1.f, 1.f));
-
 	
 	// output some text, uses the last used colour
 	m_2dRenderer->drawText(m_font, "Press ESC to quit", 0, 0);

@@ -8,13 +8,15 @@
 #include "Circle.h"
 #include "Plane.h"
 #include "Box.h"
+#include "Spring.h"
+#include "SoftBody.h"
 #include "Demos.h"
 
 class PhysicsScene
 {
 public:
     PhysicsScene();
-    ~PhysicsScene();
+    virtual ~PhysicsScene();
 
     void AddActor(PhysicsObject* _actor);
     void RemoveActor(const PhysicsObject* _actor);
@@ -24,7 +26,7 @@ public:
     virtual void Draw();
 
     void DebugScene();
-    void CheckForCollisions();
+    void CheckForCollision();
     float GetTotalEnergy() const;
     float DegreeToRadian(const float _degree) const
     {
@@ -39,8 +41,7 @@ public:
     // Setters
     void SetGravity(const glm::vec2 _gravity) const { m_gravity = _gravity; }
     void SetTimeStep(const float _timeStep)         { m_timeStep = _timeStep; }
-    void SetDoCollisions(const bool _doCollisions)  { m_doCollisions = _doCollisions; }
-
+    
     // Collision functions
     static bool Circle2Circle(PhysicsObject* _obj1, PhysicsObject* _obj2);
     static bool Circle2Plane(PhysicsObject* _obj1, PhysicsObject* _obj2);
@@ -58,5 +59,4 @@ protected:
     static glm::vec2 m_gravity;
     float m_timeStep;
     std::vector<PhysicsObject*> m_actors;
-    bool m_doCollisions = true;
 };

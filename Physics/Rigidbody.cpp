@@ -19,6 +19,7 @@ Rigidbody::Rigidbody(const ShapeType _shapeId, const glm::vec2 _position, const 
     m_angularDrag = 0.3f;
 
     m_isKinematic = false;
+    m_isTrigger = false;
     m_moment = 1;
 
     CalculateAxes();
@@ -27,6 +28,36 @@ Rigidbody::Rigidbody(const ShapeType _shapeId, const glm::vec2 _position, const 
 
 void Rigidbody::FixedUpdate(const glm::vec2 _gravity, const float _timeStep)
 {
+    // Store local axes
+    CalculateAxes();
+
+    // This object is a trigger
+    if (m_isTrigger)
+    {
+        // Check that every object in the objectsInside list
+        // is still inside us this frame, if not remove them
+        // from the list and call triggerExit
+        for (auto it = m_objectsInside.begin(); it != m_objectsInside.end(); ++it)
+        {
+            if (std::find(m_objectsInsideThisFrame.begin(), m_objectsInsideThisFrame.end(), *it)
+                == m_objectsInsideThisFrame.end())
+            {
+                if (triggerExit)
+                    triggerExit(*it);
+
+                it = m_objectsInside.erase(it);
+
+                if (it == m_objectsInside.end())
+                    break;
+            }
+        }
+    }
+
+    // Clear the list now for next frame
+    m_objectsInsideThisFrame.clear();
+
+    // If object is kinematic don't perform any
+    // force or position calculations
     if (m_isKinematic)
     {
         m_velocity = glm::vec2(0);
@@ -36,8 +67,6 @@ void Rigidbody::FixedUpdate(const glm::vec2 _gravity, const float _timeStep)
     
     m_lastOrientation = m_orientation;
     m_lastPosition = m_position;
-    
-    CalculateAxes();
 
     m_velocity -= m_velocity * m_linearDrag * _timeStep;
     m_angularVelocity -= m_angularVelocity * m_angularDrag * _timeStep;
@@ -62,6 +91,10 @@ void Rigidbody::ApplyForce(const glm::vec2 _force, glm::vec2 _pos)
 
 void Rigidbody::ResolveCollision(Rigidbody* _other, glm::vec2 _contact, glm::vec2* _collisionNormal, float _pen)
 {
+    // Register that these two objects have overlapped this frame
+    m_objectsInsideThisFrame.push_back(_other);
+    _other->m_objectsInsideThisFrame.push_back(this);
+    
     // Calculate vector between the two centres, or use the provided normal
     glm::vec2 normal = normalize(_collisionNormal ? *_collisionNormal :
                                     _other->m_position - m_position);
@@ -86,13 +119,29 @@ void Rigidbody::ResolveCollision(Rigidbody* _other, glm::vec2 _contact, glm::vec
         float mass2 = 1.f / (1.f / _other->GetMass() + (r2 * r2) / _other->GetMoment());
 
         float elasticity = (GetElasticity() + _other->GetElasticity()) * 0.5f;
-
+        
         glm::vec2 force = (1.f + elasticity) * mass1 * mass2 /
                             (mass1 + mass2) * (v1 - v2) * normal;
-        
-        // Apply equal and opposite force
-        ApplyForce(-force, _contact - m_position);
-        _other->ApplyForce(force, _contact - _other->m_position);
+
+        // Apply forces and run callbacks, if both objects aren't triggers ...
+        if (!m_isTrigger && !_other->m_isTrigger)
+        {
+            // Apply equal and opposite force
+            ApplyForce(-force, _contact - m_position);
+            _other->ApplyForce(force, _contact - _other->m_position);
+
+            // Collision callbacks, i.e. OnCollisionEnter
+            if (collisionCallback != nullptr)
+                collisionCallback(_other);
+
+            if (_other->collisionCallback != nullptr)
+                _other->collisionCallback(this);
+        }
+        else // ... else run trigger enter functions
+        {
+            TriggerEnter(_other);
+            _other->TriggerEnter(this);
+        }
 
         // Objects are penetrating, so apply contact
         // forces to separate the two objects
@@ -120,6 +169,27 @@ void Rigidbody::CalculateAxes()
 
     m_localX = glm::vec2(cs, sn);
     m_localY = glm::vec2(-sn, cs);
+}
+
+glm::vec2 Rigidbody::ToWorld(glm::vec2 _localPos)
+{
+    return m_position + (m_localX * _localPos.x + m_localY * _localPos.y);
+}
+
+glm::vec2 Rigidbody::ToWorldSmoothed(glm::vec2 _localPos)
+{
+    return m_smoothedPosition + (m_smoothedLocalX * _localPos.x + m_smoothedLocalY * _localPos.y);
+}
+
+void Rigidbody::TriggerEnter(PhysicsObject* _other)
+{
+    if (m_isTrigger && std::find(m_objectsInside.begin(), m_objectsInside.end(), _other) == m_objectsInside.end())
+    {
+        m_objectsInside.push_back(_other);
+
+        if (triggerEnter != nullptr)
+            triggerEnter(_other);
+    }
 }
 
 float Rigidbody::GetKineticEnergy()

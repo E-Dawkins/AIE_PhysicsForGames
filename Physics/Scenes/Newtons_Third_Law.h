@@ -1,7 +1,7 @@
 ﻿#pragma once
-#include "PhysicsScene.h"
+#include "../PhysicsScene.h"
 
-class Simulations : public PhysicsScene
+class Newtons_Third_Law : public PhysicsScene
 {
 public:
     void Startup() override;

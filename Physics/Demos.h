@@ -9,24 +9,25 @@
 
 #define Pi 3.14159265359f
 
-// -- NewtonsLaws --
 // #define NewtonsFirstLaw
 // #define NewtonsSecondLaw
 // #define NewtonsThirdLaw
 
-// -- Simulations --
 // #define SimulatingCollisions
 // #define SimulatingRockets
 
-// -- NewtonsCradle --
 // #define NewtonCradle
 
-// -- Collisions --
 // #define CircleToPlane
 // #define FallingOnPlane
 // #define BounceToStop
 // #define BouncePads
 // #define PhysicsBucket
 
-// -- PoolTable --
-#define TestPoolTable
+#define PoolTable
+
+// #define SpringTest
+
+// #define SoftbodyTest
+
+// #define TriggerTest

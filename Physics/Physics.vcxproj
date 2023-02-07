@@ -166,32 +166,202 @@
   <ItemGroup>
     <ClCompile Include="Box.cpp" />
     <ClCompile Include="Circle.cpp" />
-    <ClCompile Include="Collisions.cpp" />
-    <ClCompile Include="NewtonsCradle.cpp" />
-    <ClCompile Include="NewtonsLaws.cpp" />
+    <ClCompile Include="Scenes\Bounce_Pads.cpp" />
+    <ClCompile Include="Scenes\Bounce_To_Stop.cpp" />
+    <ClCompile Include="Scenes\Circle_To_Plane.cpp" />
+    <ClCompile Include="Scenes\Falling_On_Plane.cpp" />
+    <ClCompile Include="Scenes\Newtons_Cradle.cpp">
+      <RuntimeLibrary>MultiThreadedDebugDll</RuntimeLibrary>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <Optimization>Disabled</Optimization>
+      <SupportJustMyCode>true</SupportJustMyCode>
+      <AssemblerOutput>NoListing</AssemblerOutput>
+      <AssemblerListingLocation>C:\Users\s213634\Desktop\GitHub\aieBootstrap-2023\temp\Physics\x64\Debug\</AssemblerListingLocation>
+      <UndefineAllPreprocessorDefinitions>false</UndefineAllPreprocessorDefinitions>
+      <BrowseInformation>false</BrowseInformation>
+      <BrowseInformationFile>C:\Users\s213634\Desktop\GitHub\aieBootstrap-2023\temp\Physics\x64\Debug\</BrowseInformationFile>
+      <CompileAs>Default</CompileAs>
+      <ConformanceMode>Default</ConformanceMode>
+      <DiagnosticsFormat>Column</DiagnosticsFormat>
+      <DisableLanguageExtensions>false</DisableLanguageExtensions>
+      <ErrorReporting>Prompt</ErrorReporting>
+      <ExpandAttributedSource>false</ExpandAttributedSource>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <EnableASAN>false</EnableASAN>
+      <EnableFuzzer>false</EnableFuzzer>
+      <EnableFiberSafeOptimizations>false</EnableFiberSafeOptimizations>
+      <EnableEnhancedInstructionSet>NotSet</EnableEnhancedInstructionSet>
+      <FloatingPointModel>Precise</FloatingPointModel>
+      <ForceConformanceInForLoopScope>true</ForceConformanceInForLoopScope>
+      <GenerateModuleDependencies>false</GenerateModuleDependencies>
+      <GenerateSourceDependencies>false</GenerateSourceDependencies>
+      <GenerateXMLDocumentationFiles>false</GenerateXMLDocumentationFiles>
+      <InlineFunctionExpansion>Default</InlineFunctionExpansion>
+      <IntrinsicFunctions>false</IntrinsicFunctions>
+      <IgnoreStandardIncludePath>false</IgnoreStandardIncludePath>
+      <LanguageStandard>Default</LanguageStandard>
+      <LanguageStandard_C>Default</LanguageStandard_C>
+      <MinimalRebuild>false</MinimalRebuild>
+      <ModuleDependenciesFile>C:\Users\s213634\Desktop\GitHub\aieBootstrap-2023\temp\Physics\x64\Debug\</ModuleDependenciesFile>
+      <ModuleOutputFile>C:\Users\s213634\Desktop\GitHub\aieBootstrap-2023\temp\Physics\x64\Debug\</ModuleOutputFile>
+      <OmitDefaultLibName>false</OmitDefaultLibName>
+      <FavorSizeOrSpeed>Neither</FavorSizeOrSpeed>
+      <WholeProgramOptimization>false</WholeProgramOptimization>
+      <ObjectFileName>C:\Users\s213634\Desktop\GitHub\aieBootstrap-2023\temp\Physics\x64\Debug\</ObjectFileName>
+      <CallingConvention>Cdecl</CallingConvention>
+      <ProgramDataBaseFileName>C:\Users\s213634\Desktop\GitHub\aieBootstrap-2023\temp\Physics\x64\Debug\vc143.pdb</ProgramDataBaseFileName>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <PrecompiledHeaderFile>stdafx.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderOutputFile>C:\Users\s213634\Desktop\GitHub\aieBootstrap-2023\temp\Physics\x64\Debug\Physics.pch</PrecompiledHeaderOutputFile>
+      <PreprocessToFile>false</PreprocessToFile>
+      <PreprocessKeepComments>false</PreprocessKeepComments>
+      <PreprocessSuppressLineNumbers>false</PreprocessSuppressLineNumbers>
+      <RemoveUnreferencedCodeData>true</RemoveUnreferencedCodeData>
+      <ScanSourceForModuleDependencies>false</ScanSourceForModuleDependencies>
+      <ShowIncludes>false</ShowIncludes>
+      <SourceDependenciesFile>C:\Users\s213634\Desktop\GitHub\aieBootstrap-2023\temp\Physics\x64\Debug\</SourceDependenciesFile>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <BufferSecurityCheck>true</BufferSecurityCheck>
+      <SmallerTypeCheck>false</SmallerTypeCheck>
+      <SpectreMitigation>false</SpectreMitigation>
+      <StructMemberAlignment>Default</StructMemberAlignment>
+      <TrackerLogDirectory>C:\Users\s213634\Desktop\GitHub\aieBootstrap-2023\temp\Physics\x64\Debug\Physics.tlog\</TrackerLogDirectory>
+      <TranslateIncludes>false</TranslateIncludes>
+      <MinimalRebuildFromTracking>true</MinimalRebuildFromTracking>
+      <TreatWarningAsError>false</TreatWarningAsError>
+      <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
+      <UseFullPaths>true</UseFullPaths>
+      <WarningLevel>Level3</WarningLevel>
+      <XMLDocumentationFileName>C:\Users\s213634\Desktop\GitHub\aieBootstrap-2023\temp\Physics\x64\Debug\</XMLDocumentationFileName>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <IntelJCCErratum>false</IntelJCCErratum>
+      <TreatAngleIncludeAsExternal>false</TreatAngleIncludeAsExternal>
+      <ExternalWarningLevel>InheritWarningLevel</ExternalWarningLevel>
+      <TreatExternalTemplatesAsInternal>true</TreatExternalTemplatesAsInternal>
+      <DisableAnalyzeExternal>false</DisableAnalyzeExternal>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;_UNICODE;UNICODE;</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>C:\Users\s213634\Desktop\GitHub\aieBootstrap-2023\bootstrap;C:\Users\s213634\Desktop\GitHub\aieBootstrap-2023\dependencies/imgui;C:\Users\s213634\Desktop\GitHub\aieBootstrap-2023\dependencies/glm;</AdditionalIncludeDirectories>
+      <LinkCompiled>true</LinkCompiled>
+    </ClCompile>
+    <ClCompile Include="Scenes\Newtons_First_Law.cpp" />
+    <ClCompile Include="Scenes\Newtons_Second_Law.cpp" />
+    <ClCompile Include="Scenes\Newtons_Third_Law.cpp" />
     <ClCompile Include="PhysicsApp.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="PhysicsObject.cpp" />
     <ClCompile Include="PhysicsScene.cpp" />
     <ClCompile Include="Plane.cpp" />
-    <ClCompile Include="PoolTable.cpp" />
     <ClCompile Include="Rigidbody.cpp" />
-    <ClCompile Include="Simulations.cpp" />
+    <ClCompile Include="Scenes\Physics_Bucket.cpp" />
+    <ClCompile Include="Scenes\Pool_Table.cpp">
+      <RuntimeLibrary>MultiThreadedDebugDll</RuntimeLibrary>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <Optimization>Disabled</Optimization>
+      <SupportJustMyCode>true</SupportJustMyCode>
+      <AssemblerOutput>NoListing</AssemblerOutput>
+      <AssemblerListingLocation>C:\Users\s213634\Desktop\GitHub\aieBootstrap-2023\temp\Physics\x64\Debug\</AssemblerListingLocation>
+      <UndefineAllPreprocessorDefinitions>false</UndefineAllPreprocessorDefinitions>
+      <BrowseInformation>false</BrowseInformation>
+      <BrowseInformationFile>C:\Users\s213634\Desktop\GitHub\aieBootstrap-2023\temp\Physics\x64\Debug\</BrowseInformationFile>
+      <CompileAs>Default</CompileAs>
+      <ConformanceMode>Default</ConformanceMode>
+      <DiagnosticsFormat>Column</DiagnosticsFormat>
+      <DisableLanguageExtensions>false</DisableLanguageExtensions>
+      <ErrorReporting>Prompt</ErrorReporting>
+      <ExpandAttributedSource>false</ExpandAttributedSource>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <EnableASAN>false</EnableASAN>
+      <EnableFuzzer>false</EnableFuzzer>
+      <EnableFiberSafeOptimizations>false</EnableFiberSafeOptimizations>
+      <EnableEnhancedInstructionSet>NotSet</EnableEnhancedInstructionSet>
+      <FloatingPointModel>Precise</FloatingPointModel>
+      <ForceConformanceInForLoopScope>true</ForceConformanceInForLoopScope>
+      <GenerateModuleDependencies>false</GenerateModuleDependencies>
+      <GenerateSourceDependencies>false</GenerateSourceDependencies>
+      <GenerateXMLDocumentationFiles>false</GenerateXMLDocumentationFiles>
+      <InlineFunctionExpansion>Default</InlineFunctionExpansion>
+      <IntrinsicFunctions>false</IntrinsicFunctions>
+      <IgnoreStandardIncludePath>false</IgnoreStandardIncludePath>
+      <LanguageStandard>Default</LanguageStandard>
+      <LanguageStandard_C>Default</LanguageStandard_C>
+      <MinimalRebuild>false</MinimalRebuild>
+      <ModuleDependenciesFile>C:\Users\s213634\Desktop\GitHub\aieBootstrap-2023\temp\Physics\x64\Debug\</ModuleDependenciesFile>
+      <ModuleOutputFile>C:\Users\s213634\Desktop\GitHub\aieBootstrap-2023\temp\Physics\x64\Debug\</ModuleOutputFile>
+      <OmitDefaultLibName>false</OmitDefaultLibName>
+      <FavorSizeOrSpeed>Neither</FavorSizeOrSpeed>
+      <WholeProgramOptimization>false</WholeProgramOptimization>
+      <ObjectFileName>C:\Users\s213634\Desktop\GitHub\aieBootstrap-2023\temp\Physics\x64\Debug\</ObjectFileName>
+      <CallingConvention>Cdecl</CallingConvention>
+      <ProgramDataBaseFileName>C:\Users\s213634\Desktop\GitHub\aieBootstrap-2023\temp\Physics\x64\Debug\vc143.pdb</ProgramDataBaseFileName>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <PrecompiledHeaderFile>stdafx.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderOutputFile>C:\Users\s213634\Desktop\GitHub\aieBootstrap-2023\temp\Physics\x64\Debug\Physics.pch</PrecompiledHeaderOutputFile>
+      <PreprocessToFile>false</PreprocessToFile>
+      <PreprocessKeepComments>false</PreprocessKeepComments>
+      <PreprocessSuppressLineNumbers>false</PreprocessSuppressLineNumbers>
+      <RemoveUnreferencedCodeData>true</RemoveUnreferencedCodeData>
+      <ScanSourceForModuleDependencies>false</ScanSourceForModuleDependencies>
+      <ShowIncludes>false</ShowIncludes>
+      <SourceDependenciesFile>C:\Users\s213634\Desktop\GitHub\aieBootstrap-2023\temp\Physics\x64\Debug\</SourceDependenciesFile>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <BufferSecurityCheck>true</BufferSecurityCheck>
+      <SmallerTypeCheck>false</SmallerTypeCheck>
+      <SpectreMitigation>false</SpectreMitigation>
+      <StructMemberAlignment>Default</StructMemberAlignment>
+      <TrackerLogDirectory>C:\Users\s213634\Desktop\GitHub\aieBootstrap-2023\temp\Physics\x64\Debug\Physics.tlog\</TrackerLogDirectory>
+      <TranslateIncludes>false</TranslateIncludes>
+      <MinimalRebuildFromTracking>true</MinimalRebuildFromTracking>
+      <TreatWarningAsError>false</TreatWarningAsError>
+      <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
+      <UseFullPaths>true</UseFullPaths>
+      <WarningLevel>Level3</WarningLevel>
+      <XMLDocumentationFileName>C:\Users\s213634\Desktop\GitHub\aieBootstrap-2023\temp\Physics\x64\Debug\</XMLDocumentationFileName>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <IntelJCCErratum>false</IntelJCCErratum>
+      <TreatAngleIncludeAsExternal>false</TreatAngleIncludeAsExternal>
+      <ExternalWarningLevel>InheritWarningLevel</ExternalWarningLevel>
+      <TreatExternalTemplatesAsInternal>true</TreatExternalTemplatesAsInternal>
+      <DisableAnalyzeExternal>false</DisableAnalyzeExternal>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;_UNICODE;UNICODE;</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>C:\Users\s213634\Desktop\GitHub\aieBootstrap-2023\bootstrap;C:\Users\s213634\Desktop\GitHub\aieBootstrap-2023\dependencies/imgui;C:\Users\s213634\Desktop\GitHub\aieBootstrap-2023\dependencies/glm;</AdditionalIncludeDirectories>
+      <LinkCompiled>true</LinkCompiled>
+    </ClCompile>
+    <ClCompile Include="Scenes\Simulating_Collisions.cpp" />
+    <ClCompile Include="Scenes\Simulating_Rockets.cpp" />
+    <ClCompile Include="Scenes\SoftBody_Test.cpp" />
+    <ClCompile Include="Scenes\Spring_Test.cpp" />
+    <ClCompile Include="Scenes\Trigger_Test.cpp" />
+    <ClCompile Include="SoftBody.cpp" />
+    <ClCompile Include="Spring.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Box.h" />
     <ClInclude Include="Circle.h" />
-    <ClInclude Include="Collisions.h" />
     <ClInclude Include="Demos.h" />
-    <ClInclude Include="NewtonsCradle.h" />
-    <ClInclude Include="NewtonsLaws.h" />
+    <ClInclude Include="Scenes\Bounce_Pads.h" />
+    <ClInclude Include="Scenes\Bounce_To_Stop.h" />
+    <ClInclude Include="Scenes\Circle_To_Plane.h" />
+    <ClInclude Include="Scenes\Falling_On_Plane.h" />
+    <ClInclude Include="Scenes\Newtons_Cradle.h" />
+    <ClInclude Include="Scenes\Newtons_First_Law.h" />
+    <ClInclude Include="Scenes\Newtons_Second_Law.h" />
+    <ClInclude Include="Scenes\Newtons_Third_Law.h" />
     <ClInclude Include="PhysicsApp.h" />
     <ClInclude Include="PhysicsObject.h" />
     <ClInclude Include="PhysicsScene.h" />
     <ClInclude Include="Plane.h" />
-    <ClInclude Include="PoolTable.h" />
     <ClInclude Include="Rigidbody.h" />
-    <ClInclude Include="Simulations.h" />
+    <ClInclude Include="Scenes\Physics_Bucket.h" />
+    <ClInclude Include="Scenes\Pool_Table.h" />
+    <ClInclude Include="Scenes\Simulating_Collisions.h" />
+    <ClInclude Include="Scenes\Simulating_Rockets.h" />
+    <ClInclude Include="Scenes\SoftBody_Test.h" />
+    <ClInclude Include="Scenes\Spring_Test.h" />
+    <ClInclude Include="Scenes\Trigger_Test.h" />
+    <ClInclude Include="SoftBody.h" />
+    <ClInclude Include="Spring.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

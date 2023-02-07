@@ -14,6 +14,7 @@ glm::vec2 PhysicsScene::m_gravity = glm::vec2(0);
 PhysicsScene::PhysicsScene()
 {
     m_timeStep = 0.01f;
+    m_gravity = glm::vec2(0);
 }
 
 PhysicsScene::~PhysicsScene()
@@ -22,6 +23,8 @@ PhysicsScene::~PhysicsScene()
     {
         delete pActor;
     }
+
+    m_actors.clear();
 }
 
 void PhysicsScene::AddActor(PhysicsObject* _actor)
@@ -52,29 +55,7 @@ void PhysicsScene::Update(float _dt)
 
         accumulatedTime -= m_timeStep;
 
-        if(m_doCollisions)
-        {
-            // check for collisions
-            int actorCount = m_actors.size();
-            
-            // check for collisions against all objects except this one
-            for (int outer = 0; outer < actorCount - 1; outer++)
-            {
-                for (int inner = outer + 1; inner < actorCount; inner++)
-                {
-                    PhysicsObject* object1 = m_actors[outer];
-                    PhysicsObject* object2 = m_actors[inner];
-                    
-                    int functionIdx = (object1->GetShapeId() * SHAPE_COUNT) + object2->GetShapeId();
-                    fn collisionFunctionPtr = collisionFunctionArray[functionIdx];
-
-                    if (collisionFunctionPtr != nullptr)
-                    {
-                        collisionFunctionPtr(object1, object2);
-                    }
-                }
-            }
-        }
+        CheckForCollision();
     }
 }
 
@@ -83,6 +64,33 @@ void PhysicsScene::Draw()
     for (auto pActor : m_actors)
     {
         pActor->Draw(1);
+    }
+}
+
+void PhysicsScene::CheckForCollision()
+{
+    int actorCount = (int)m_actors.size();
+            
+    // check for collisions against all objects except this one
+    for (int outer = 0; outer < actorCount - 1; outer++)
+    {
+        for (int inner = outer + 1; inner < actorCount; inner++)
+        {
+            PhysicsObject* object1 = m_actors[outer];
+            PhysicsObject* object2 = m_actors[inner];
+
+            // Ensures no joints are included in collision checks
+            if (object1->GetShapeId() < 0 || object2->GetShapeId() < 0)
+                continue;
+                    
+            int functionIdx = (object1->GetShapeId() * SHAPE_COUNT) + object2->GetShapeId();
+            fn collisionFunctionPtr = collisionFunctionArray[functionIdx];
+
+            if (collisionFunctionPtr != nullptr)
+            {
+                collisionFunctionPtr(object1, object2);
+            }
+        }
     }
 }
 
@@ -307,6 +315,10 @@ bool PhysicsScene::Box2Box(PhysicsObject* _obj1, PhysicsObject* _obj2)
 
 void PhysicsScene::ApplyContactForces(Rigidbody* _body1, Rigidbody* _body2, glm::vec2 _norm, float _pen)
 {
+    if ((_body1 && _body1->IsTrigger()) ||
+        (_body2 && _body2->IsTrigger()))
+        return;
+    
     float body2Mass = _body2 ? _body2->GetMass() : INT_MAX;
 
     float body1Factor = body2Mass / (_body1->GetMass() + body2Mass);

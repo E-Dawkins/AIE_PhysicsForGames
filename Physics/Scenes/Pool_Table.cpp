@@ -1,12 +1,15 @@
-﻿#include "PoolTable.h"
+﻿#include "Pool_Table.h"
 
 #include <Gizmos.h>
 #include <Input.h>
 
-void PoolTable::Startup()
+void Pool_Table::Startup()
 {
     // Cue ball
-    AddActor(new Circle(glm::vec2(-60, 0), glm::vec2(0), 2.f, 3.5, glm::vec4(1), 0.8f));
+    m_cueBall = new Circle(glm::vec2(-60, 0), glm::vec2(0), 2.f, 3.5, glm::vec4(1), 0.8f);
+    m_cueBall->SetLinearDrag(0.7f);
+    
+    AddActor(m_cueBall);
 
     // Pool table edges
     for(int i = 0; i < 4; i++)
@@ -45,13 +48,14 @@ void PoolTable::Startup()
 
         // 8 ball
         billiardColor = (_rowIndex == 2 && _ballPos.y == 0) ? colors[2] : billiardColor;
-
+        
         // Add to color totals
         color1 += billiardColor == colors[0];
         color2 += billiardColor == colors[1];
 
         // Add billiard to scene
         billiards.push_back(new Circle(_ballPos, glm::vec2(0), 3.f, 4, billiardColor, 0.8f));
+        billiards.back()->SetLinearDrag(0.9f);
         AddActor(billiards.back());
     };
 
@@ -95,18 +99,16 @@ void PoolTable::Startup()
     }
 }
 
-void PoolTable::Update(float _dt)
+void Pool_Table::Update(float _dt)
 {
     PhysicsScene::Update(_dt);
 
     aie::Input* input = aie::Input::getInstance();
 
-    static Circle* cueBall = dynamic_cast<Circle*>(GetActors()->at(0));
-
-    if (cueBall->GetVelocity() == glm::vec2(0))
+    if (m_cueBall->GetVelocity() == glm::vec2(0))
     {
-        float turnSpeed = 1.f;
-        float orientation = cueBall->GetOrientation();
+        float turnSpeed = 2.5f;
+        float orientation = m_cueBall->GetOrientation();
 	
         if (input->isKeyDown(aie::INPUT_KEY_LEFT))
             orientation += turnSpeed;
@@ -114,31 +116,29 @@ void PoolTable::Update(float _dt)
         if (input->isKeyDown(aie::INPUT_KEY_RIGHT))
             orientation -= turnSpeed;
 	
-        cueBall->SetOrientation(orientation);
+        m_cueBall->SetOrientation(orientation);
 
-        float rads = DegreeToRadian(cueBall->GetOrientation());
+        float rads = DegreeToRadian(m_cueBall->GetOrientation());
         const glm::vec2 forceDir = normalize(glm::vec2(cos(rads), sin(rads)));
 
         if (input->wasKeyPressed(aie::INPUT_KEY_SPACE))
         {
             static float forceAmount = 650.f;
-            cueBall->ApplyForce(forceDir * forceAmount, glm::vec2(0));
+            m_cueBall->ApplyForce(forceDir * forceAmount, glm::vec2(0));
         }
     }
 }
 
-void PoolTable::Draw()
+void Pool_Table::Draw()
 {
     PhysicsScene::Draw();
 
-    static Circle* cueBall = dynamic_cast<Circle*>(GetActors()->at(0));
-
-    if (cueBall->GetVelocity() == glm::vec2(0))
+    if (m_cueBall->GetVelocity() == glm::vec2(0))
     {
-        float rads = DegreeToRadian(cueBall->GetOrientation());
+        float rads = DegreeToRadian(m_cueBall->GetOrientation());
         const glm::vec2 forceDir = normalize(glm::vec2(cos(rads), sin(rads)));
-		
-        aie::Gizmos::add2DLine(cueBall->GetPosition(), cueBall->GetPosition()
-                        + forceDir * cueBall->GetRadius(), glm::vec4(1, 0, 0, 1));
+        
+        aie::Gizmos::add2DLine(m_cueBall->GetPosition(), m_cueBall->GetPosition()
+                        + forceDir * m_cueBall->GetRadius(), glm::vec4(1, 0, 0, 1));
     }
 }

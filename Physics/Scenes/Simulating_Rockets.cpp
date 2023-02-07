@@ -1,36 +1,20 @@
-﻿#include "Simulations.h"
+﻿#include "Simulating_Rockets.h"
 
 #include <Input.h>
 
-void Simulations::Startup()
+void Simulating_Rockets::Startup()
 {
-#ifdef SimulatingCollisions
-    SetGravity(glm::vec2(0, -10));
-	
-    Circle* ball1 = new Circle(glm::vec2(-50, 0), glm::vec2(30, 20), 1.0f, 4, glm::vec4(1, 0, 0, 1));
-    Circle* ball2 = new Circle(glm::vec2(50, 0), glm::vec2(-30, 20), 1.0f, 4, glm::vec4(0, 1, 0, 1));
-
-    AddActor(ball1);
-    AddActor(ball2);
-#endif
-
-#ifdef SimulatingRockets
     // m_physicsScene->SetGravity(glm::vec2(0, -10));
-    SetDoCollisions(false);
-	
     Circle* ball = new Circle(glm::vec2(0), glm::vec2(0), 1000.f, 5, glm::vec4(1, 0, 0, 1));
     ball->SetOrientation(90);
     AddActor(ball);
-#endif
 }
 
-void Simulations::Update(float _dt)
+void Simulating_Rockets::Update(float _dt)
 {
     PhysicsScene::Update(_dt);
-
     aie::Input* input = aie::Input::getInstance();
 
-#ifdef SimulatingRockets
     static Circle* rocket = dynamic_cast<Circle*>(GetActors()->at(0));
     static float fuelStorage = rocket->GetMass() * 0.75f;
     static float rocketMass = rocket->GetMass() - fuelStorage;
@@ -71,5 +55,4 @@ void Simulations::Update(float _dt)
     rocket->SetOrientation(rocket->GetOrientation() + addOrientation);
 	
     accumulatedTime += _dt;
-#endif
 }
