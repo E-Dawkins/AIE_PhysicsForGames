@@ -12,6 +12,8 @@
 #include "SoftBody.h"
 #include "Demos.h"
 
+using std::vector;
+
 class PhysicsScene
 {
 public:

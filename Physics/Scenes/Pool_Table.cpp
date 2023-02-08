@@ -8,7 +8,6 @@ void Pool_Table::Startup()
     // Cue ball
     m_cueBall = new Circle(glm::vec2(-60, 0), glm::vec2(0), 2.f, 3.5, glm::vec4(1), 0.8f);
     m_cueBall->SetLinearDrag(0.7f);
-    
     AddActor(m_cueBall);
 
     // Pool table edges
@@ -19,83 +18,16 @@ void Pool_Table::Startup()
         AddActor(new Plane(planeNormal, planeDist, glm::vec4(0, 0.75, 0, 1), 0.6f));
     }
 
-    // Billiards
-    std::vector<Circle*> billiards;
-
-    int billiardRows = 5;
-    int ballTotal = ((billiardRows * (1 + billiardRows)) / 2) - 1;
-
-    glm::vec2 billiardStart = glm::vec2(30, 0);
-
-    glm::vec4 colors[] =
+    // First makes the triangle using recursion, then passes the made
+    // triangle to the ColorTriangle function with the 2 teams colors
+    vector<Circle*> triangle = MakeTriangle(glm::vec2(30, 0), 7.5f);
+    ColorTriangle(triangle,glm::vec4(1, 0, 0, 1), glm::vec4(1, 1, 0, 1));
+    
+    for (auto ball : triangle) // sets drag & elasticity, then adds triangle to the scene
     {
-        glm::vec4(1, 0, 0, 1),
-        glm::vec4(1, 1, 0, 1),
-        glm::vec4(0.15, 0.15, 0.15, 1)
-    };
-
-    // Delegate for adding billiard to the scene
-    auto AddBilliard = [&colors, &ballTotal, &billiards, this](int _rowIndex, glm::vec2 _ballPos)
-    {
-        static int color1 = 0;
-        static int color2 = 0;
-
-        glm::vec4 billiardColor = colors[rand() % 2];
-
-        // Too much of colorX, make it colorY
-        billiardColor = (color1 >= floor(ballTotal * 0.5f)) ? colors[1] : billiardColor;
-        billiardColor = (color2 >= floor(ballTotal * 0.5f)) ? colors[0] : billiardColor;
-
-        // 8 ball
-        billiardColor = (_rowIndex == 2 && _ballPos.y == 0) ? colors[2] : billiardColor;
-        
-        // Add to color totals
-        color1 += billiardColor == colors[0];
-        color2 += billiardColor == colors[1];
-
-        // Add billiard to scene
-        billiards.push_back(new Circle(_ballPos, glm::vec2(0), 3.f, 4, billiardColor, 0.8f));
-        billiards.back()->SetLinearDrag(0.9f);
-        AddActor(billiards.back());
-    };
-
-    for(int i = 0; i < billiardRows; i++)
-    {
-        // If the first ball, then add it and continue to next loop
-        if(billiards.empty())
-        {
-            AddBilliard(0, billiardStart);
-            continue;
-        }
-
-        std::vector<Circle*> temp;
-
-        // Add previous row of billiards into temp vector
-        for(int j = 0; j < i; j++)
-        {
-            temp.push_back(billiards.at(billiards.size() - 1 - j));
-        }
-
-        // Loop through all billiards in temp, and add
-        // new ones either side of it in the next row
-        for(auto ball : temp)
-        {
-            glm::vec2 billiardPos = ball->GetPosition() + glm::vec2(7.5f, 4.5f);
-            glm::vec2 billiardPos2 = ball->GetPosition() + glm::vec2(7.5f, -4.5f);
-
-            bool result1 = billiards.end() == std::find_if(billiards.begin(), billiards.end(),
-                                                           [billiardPos](Circle* _circle) { return _circle->GetPosition() == billiardPos; });
-
-            bool result2 = billiards.end() == std::find_if(billiards.begin(), billiards.end(),
-                                                           [billiardPos2](Circle* _circle) { return _circle->GetPosition() == billiardPos2; });
-
-            // Adds the billiard if it has a unique position,
-            // i.e. that position is not already occupied
-            if(result1) AddBilliard(i, billiardPos);
-            if(result2) AddBilliard(i, billiardPos2);
-        }
-
-        temp.clear();
+        ball->SetLinearDrag(0.9f);
+        ball->SetElasticity(0.8f);
+        AddActor(ball);
     }
 }
 
@@ -140,5 +72,63 @@ void Pool_Table::Draw()
         
         aie::Gizmos::add2DLine(m_cueBall->GetPosition(), m_cueBall->GetPosition()
                         + forceDir * m_cueBall->GetRadius(), glm::vec4(1, 0, 0, 1));
+    }
+}
+
+vector<Circle*> Pool_Table::MakeTriangle(glm::vec2 _startPos, float _xDiff, int _rows)
+{
+    vector<Circle*> billiards;
+
+    // Create _rows amount of rows
+    for (int i = 0; i < _rows; i++)
+    {
+        float yDiff = abs((_xDiff * i * sinf(DegreeToRadian(30)))
+                                / sinf(DegreeToRadian(60)));
+        
+        // Add billiards outwards, i.e. 1 up-right, 1 down-right
+        glm::vec2 posDiff = glm::vec2(_xDiff * i, yDiff);
+        billiards.push_back(new Circle(_startPos + posDiff, glm::vec2(0), 3.f, 4.f));
+
+        posDiff = glm::vec2(posDiff.x, -posDiff.y);
+
+        // Only adds second if position is not occupied
+        if (_startPos + posDiff != billiards.back()->GetPosition())
+            billiards.push_back(new Circle(_startPos + posDiff, glm::vec2(0), 3.f, 4.f));
+    }
+
+    if (_rows - 2 > 0) // if rows left is not 0 or negative, run recursion
+    {
+        vector<Circle*> extras = MakeTriangle(_startPos + glm::vec2(_xDiff * 2.f, 0), _xDiff, _rows - 2);
+        billiards.insert(billiards.end(), extras.begin(), extras.end());
+    }
+
+    return billiards;
+}
+
+void Pool_Table::ColorTriangle(vector<Circle*>& _balls, glm::vec4 _color1, glm::vec4 _color2, glm::vec4 _8BallColor)
+{
+    int ballTotal = (int)_balls.size(), color1 = 0, color2 = 0;
+
+    // Because of the recursion algorithm to make the triangle,
+    // this is the only way to get the exact row amount
+    int rows = (int)floor((-1 + sqrt(1 - 4 * 1 * (-2 * _balls.size()))) / 2);
+
+    for (int i = 0; i < (int)_balls.size(); i++)
+    {
+        // Set random color, out of 2 passed in colors
+        glm::vec4 ballColor = (rand() % 2 == 0) ? _color1 : _color2;
+
+        // If too much of colorX, set it to colorY
+        ballColor = color1 >= floor(ballTotal * 0.5f) ? _color2 : ballColor;
+        ballColor = color2 >= floor(ballTotal * 0.5f) ? _color1 : ballColor;
+
+        // 8-ball
+        if (i == rows * 2 - 1) ballColor = _8BallColor;
+
+        // Update totals
+        color1 += ballColor == _color1;
+        color2 += ballColor == _color2;
+
+        _balls.at(i)->SetColor(ballColor);
     }
 }
