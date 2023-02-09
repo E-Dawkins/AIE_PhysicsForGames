@@ -16,8 +16,8 @@ void Trigger_Test::Startup()
     AddActor(new Plane(glm::vec2(0, 1), -30));
     AddActor(new Plane(glm::vec2(1, 0), -50));
     AddActor(new Plane(glm::vec2(-1, 0), -50));
-    AddActor(new Box(glm::vec2(20, 10), glm::vec2(30, 0), glm::vec2(2), 1.f, 0));
-    AddActor(new Box(glm::vec2(-40, 10), glm::vec2(30, 0), glm::vec2(2), 1.f, 45));
+    AddActor(new Box(glm::vec2(20, 10), glm::vec2(30, 0), 1.f, glm::vec2(2), 0));
+    AddActor(new Box(glm::vec2(-40, 10), glm::vec2(30, 0), 1.f, glm::vec2(2), 45));
     
     ball2->triggerEnter = [=](PhysicsObject* other) { std::cout << "Enter:" << other->GetShapeId() << std::endl; };
     ball2->triggerExit  = [=](PhysicsObject* other) { std::cout << "Exit:"  << other->GetShapeId() << std::endl; };

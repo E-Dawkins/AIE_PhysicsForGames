@@ -5,7 +5,7 @@ class Box : public Rigidbody
 {
 public:
     Box();
-    Box(glm::vec2 _position, glm::vec2 _velocity, glm::vec2 _extents, float _mass,
+    Box(glm::vec2 _position, glm::vec2 _velocity, float _mass, glm::vec2 _extents,
         float _orientation, glm::vec4 _color = glm::vec4(1), float _elasticity = 1);
 
     void Draw(float _alpha) override;

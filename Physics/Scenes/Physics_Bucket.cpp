@@ -10,9 +10,9 @@ void Physics_Bucket::Startup()
     plane->SetElasticity(0.5f);
     plane1->SetElasticity(0.5f);
 	
-    Box* box = new Box(glm::vec2(0, 40), glm::vec2(0), glm::vec2(3), 1.f, 0);
-    Box* box1 = new Box(glm::vec2(-10, 50), glm::vec2(0), glm::vec2(5), 1.f, 0);
-    Box* box2 = new Box(glm::vec2(5, 60), glm::vec2(0), glm::vec2(8), 1.f, 0);
+    Box* box = new Box(glm::vec2(0, 40), glm::vec2(0), 1.f, glm::vec2(3), 0);
+    Box* box1 = new Box(glm::vec2(-10, 50), glm::vec2(0), 1.f, glm::vec2(5), 0);
+    Box* box2 = new Box(glm::vec2(5, 60), glm::vec2(0), 1.f, glm::vec2(8), 0);
 
     box->SetLinearDrag(0.1f);
     box1->SetLinearDrag(1.f);

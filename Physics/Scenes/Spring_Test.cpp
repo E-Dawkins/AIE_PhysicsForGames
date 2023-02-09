@@ -8,18 +8,18 @@ void Spring_Test::Startup()
     MakeRope(13, glm::vec2(30, 40), glm::vec2(-5, 0), true);
 
     // A box for the rope to dangle over
-    Box* box = new Box(glm::vec2(0, -20), glm::vec2(0), glm::vec2(10.f), 1.f, 20);
+    Box* box = new Box(glm::vec2(0, -20), glm::vec2(0), 1.f, glm::vec2(10.f), 20);
     box->SetKinematic(true);
     AddActor(box);
 
     // A box falling onto the rope
-    Box* box1 = new Box(glm::vec2(25, 100), glm::vec2(0), glm::vec2(5), 10.f, 0);
+    Box* box1 = new Box(glm::vec2(25, 100), glm::vec2(0), 10.f, glm::vec2(5), 0);
     AddActor(box1);
 
-    Box* box2 = new Box(glm::vec2(30, 80), glm::vec2(0), glm::vec2(5), 10.f, 0);
+    Box* box2 = new Box(glm::vec2(30, 80), glm::vec2(0), 10.f, glm::vec2(5), 0);
     AddActor(box2);
 
-    Box* box3 = new Box(glm::vec2(10, 150), glm::vec2(0), glm::vec2(5), 10.f, 0);
+    Box* box3 = new Box(glm::vec2(10, 150), glm::vec2(0), 10.f, glm::vec2(5), 0);
     AddActor(box3);
 }
 
