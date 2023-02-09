@@ -43,6 +43,7 @@ public:
     // Setters
     void SetGravity(const glm::vec2 _gravity) const { m_gravity = _gravity; }
     void SetTimeStep(const float _timeStep)         { m_timeStep = _timeStep; }
+    void SetWindowExtents(const glm::vec2 _size)       { m_windowExtents = _size; }
     
     // Collision functions
     static bool Circle2Circle(PhysicsObject* _obj1, PhysicsObject* _obj2);
@@ -60,5 +61,6 @@ public:
 protected:
     static glm::vec2 m_gravity;
     float m_timeStep;
-    std::vector<PhysicsObject*> m_actors;
+    vector<PhysicsObject*> m_actors;
+    glm::vec2 m_windowExtents;
 };

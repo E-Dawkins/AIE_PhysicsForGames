@@ -27,4 +27,5 @@ protected:
 	aie::Font*					m_font;
 	
 	PhysicsScene*				m_physicsScene;
+	float						m_aspectRatio = 16.f / 9.f;
 };

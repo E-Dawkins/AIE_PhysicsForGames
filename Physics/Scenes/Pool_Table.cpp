@@ -6,29 +6,17 @@
 void Pool_Table::Startup()
 {
     // Cue ball
-    m_cueBall = new Circle(glm::vec2(-60, 0), glm::vec2(0), 2.f, 3.5, glm::vec4(1), 0.8f);
+    m_cueBall = new Circle(glm::vec2(-60, 0), glm::vec2(0), 2.f, 3.f);
+    m_cueBall->SetLinearDrag(0.9f);
     m_cueBall->SetLinearDrag(0.7f);
     AddActor(m_cueBall);
 
-    // Pool table edges
-    for(int i = 0; i < 4; i++)
-    {
-        glm::vec2 planeNormal = glm::vec2(i % 2, (1 + i) % 2) * (i % 3 == 0 ? -1.f : 1.f);
-        float planeDist = planeNormal.x == 0 ? -50.f : -95.f;
-        AddActor(new Plane(planeNormal, planeDist, glm::vec4(0, 0.75, 0, 1), 0.6f));
-    }
+    MakePoolEdges();
 
     // First makes the triangle using recursion, then passes the made
     // triangle to the ColorTriangle function with the 2 teams colors
-    vector<Circle*> triangle = MakeTriangle(glm::vec2(30, 0), 7.5f);
-    ColorTriangle(triangle,glm::vec4(1, 0, 0, 1), glm::vec4(1, 1, 0, 1));
-    
-    for (auto ball : triangle) // sets drag & elasticity, then adds triangle to the scene
-    {
-        ball->SetLinearDrag(0.9f);
-        ball->SetElasticity(0.8f);
-        AddActor(ball);
-    }
+    vector<Circle*> triangle = MakeTriangle(glm::vec2(30, 0), 6.5f);
+    ColorTriangle(triangle, glm::vec4(1, 0, 0, 1), glm::vec4(1, 1, 0, 1));
 }
 
 void Pool_Table::Update(float _dt)
@@ -82,24 +70,33 @@ vector<Circle*> Pool_Table::MakeTriangle(glm::vec2 _startPos, float _xDiff, int 
     // Create _rows amount of rows
     for (int i = 0; i < _rows; i++)
     {
-        float yDiff = abs((_xDiff * i * sinf(DegreeToRadian(30)))
+        const float radius = 3.5f;
+        const float yDiff = abs((_xDiff * i * sinf(DegreeToRadian(30)))
                                 / sinf(DegreeToRadian(60)));
         
         // Add billiards outwards, i.e. 1 up-right, 1 down-right
         glm::vec2 posDiff = glm::vec2(_xDiff * i, yDiff);
-        billiards.push_back(new Circle(_startPos + posDiff, glm::vec2(0), 3.f, 4.f));
+        billiards.push_back(new Circle(_startPos + posDiff, glm::vec2(0), 3.f, radius));
 
         posDiff = glm::vec2(posDiff.x, -posDiff.y);
 
         // Only adds second if position is not occupied
         if (_startPos + posDiff != billiards.back()->GetPosition())
-            billiards.push_back(new Circle(_startPos + posDiff, glm::vec2(0), 3.f, 4.f));
+            billiards.push_back(new Circle(_startPos + posDiff, glm::vec2(0), 3.f, radius));
     }
 
     if (_rows - 2 > 0) // if rows left is not 0 or negative, run recursion
     {
         vector<Circle*> extras = MakeTriangle(_startPos + glm::vec2(_xDiff * 2.f, 0), _xDiff, _rows - 2);
         billiards.insert(billiards.end(), extras.begin(), extras.end());
+    }
+
+    // Sets drag & elasticity, then adds billiards to the scene
+    for (auto ball : billiards)
+    {
+        ball->SetLinearDrag(0.9f);
+        ball->SetElasticity(0.8f);
+        AddActor(ball);
     }
 
     return billiards;
@@ -131,4 +128,45 @@ void Pool_Table::ColorTriangle(vector<Circle*>& _balls, glm::vec4 _color1, glm::
 
         _balls.at(i)->SetColor(ballColor);
     }
+}
+
+void Pool_Table::MakePoolEdges()
+{
+    // Boxes for the screen edges
+    const glm::vec4 edgeColor = glm::vec4(0, 0.7, 0, 1);
+
+    float cornerPocketRadius = 12.5f;
+    float centrePocketRadius = 6.25f;
+
+    float halfXSize = (m_windowExtents.x - cornerPocketRadius - centrePocketRadius) * 0.5f;
+    float xPos = centrePocketRadius + halfXSize;
+    
+    Box* top1 = new Box(glm::vec2(xPos, m_windowExtents.y), glm::vec2(0),
+        glm::vec2(halfXSize, 5), 1.f, 0.f, edgeColor);
+    Box* top2 = new Box(glm::vec2(-xPos, m_windowExtents.y), glm::vec2(0),
+        glm::vec2(halfXSize, 5), 1.f, 0.f, edgeColor);
+
+    Box* bot1 = new Box(glm::vec2(xPos, -m_windowExtents.y), glm::vec2(0),
+        glm::vec2(halfXSize, 5), 1.f, 0.f, edgeColor);
+    Box* bot2 = new Box(glm::vec2(-xPos, -m_windowExtents.y), glm::vec2(0),
+        glm::vec2(halfXSize, 5), 1.f, 0.f, edgeColor);
+    
+    Box* left = new Box(glm::vec2(-m_windowExtents.x, 0), glm::vec2(0),
+        glm::vec2(5, m_windowExtents.y - cornerPocketRadius), 1.f, 0.f, edgeColor);
+    Box* right = new Box(glm::vec2(m_windowExtents.x, 0), glm::vec2(0),
+        glm::vec2(5, m_windowExtents.y - cornerPocketRadius), 1.f, 0.f, edgeColor);
+
+    top1->SetKinematic(true);
+    top2->SetKinematic(true);
+    bot1->SetKinematic(true);
+    bot2->SetKinematic(true);
+    right->SetKinematic(true);
+    left->SetKinematic(true);
+    
+    AddActor(top1);
+    AddActor(top2);
+    AddActor(bot1);
+    AddActor(bot2);
+    AddActor(right);
+    AddActor(left);
 }

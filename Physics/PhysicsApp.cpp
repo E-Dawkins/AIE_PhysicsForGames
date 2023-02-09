@@ -70,7 +70,8 @@ bool PhysicsApp::startup() {
 	#elif defined TriggerTest
 		m_physicsScene = new Trigger_Test();
 	#endif
-	
+
+	m_physicsScene->SetWindowExtents(glm::vec2(100, 100 / m_aspectRatio));
 	m_physicsScene->Startup();
 	return true;
 }
@@ -105,9 +106,8 @@ void PhysicsApp::draw() {
 	m_physicsScene->Draw();
 	
 	// draw your stuff here!
-	static float aspectRatio = 16.0f / 9.0f;
 	aie::Gizmos::draw2D(glm::ortho<float>(-100, 100,
-		-100 / aspectRatio, 100 / aspectRatio, -1.f, 1.f));
+		-100 / m_aspectRatio, 100 / m_aspectRatio, -1.f, 1.f));
 	
 	// output some text, uses the last used colour
 	m_2dRenderer->drawText(m_font, "Press ESC to quit", 0, 0);

@@ -14,6 +14,7 @@ glm::vec2 PhysicsScene::m_gravity = glm::vec2(0);
 PhysicsScene::PhysicsScene()
 {
     m_timeStep = 0.01f;
+    m_windowExtents = glm::vec2(0);
     m_gravity = glm::vec2(0);
 }
 
