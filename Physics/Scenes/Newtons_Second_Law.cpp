@@ -1,6 +1,6 @@
 ﻿#include "Newtons_Second_Law.h"
 
-void Newtons_Second_Law::Startup()
+void Newtons_Second_Law::Startup(aie::Application* _app)
 {
     SetGravity(glm::vec2(0, -15));
 	

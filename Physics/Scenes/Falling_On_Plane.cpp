@@ -1,6 +1,6 @@
 ﻿#include "Falling_On_Plane.h"
 
-void Falling_On_Plane::Startup()
+void Falling_On_Plane::Startup(aie::Application* _app)
 {
     SetGravity(glm::vec2(0, -10));
 	

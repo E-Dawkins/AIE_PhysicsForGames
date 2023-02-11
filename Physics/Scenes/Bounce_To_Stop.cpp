@@ -1,6 +1,6 @@
 ﻿#include "Bounce_To_Stop.h"
 
-void Bounce_To_Stop::Startup()
+void Bounce_To_Stop::Startup(aie::Application* _app)
 {
     SetGravity(glm::vec2(0, -10));
 	

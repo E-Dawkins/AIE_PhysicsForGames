@@ -4,13 +4,14 @@
 
 #include "PhysicsObject.h"
 #include "Rigidbody.h"
+#include "Demos.h"
+#include "Application.h"
 
 #include "Circle.h"
 #include "Plane.h"
 #include "Box.h"
 #include "Spring.h"
 #include "SoftBody.h"
-#include "Demos.h"
 
 using std::vector;
 
@@ -23,7 +24,7 @@ public:
     void AddActor(PhysicsObject* _actor);
     void RemoveActor(const PhysicsObject* _actor);
 
-    virtual void Startup() {}
+    virtual void Startup(aie::Application* _app) {}
     virtual void Update(float _dt);
     virtual void Draw();
 
@@ -43,7 +44,7 @@ public:
     // Setters
     void SetGravity(const glm::vec2 _gravity) const { m_gravity = _gravity; }
     void SetTimeStep(const float _timeStep)         { m_timeStep = _timeStep; }
-    void SetWindowExtents(const glm::vec2 _size)       { m_windowExtents = _size; }
+    void SetWindowExtents(const glm::vec2 _size)    { m_windowExtents = _size; }
     
     // Collision functions
     static bool Circle2Circle(PhysicsObject* _obj1, PhysicsObject* _obj2);

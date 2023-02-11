@@ -2,7 +2,7 @@
 
 #include <iostream>
 
-void Trigger_Test::Startup()
+void Trigger_Test::Startup(aie::Application* _app)
 {
     SetGravity(glm::vec2(0, -10));
 

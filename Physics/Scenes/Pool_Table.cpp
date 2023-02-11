@@ -3,8 +3,10 @@
 #include <Gizmos.h>
 #include <Input.h>
 
-void Pool_Table::Startup()
+void Pool_Table::Startup(aie::Application* _app)
 {
+    _app->setBackgroundColour(0.f, 0.2f, 0.1f);
+    
     // Cue ball
     m_cueBall = new Circle(glm::vec2(-60, 0), glm::vec2(0), 2.f, 3.f);
     m_cueBall->SetLinearDrag(0.9f);
@@ -13,7 +15,7 @@ void Pool_Table::Startup()
 
     // First makes the triangle using recursion, then passes the made
     // triangle to the ColorTriangle function with the 2 teams colors
-    vector<Circle*> triangle = MakeTriangle(glm::vec2(30, 0), 6.f);
+    vector<Circle*> triangle = MakeTriangle(glm::vec2(40, 0), 6.f);
     ColorTriangle(triangle, glm::vec4(1, 0, 0, 1), glm::vec4(1, 1, 0, 1));
 
     MakePoolTable();
@@ -135,124 +137,60 @@ void Pool_Table::MakePoolTable()
     // Boxes for the screen edges
     const glm::vec4 edgeColor = glm::vec4(0, 0.7, 0, 1);
 
-    float cornerRadius = 14.5f;
-    float centreRadius = 10.f;
-
-    float edgeWidth = 5.f;
-
+    float cornerRadius = 14.5f, centreRadius = 10.f, edgeWidth = 5.f;
     float halfXSize = (m_windowExtents.x - cornerRadius - centreRadius) * 0.5f;
-    float xPos = centreRadius + halfXSize;
-    
-    Box* top1 = new Box(glm::vec2(xPos, m_windowExtents.y), glm::vec2(0),
-        1.f, glm::vec2(halfXSize, edgeWidth), 0.f, edgeColor);
-    Box* top2 = new Box(glm::vec2(-xPos, m_windowExtents.y), glm::vec2(0),
-        1.f, glm::vec2(halfXSize, edgeWidth), 0.f, edgeColor);
 
-    Box* bot1 = new Box(glm::vec2(xPos, -m_windowExtents.y), glm::vec2(0),
-        1.f, glm::vec2(halfXSize, edgeWidth), 0.f, edgeColor);
-    Box* bot2 = new Box(glm::vec2(-xPos, -m_windowExtents.y), glm::vec2(0),
-        1.f, glm::vec2(halfXSize, edgeWidth), 0.f, edgeColor);
-    
-    Box* left = new Box(glm::vec2(-m_windowExtents.x, 0), glm::vec2(0), 1.f,
-        glm::vec2(edgeWidth, m_windowExtents.y - cornerRadius), 0.f, edgeColor);
-    Box* right = new Box(glm::vec2(m_windowExtents.x, 0), glm::vec2(0), 1.f,
-        glm::vec2(edgeWidth, m_windowExtents.y - cornerRadius), 0.f, edgeColor);
+    // Loop to make top and bottom edges
+    for (int i = 0; i < 4; i++)
+    {
+        glm::vec2 boxPos = glm::vec2((centreRadius + halfXSize) * (i % 3 == 0 ? -1.f : 1.f),
+                                    m_windowExtents.y * (i % 2 == 0 ? -1.f : 1.f));
+        glm::vec2 boxSize = glm::vec2(halfXSize, edgeWidth);
+        glm::vec2 circlePos = boxPos + glm::vec2(boxSize.x, 0) * (i % 2 == 0 ? -1.f : 1.f);
 
-    top1->SetKinematic(true);
-    top2->SetKinematic(true);
-    bot1->SetKinematic(true);
-    bot2->SetKinematic(true);
-    right->SetKinematic(true);
-    left->SetKinematic(true);
-    
-    AddActor(top1);
-    AddActor(top2);
-    AddActor(bot1);
-    AddActor(bot2);
-    AddActor(right);
-    AddActor(left);
+        AddActor(new Box(boxPos, glm::vec2(), 1, boxSize, 0, edgeColor));
+        AddActor(new Circle(circlePos, glm::vec2(), 1, edgeWidth, edgeColor));
+        AddActor(new Circle(glm::vec2(-circlePos.x, circlePos.y), glm::vec2(), 1, edgeWidth, edgeColor));
+    }
 
-    // Makes the edges seem 'rounded', really just circles on the ends
-    Circle* topRnd1 = new Circle(glm::vec2(xPos + halfXSize, m_windowExtents.y),
-        glm::vec2(0), 1.f, edgeWidth, edgeColor);
-    Circle* topRnd2 = new Circle(glm::vec2(xPos - halfXSize, m_windowExtents.y),
-        glm::vec2(0), 1.f, edgeWidth, edgeColor);
-    Circle* topRnd3 = new Circle(glm::vec2(-xPos + halfXSize, m_windowExtents.y),
-        glm::vec2(0), 1.f, edgeWidth, edgeColor);
-    Circle* topRnd4 = new Circle(glm::vec2(-xPos - halfXSize, m_windowExtents.y),
-        glm::vec2(0), 1.f, edgeWidth, edgeColor);
+    // Loop to make left and right edges
+    for (int i = 0; i < 2; i++)
+    {
+        glm::vec2 boxPos = glm::vec2(m_windowExtents.x * (i % 2 == 0 ? -1.f : 1.f), 0);
+        glm::vec2 boxSize = glm::vec2(edgeWidth, m_windowExtents.y - cornerRadius);
+        glm::vec2 circlePos = boxPos + glm::vec2(0, boxSize.y) * (i % 2 == 0 ? -1.f : 1.f);
 
-    Circle* bottomRnd1 = new Circle(glm::vec2(xPos + halfXSize, -m_windowExtents.y),
-        glm::vec2(0), 1.f, edgeWidth, edgeColor);
-    Circle* bottomRnd2 = new Circle(glm::vec2(xPos - halfXSize, -m_windowExtents.y),
-        glm::vec2(0), 1.f, edgeWidth, edgeColor);
-    Circle* bottomRnd3 = new Circle(glm::vec2(-xPos + halfXSize, -m_windowExtents.y),
-        glm::vec2(0), 1.f, edgeWidth, edgeColor);
-    Circle* bottomRnd4 = new Circle(glm::vec2(-xPos - halfXSize, -m_windowExtents.y),
-        glm::vec2(0), 1.f, edgeWidth, edgeColor);
-    
-    Circle* leftRnd1 = new Circle(glm::vec2(-m_windowExtents.x, m_windowExtents.y
-            - cornerRadius), glm::vec2(0), 1.f, edgeWidth, edgeColor);
-    Circle* leftRnd2 = new Circle(glm::vec2(-m_windowExtents.x, -m_windowExtents.y
-            + cornerRadius), glm::vec2(0), 1.f, edgeWidth, edgeColor);
-    Circle* rightRnd1 = new Circle(glm::vec2(m_windowExtents.x, m_windowExtents.y
-            - cornerRadius), glm::vec2(0), 1.f, edgeWidth, edgeColor);
-    Circle* rightRnd2 = new Circle(glm::vec2(m_windowExtents.x, -m_windowExtents.y
-            + cornerRadius), glm::vec2(0), 1.f, edgeWidth, edgeColor);
+        AddActor(new Box(boxPos, glm::vec2(), 1, boxSize, 0, edgeColor));
+        AddActor(new Circle(circlePos, glm::vec2(), 1, edgeWidth, edgeColor));
+        AddActor(new Circle(glm::vec2(circlePos.x, -circlePos.y), glm::vec2(), 1, edgeWidth, edgeColor));
+    }
 
-    topRnd1->SetKinematic(true);
-    topRnd2->SetKinematic(true);
-    topRnd3->SetKinematic(true);
-    topRnd4->SetKinematic(true);
-    bottomRnd1->SetKinematic(true);
-    bottomRnd2->SetKinematic(true);
-    bottomRnd3->SetKinematic(true);
-    bottomRnd4->SetKinematic(true);
-    leftRnd1->SetKinematic(true);
-    leftRnd2->SetKinematic(true);
-    rightRnd1->SetKinematic(true);
-    rightRnd2->SetKinematic(true);
-    
-    AddActor(topRnd1);
-    AddActor(topRnd2);
-    AddActor(topRnd3);
-    AddActor(topRnd4);
-    AddActor(bottomRnd1);
-    AddActor(bottomRnd2);
-    AddActor(bottomRnd3);
-    AddActor(bottomRnd4);
-    AddActor(leftRnd1);
-    AddActor(leftRnd2);
-    AddActor(rightRnd1);
-    AddActor(rightRnd2);
+    // Loop for setting edge kinematic and elasticity
+    for (int i = 0; i < 18; i++)
+    {
+        dynamic_cast<Rigidbody*>(m_actors.at(m_actors.size() - 1 - i))->SetKinematic(true);
+        m_actors.at(m_actors.size() - 1 - i)->SetElasticity(0.6f);
+    }
 
     // Pockets
-    glm::vec4 pocketColor = glm::vec4(1, 0, 0, 1);
+    glm::vec4 pocketColor = glm::vec4(0, 0, 0, 1);
     float pocketRadius = centreRadius - edgeWidth;
-
+    
     glm::vec2 cornerPos = glm::vec2(m_windowExtents.x, m_windowExtents.y) - edgeWidth;
-    
-    Circle* topMid = new Circle(glm::vec2(0, m_windowExtents.y), glm::vec2(),
-                        1.f, pocketRadius, pocketColor);
-    Circle* topLeft = new Circle(glm::vec2(-cornerPos.x, cornerPos.y), glm::vec2(), 1.f, pocketRadius, pocketColor);
-    Circle* topRight = new Circle(cornerPos, glm::vec2(), 1.f, pocketRadius, pocketColor);
 
-    Circle* botMid = new Circle(glm::vec2(0, -m_windowExtents.y), glm::vec2(),
-                        1.f, pocketRadius, pocketColor);
-    Circle* botLeft = new Circle(glm::vec2(-cornerPos.x, -cornerPos.y), glm::vec2(), 1.f, pocketRadius, pocketColor);
-    Circle* botRight = new Circle(glm::vec2(cornerPos.x, -cornerPos.y), glm::vec2(), 1.f, pocketRadius, pocketColor);
+    // Loop for making the 3 pockets (left, mid, right) for top + bottom
+    for (int i = 0; i < 2; i++)
+    {
+        float multi = i % 2 == 0 ? 1.f : -1.f;
+        
+        AddActor(new Circle(glm::vec2(-cornerPos.x, cornerPos.y) * multi, glm::vec2(), 1, pocketRadius, pocketColor));
+        AddActor(new Circle(glm::vec2(0, m_windowExtents.y * multi), glm::vec2(), 1, pocketRadius, pocketColor));
+        AddActor(new Circle(cornerPos * multi, glm::vec2(), 1, pocketRadius, pocketColor));
+    }
 
-    topMid->SetTrigger(true);
-    topLeft->SetTrigger(true);
-    topRight->SetTrigger(true);
-    botMid->SetTrigger(true);
-    botLeft->SetTrigger(true);
-    botRight->SetTrigger(true);
-    
-    AddActor(topMid);
-    AddActor(topLeft);
-    AddActor(topRight);
-    AddActor(botMid);
-    AddActor(botLeft);
-    AddActor(botRight);
+    // Loop for setting the pockets to triggers and adding a callback
+    for (int i = 0; i < 6; i++)
+    {
+        dynamic_cast<Rigidbody*>(m_actors.at(m_actors.size() - 1 - i))->SetTrigger(true);
+    }
 }

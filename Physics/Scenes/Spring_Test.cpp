@@ -1,6 +1,6 @@
 ﻿#include "Spring_Test.h"
 
-void Spring_Test::Startup()
+void Spring_Test::Startup(aie::Application* _app)
 {
     SetGravity(glm::vec2(0, -15));
     

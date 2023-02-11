@@ -1,6 +1,6 @@
 ﻿#include "Bounce_Pads.h"
 
-void Bounce_Pads::Startup()
+void Bounce_Pads::Startup(aie::Application* _app)
 {
     SetGravity(glm::vec2(0, -10));
 	

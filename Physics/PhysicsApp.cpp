@@ -40,7 +40,7 @@ bool PhysicsApp::startup() {
 	m_font = new aie::Font("./font/consolas.ttf", 32);
 
 	#if defined NewtonsFirstLaw
-		m_physicsScene = new Newtons_First_Law();
+		m_physicsScene = new Newtons_First_Law(this);
 	#elif defined NewtonsSecondLaw
 		m_physicsScene = new Newtons_Second_Law();
 	#elif defined NewtonsThirdLaw
@@ -72,7 +72,7 @@ bool PhysicsApp::startup() {
 	#endif
 
 	m_physicsScene->SetWindowExtents(glm::vec2(100, 100 / m_aspectRatio));
-	m_physicsScene->Startup();
+	m_physicsScene->Startup(this);
 	return true;
 }
 

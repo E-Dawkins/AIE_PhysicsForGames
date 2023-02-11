@@ -1,6 +1,6 @@
 ﻿#include "Newtons_Cradle.h"
 
-void Newtons_Cradle::Startup()
+void Newtons_Cradle::Startup(aie::Application* _app)
 {
 	Plane* plane = new Plane(glm::vec2(1, 0), -60, glm::vec4(1));
 	Plane* plane2 = new Plane(glm::vec2(-1, 0), -60, glm::vec4(1));

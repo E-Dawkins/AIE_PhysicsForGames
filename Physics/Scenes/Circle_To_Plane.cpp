@@ -1,6 +1,6 @@
 ﻿#include "Circle_To_Plane.h"
 
-void Circle_To_Plane::Startup()
+void Circle_To_Plane::Startup(aie::Application* _app)
 {
     SetGravity(glm::vec2(0, -10));
 

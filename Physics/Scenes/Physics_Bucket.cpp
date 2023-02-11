@@ -1,6 +1,6 @@
 ﻿#include "Physics_Bucket.h"
 
-void Physics_Bucket::Startup()
+void Physics_Bucket::Startup(aie::Application* _app)
 {
     SetGravity(glm::vec2(0, -15));
 

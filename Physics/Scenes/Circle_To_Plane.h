@@ -4,5 +4,5 @@
 class Circle_To_Plane : public PhysicsScene
 {
 public:
-    void Startup() override;
+    void Startup(aie::Application* _app) override;
 };

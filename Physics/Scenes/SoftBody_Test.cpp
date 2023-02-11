@@ -2,7 +2,7 @@
 
 #include <string>
 
-void SoftBody_Test::Startup()
+void SoftBody_Test::Startup(aie::Application* _app)
 {
     SetGravity(glm::vec2(0, -10));
     

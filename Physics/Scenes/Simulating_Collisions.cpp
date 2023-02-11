@@ -1,6 +1,6 @@
 ﻿#include "Simulating_Collisions.h"
 
-void Simulating_Collisions::Startup()
+void Simulating_Collisions::Startup(aie::Application* _app)
 {
     SetGravity(glm::vec2(0, -10));
 	

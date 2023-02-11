@@ -2,7 +2,7 @@
 
 #include <Input.h>
 
-void Simulating_Rockets::Startup()
+void Simulating_Rockets::Startup(aie::Application* _app)
 {
     // m_physicsScene->SetGravity(glm::vec2(0, -10));
     Circle* ball = new Circle(glm::vec2(0), glm::vec2(0), 1000.f, 5, glm::vec4(1, 0, 0, 1));

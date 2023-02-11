@@ -2,7 +2,7 @@
 
 #include <Input.h>
 
-void Newtons_Third_Law::Startup()
+void Newtons_Third_Law::Startup(aie::Application* _app)
 {
     Circle* ball1 = new Circle(glm::vec2(-4, 0), glm::vec2(0, 0), 0.1f, 4, glm::vec4(1, 0, 0, 1));
     Circle* ball2 = new Circle(glm::vec2(4, 0), glm::vec2(0, 0), 0.1f, 4, glm::vec4(0, 1, 0, 1));
