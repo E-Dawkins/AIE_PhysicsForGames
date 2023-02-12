@@ -70,12 +70,10 @@ void PhysicsScene::Draw()
 
 void PhysicsScene::CheckForCollision()
 {
-    int actorCount = (int)m_actors.size();
-            
     // check for collisions against all objects except this one
-    for (int outer = 0; outer < actorCount - 1; outer++)
+    for (int outer = 0; outer < (int)m_actors.size() - 1; outer++)
     {
-        for (int inner = outer + 1; inner < actorCount; inner++)
+        for (int inner = outer + 1; inner < (int)m_actors.size(); inner++)
         {
             PhysicsObject* object1 = m_actors[outer];
             PhysicsObject* object2 = m_actors[inner];
