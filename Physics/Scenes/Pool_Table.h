@@ -30,11 +30,14 @@ public:
     // Generator functions
     vector<Billiard*> MakeTriangle(glm::vec2 _startPos, float _xDiff, int _rows = 5);
     void ColorTriangle(vector<Billiard*>& _balls, glm::vec4 _color1, glm::vec4 _color2,
-                        glm::vec4 _8BallColor = glm::vec4(0.2f, 0.2f, 0.2f, 1));
-    void MakePoolTable();
+                        glm::vec4 _8BallColor = glm::vec4(0.1f, 0.1f, 0.1f, 1));
+    void MakePoolTable(glm::vec2 _tableCenterOffset, glm::vec2 _tableExtents,
+                        bool _showTriggers = false);
 
     void PocketEnter(PhysicsObject* _other);
     void CueBallCollision(PhysicsObject* _other);
+
+    void EndGame(int _winningTeam);
     
 protected:
     Billiard* m_cueBall = nullptr;
@@ -46,14 +49,23 @@ protected:
     int m_team1Counter = 0;
     int m_team2Counter = 0;
 
+    int m_colorTotal = 0;
+
+    int m_playersTurn = 0;
     int m_turnAddCountdown = 1;
     
-    int m_playersTurn = 0;
-    Billiard* m_firstHit = nullptr;
-
     void ExtraTurn()
     {
         m_turnAddCountdown = 2;
-        m_playersTurn = (m_playersTurn + 1) % 2;
+        m_playersTurn = 1 - m_playersTurn;
     }
+    
+    Billiard* m_firstHit = nullptr;
+
+    bool m_runEndgame = false;
+    bool m_eightBallFirst = false;
+
+    glm::vec2 m_dragStartPos = glm::vec2(0);
+    glm::vec2 m_dragVector = glm::vec2(0);
+    bool m_dragging = false;
 };

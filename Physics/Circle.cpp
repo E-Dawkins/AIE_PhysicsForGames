@@ -26,8 +26,5 @@ void Circle::Draw(float _alpha)
 {
     CalculateSmoothedPosition(_alpha);
     
-    aie::Gizmos::add2DCircle(m_smoothedPosition, m_radius, 12, m_color);
-    
-    // aie::Gizmos::add2DLine(m_smoothedPosition, m_smoothedPosition
-    //                         + m_smoothedLocalX * m_radius, glm::vec4(1));
+    aie::Gizmos::add2DCircle(m_smoothedPosition, m_radius, 12, m_color, false);
 }

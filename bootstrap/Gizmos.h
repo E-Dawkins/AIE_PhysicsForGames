@@ -89,7 +89,7 @@ public:
 	static void		add2DTri(const glm::vec2& v0, const glm::vec2& v1, const glm::vec2& v2, const glm::vec4& colour0, const glm::vec4& colour1, const glm::vec4& colour2);
 	static void		add2DAABB(const glm::vec2& center, const glm::vec2& extents, const glm::vec4& colour, const glm::mat4* transform = nullptr);	
 	static void		add2DAABBFilled(const glm::vec2& center, const glm::vec2& extents, const glm::vec4& colour, const glm::mat4* transform = nullptr);	
-	static void		add2DCircle(const glm::vec2& center, float radius, unsigned int segments, const glm::vec4& colour, const glm::mat4* transform = nullptr);
+	static void		add2DCircle(const glm::vec2& center, float radius, unsigned int segments, const glm::vec4& colour, bool drawOutline = true,const glm::mat4* transform = nullptr);
 	
 private:
 

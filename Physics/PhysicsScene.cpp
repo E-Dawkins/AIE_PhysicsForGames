@@ -14,7 +14,8 @@ glm::vec2 PhysicsScene::m_gravity = glm::vec2(0);
 PhysicsScene::PhysicsScene()
 {
     m_timeStep = 0.01f;
-    m_windowExtents = glm::vec2(0);
+    m_windowExtents = glm::vec2(100, 56.25);
+    m_windowPixelSize = glm::vec2(1280, 720);
     m_gravity = glm::vec2(0);
 }
 
@@ -103,6 +104,18 @@ float PhysicsScene::GetTotalEnergy() const
     }
 
     return total;
+}
+
+float PhysicsScene::DegreeToRadian(const float _degree) const
+{
+    return _degree * (Pi / 180.f);
+}
+
+glm::vec2 PhysicsScene::PixelToViewSpace(glm::vec2 _pixelPos) const
+{
+    const glm::vec2 newPos = glm::vec2((m_windowExtents.x * 2.f) * (_pixelPos.x / m_windowPixelSize.x),
+                                       (m_windowExtents.y * 2.f) * (_pixelPos.y / m_windowPixelSize.y));
+    return newPos - m_windowExtents;
 }
 
 bool PhysicsScene::Circle2Circle(PhysicsObject* _obj1, PhysicsObject* _obj2)

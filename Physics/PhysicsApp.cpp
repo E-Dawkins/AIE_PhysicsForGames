@@ -72,6 +72,7 @@ bool PhysicsApp::startup() {
 	#endif
 
 	m_physicsScene->SetWindowExtents(glm::vec2(100, 100 / m_aspectRatio));
+	m_physicsScene->SetWindowPixelSize(glm::vec2(getWindowWidth(), getWindowHeight()));
 	m_physicsScene->Startup(this);
 	return true;
 }
@@ -108,9 +109,6 @@ void PhysicsApp::draw() {
 	// draw your stuff here!
 	aie::Gizmos::draw2D(glm::ortho<float>(-100, 100,
 		-100 / m_aspectRatio, 100 / m_aspectRatio, -1.f, 1.f));
-	
-	// output some text, uses the last used colour
-	m_2dRenderer->drawText(m_font, "Press ESC to quit", 0, 0);
 
 	// done drawing sprites
 	m_2dRenderer->end();

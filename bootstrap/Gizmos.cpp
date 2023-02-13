@@ -841,7 +841,7 @@ void Gizmos::add2DAABBFilled(const glm::vec2& center, const glm::vec2& extents, 
 	add2DTri(verts[0], verts[2], verts[3], colour);
 }
 
-void Gizmos::add2DCircle(const glm::vec2& center, float radius, unsigned int segments, const glm::vec4& colour, const glm::mat4* transform /*= nullptr*/) {
+void Gizmos::add2DCircle(const glm::vec2& center, float radius, unsigned int segments, const glm::vec4& colour, const bool drawOutline, const glm::mat4* transform /*= nullptr*/) {
 	glm::vec4 solidColour = colour;
 	solidColour.w = 1;
 
@@ -860,7 +860,7 @@ void Gizmos::add2DCircle(const glm::vec2& center, float radius, unsigned int seg
 			add2DTri(center, center + v1outer, center + v2outer, colour);
 			add2DTri(center + v2outer, center + v1outer, center, colour);
 		}
-		else {
+		else if (drawOutline) {
 			// line
 			add2DLine(center + v1outer, center + v2outer, solidColour, solidColour);
 		}
