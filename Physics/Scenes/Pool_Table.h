@@ -68,4 +68,6 @@ protected:
     glm::vec2 m_dragStartPos = glm::vec2(0);
     glm::vec2 m_dragVector = glm::vec2(0);
     bool m_dragging = false;
+
+    bool m_potted = false;
 };

@@ -35,21 +35,19 @@ void Pool_Table::Startup(aie::Application* _app)
 void Pool_Table::Update(float _dt)
 {
     PhysicsScene::Update(_dt);
-
+    
     aie::Input* input = aie::Input::getInstance();
 
     if (m_cueBall->GetVelocity() == glm::vec2(0))
     {
         // Check if all balls have stopped moving
-        auto pred = [=] (PhysicsObject* _obj)
+        for (auto obj : m_actors)
         {
-            const Rigidbody* rb = dynamic_cast<Rigidbody*>(_obj);
-            return rb != nullptr && rb->GetVelocity() != glm::vec2(0);
-        };
-        const auto result = std::find_if(m_actors.begin(), m_actors.end(), pred);
+            Rigidbody* rb = dynamic_cast<Rigidbody*>(obj);
 
-        if (result != m_actors.end())
-            return;
+            if (rb != nullptr && rb->GetVelocity() != glm::vec2(0))
+                return;
+        }
         
         m_cueBall->SetColor(glm::vec4(1));
         
@@ -99,6 +97,7 @@ void Pool_Table::Update(float _dt)
                 m_turnAddCountdown--;
                 m_firstHit = nullptr;
                 m_dragging = false;
+                m_potted = false;
 
                 float maxForce = sqrtf(m_windowPixelSize.x * m_windowPixelSize.x +
                                     m_windowPixelSize.y * m_windowPixelSize.y) * 0.65f;
@@ -427,13 +426,16 @@ void Pool_Table::PocketEnter(PhysicsObject* _other)
             // Decrement the right team counter
             m_team1Counter -= type == m_team1Type;
             m_team2Counter -= type == m_team2Type;
-
+            
             // If the player got one of their own in, keep it their turn
-            if ((m_playersTurn == 0 && type == m_team1Type) ||
-                (m_playersTurn == 1 && type == m_team2Type))
+            if (!m_potted)
             {
-                ExtraTurn();
-                m_playersTurn = 1 - m_playersTurn;
+                if ((m_playersTurn == 0 && type == m_team1Type) ||
+                (m_playersTurn == 1 && type == m_team2Type))
+                {
+                    m_turnAddCountdown = 1;
+                    m_potted = true;
+                }
             }
 
             // Remove the billiard from the scene

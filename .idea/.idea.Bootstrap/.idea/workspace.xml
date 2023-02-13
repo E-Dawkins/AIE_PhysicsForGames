@@ -6,17 +6,7 @@
     <projectFile>Project3D/Project3D.vcxproj</projectFile>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3f42d6cf-72c4-4b40-a4a1-a632254f03a2" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.Bootstrap/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Bootstrap/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Physics/Circle.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Physics/Circle.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Physics/PhysicsApp.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Physics/PhysicsApp.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Physics/PhysicsScene.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Physics/PhysicsScene.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Physics/PhysicsScene.h" beforeDir="false" afterPath="$PROJECT_DIR$/Physics/PhysicsScene.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Physics/Scenes/Pool_Table.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Physics/Scenes/Pool_Table.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Physics/Scenes/Pool_Table.h" beforeDir="false" afterPath="$PROJECT_DIR$/Physics/Scenes/Pool_Table.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bootstrap/Gizmos.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/bootstrap/Gizmos.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bootstrap/Gizmos.h" beforeDir="false" afterPath="$PROJECT_DIR$/bootstrap/Gizmos.h" afterDir="false" />
-    </list>
+    <list default="true" id="3f42d6cf-72c4-4b40-a4a1-a632254f03a2" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -230,6 +220,8 @@
       <workItem from="1676155018756" duration="4802000" />
       <workItem from="1676179094412" duration="14883000" />
       <workItem from="1676239299150" duration="24613000" />
+      <workItem from="1676279724670" duration="854000" />
+      <workItem from="1676281036913" duration="822000" />
     </task>
     <servers />
   </component>
@@ -251,22 +243,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
-          <url>file://$PROJECT_DIR$/Physics/Scenes/Pool_Table.cpp</url>
-          <line>434</line>
-          <option name="timeStamp" value="16" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
-          <url>file://$PROJECT_DIR$/Physics/Scenes/Pool_Table.cpp</url>
-          <line>453</line>
-          <option name="timeStamp" value="18" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
