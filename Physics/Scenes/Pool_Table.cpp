@@ -140,6 +140,9 @@ void Pool_Table::Draw()
     m_renderer2D->drawSprite(m_table->texture, m_table->position.x, m_table->position.y,
                              m_table->size.x, m_table->size.y);
 
+    std::string turnText = m_playersTurn == 0 ? "1" : "2";
+    m_renderer2D->drawText(m_font, turnText.c_str(), m_windowPixelSize.x * 0.5f, m_windowPixelSize.y * 0.9f);
+
     m_renderer2D->end();
     
     PhysicsScene::Draw();
@@ -346,28 +349,24 @@ void Pool_Table::PocketEnter(PhysicsObject* _other)
 
                 m_team1Type = m_playersTurn == 0 ? type : otherType;
                 m_team2Type = m_playersTurn == 1 ? type : otherType;
-                
-                // Fill the teams vectors
-                for (int i = 0; i < m_actors.size(); i++)
-                {
-                    Billiard* temp = dynamic_cast<Billiard*>(m_actors.at(i));
-                    
-                    if (temp != nullptr)
-                    {
-                        if (temp->billiardType == m_team1Type)
-                            m_team1.push_back(temp);
-
-                        else m_team2.push_back(temp);
-                    }
-                }
             }
             
-            // Remove from the teams vector
-            auto team1Found = std::find(m_team1.begin(), m_team1.end(), billiard);
-            if (team1Found != m_team1.end()) m_team1.erase(team1Found);
+            // Add to the right teams vector
+            if (type == m_team1Type)
+            {
+                billiard->SetPosition(glm::vec2(-70 + m_team1.size() * billiard->GetRadius(), 50));
+                billiard->SetVelocity(glm::vec2(0));
+                
+                m_team1.push_back(billiard);
+            }
 
-            auto team2Found = std::find(m_team2.begin(), m_team2.end(), billiard);
-            if (team2Found != m_team2.end()) m_team2.erase(team2Found);
+            if (type == m_team2Type)
+            {
+                billiard->SetPosition(glm::vec2(70 - m_team1.size() * billiard->GetRadius(), 50));
+                billiard->SetVelocity(glm::vec2(0));
+                
+                m_team2.push_back(billiard);
+            }
             
             // If the player got one of their own in, keep it their turn
             if (!m_potted)
@@ -401,8 +400,8 @@ void Pool_Table::CueBallCollision(PhysicsObject* _other)
         // The first hit was of type eight ball, and team still has balls left
         else if (m_firstHit->billiardType == Billiard::EightBall)
         {
-            if ((m_playersTurn == 0 && !m_team1.empty()) ||
-                (m_playersTurn == 1 && !m_team2.empty()))
+            if ((m_playersTurn == 0 && m_team1.size() < 7) ||
+                (m_playersTurn == 1 && m_team2.size() < 7))
             {
                 ExtraTurn();
             }
