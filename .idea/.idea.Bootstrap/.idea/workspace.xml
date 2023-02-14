@@ -8,7 +8,6 @@
   <component name="ChangeListManager">
     <list default="true" id="3f42d6cf-72c4-4b40-a4a1-a632254f03a2" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Bootstrap/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Bootstrap/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Physics/Scenes/Pool_Table.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Physics/Scenes/Pool_Table.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -225,7 +224,7 @@
       <workItem from="1676239299150" duration="24613000" />
       <workItem from="1676279724670" duration="854000" />
       <workItem from="1676281036913" duration="822000" />
-      <workItem from="1676325601227" duration="21860000" />
+      <workItem from="1676325601227" duration="23884000" />
     </task>
     <servers />
   </component>
