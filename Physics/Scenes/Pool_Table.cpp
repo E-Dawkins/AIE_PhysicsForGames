@@ -20,7 +20,7 @@ void Pool_Table::Startup(aie::Application* _app)
     
     // Cue ball
     m_cueBallStartPos = tableOffset + glm::vec2(-47.5f, 0);
-    m_cueBall = new Billiard(m_cueBallStartPos, glm::vec2(0), 2.f, 1.9f, glm::vec4(1), 0.9f);
+    m_cueBall = new Billiard(m_cueBallStartPos, glm::vec2(0), 2.f, 1.85f, glm::vec4(1), 0.9f);
     m_cueBall->SetLinearDrag(0.8f);
     m_cueBall->collisionCallback = std::bind(&Pool_Table::CueBallCollision, this, std::placeholders::_1);
     AddActor(m_cueBall);
@@ -189,7 +189,7 @@ void Pool_Table::MakeTriangle(glm::vec2 _startPos, float _spacing)
     float rads = DegreeToRadian(30);
     glm::vec2 offset = glm::vec2(cosf(rads), sinf(rads)) * _spacing;
     
-    float mass = 1.f;
+    float mass = m_cueBall->GetMass() * 1.25f;
     float radius = m_cueBall->GetRadius() * 1.1f;
 
     glm::vec4 color1 = glm::vec4(1, 0, 0, 1);
@@ -253,52 +253,51 @@ void Pool_Table::MakeTriangle(glm::vec2 _startPos, float _spacing)
     }
 }
 
-void Pool_Table::MakePoolTable(glm::vec2 _tableCenterOffset, glm::vec2 _tableExtents, bool _showTriggers)
+void Pool_Table::MakePoolTable(glm::vec2 _tableCenterOffset, glm::vec2 _tableExtents, bool _showBounds)
 {
     // -- Edge colliders --
     glm::vec2 collPos = _tableCenterOffset + glm::vec2(-40.f, 46.5f);
-    glm::vec2 collSize = glm::vec2(35, 5);
+    glm::vec2 collSize = glm::vec2(36.f, 5);
 
     // Top
-    AddActor(new Box(collPos, glm::vec2(0), 1.f, collSize, 0, glm::vec4(0)));
-    AddActor(new Circle(collPos - glm::vec2(collSize.x, collSize.y * 0.5f), glm::vec2(0), 1.f, 2.5f, glm::vec4(0)));
-    AddActor(new Circle(collPos + glm::vec2(collSize.x, -collSize.y * 0.5f), glm::vec2(0), 1.f, 2.5f, glm::vec4(0)));
-
+    AddActor(new Box(collPos, glm::vec2(0), 1.f, collSize, 0, glm::vec4(_showBounds)));
+    AddActor(new Box(collPos + glm::vec2(-collSize.x, collSize.y / 2.f), glm::vec2(0), 1.f, glm::vec2(5), DegreeToRadian(45), glm::vec4(_showBounds)));
+    AddActor(new Box(collPos + glm::vec2(collSize.x, collSize.y / 2.f), glm::vec2(0), 1.f, glm::vec2(5), DegreeToRadian(45), glm::vec4(_showBounds)));
+    
     collPos.x *= -1.f;
         
-    AddActor(new Box(collPos, glm::vec2(0), 1.f, collSize, 0, glm::vec4(0)));
-    AddActor(new Circle(collPos - glm::vec2(collSize.x, collSize.y * 0.5f), glm::vec2(0), 1.f, 2.5f, glm::vec4(0)));
-    AddActor(new Circle(collPos + glm::vec2(collSize.x, -collSize.y * 0.5f), glm::vec2(0), 1.f, 2.5f, glm::vec4(0)));
-
+    AddActor(new Box(collPos, glm::vec2(0), 1.f, collSize, 0, glm::vec4(_showBounds)));
+    AddActor(new Box(collPos + glm::vec2(-collSize.x, collSize.y / 2.f), glm::vec2(0), 1.f, glm::vec2(5), DegreeToRadian(45), glm::vec4(_showBounds)));
+    AddActor(new Box(collPos + glm::vec2(collSize.x, collSize.y / 2.f), glm::vec2(0), 1.f, glm::vec2(5), DegreeToRadian(45), glm::vec4(_showBounds)));
     
     // Bottom
     collPos = _tableCenterOffset - glm::vec2(-40.f, 46.5f);
     
-    AddActor(new Box(collPos, glm::vec2(0), 1.f, collSize, 0, glm::vec4(0)));
-    AddActor(new Circle(collPos + glm::vec2(collSize.x, collSize.y * 0.5f), glm::vec2(0), 1.f, 2.5f, glm::vec4(0)));
-    AddActor(new Circle(collPos - glm::vec2(collSize.x, -collSize.y * 0.5f), glm::vec2(0), 1.f, 2.5f, glm::vec4(0)));
-
+    AddActor(new Box(collPos, glm::vec2(0), 1.f, collSize, 0, glm::vec4(_showBounds)));
+    AddActor(new Box(collPos - glm::vec2(-collSize.x, collSize.y / 2.f), glm::vec2(0), 1.f, glm::vec2(5), DegreeToRadian(45), glm::vec4(_showBounds)));
+    AddActor(new Box(collPos - glm::vec2(collSize.x, collSize.y / 2.f), glm::vec2(0), 1.f, glm::vec2(5), DegreeToRadian(45), glm::vec4(_showBounds)));
+    
     collPos.x *= -1.f;
         
-    AddActor(new Box(collPos, glm::vec2(0), 1.f, collSize, 0, glm::vec4(0)));
-    AddActor(new Circle(collPos + glm::vec2(collSize.x, collSize.y * 0.5f), glm::vec2(0), 1.f, 2.5f, glm::vec4(0)));
-    AddActor(new Circle(collPos - glm::vec2(collSize.x, -collSize.y * 0.5f), glm::vec2(0), 1.f, 2.5f, glm::vec4(0)));
-
+    AddActor(new Box(collPos, glm::vec2(0), 1.f, collSize, 0, glm::vec4(_showBounds)));
+    AddActor(new Box(collPos - glm::vec2(-collSize.x, collSize.y / 2.f), glm::vec2(0), 1.f, glm::vec2(5), DegreeToRadian(45), glm::vec4(_showBounds)));
+    AddActor(new Box(collPos - glm::vec2(collSize.x, collSize.y / 2.f), glm::vec2(0), 1.f, glm::vec2(5), DegreeToRadian(45), glm::vec4(_showBounds)));
+    
     // Left
     collPos = _tableCenterOffset + glm::vec2(-85, 0);
-    collSize = glm::vec2(5, 36.5f);
+    collSize = glm::vec2(5, 38.f);
     
-    AddActor(new Box(collPos, glm::vec2(0), 1.f, collSize, 0, glm::vec4(0)));
-    AddActor(new Circle(collPos + glm::vec2(collSize.x * 0.5f, collSize.y), glm::vec2(0), 1.f, 2.5f, glm::vec4(0)));
-    AddActor(new Circle(collPos - glm::vec2(-collSize.x * 0.5f, collSize.y), glm::vec2(0), 1.f, 2.5f, glm::vec4(0)));
-
+    AddActor(new Box(collPos, glm::vec2(0), 1.f, collSize, 0, glm::vec4(_showBounds)));
+    AddActor(new Box(collPos + glm::vec2(-collSize.x / 2.f, collSize.y), glm::vec2(0), 1.f, glm::vec2(5), DegreeToRadian(45), glm::vec4(_showBounds)));
+    AddActor(new Box(collPos + glm::vec2(-collSize.x / 2.f, -collSize.y), glm::vec2(0), 1.f, glm::vec2(5), DegreeToRadian(45), glm::vec4(_showBounds)));
+    
     // Right
     collPos.x *= -1.f;
     
-    AddActor(new Box(collPos, glm::vec2(0), 1.f, collSize, 0, glm::vec4(0)));
-    AddActor(new Circle(collPos - glm::vec2(collSize.x * 0.5f, collSize.y), glm::vec2(0), 1.f, 2.5f, glm::vec4(0)));
-    AddActor(new Circle(collPos + glm::vec2(-collSize.x * 0.5f, collSize.y), glm::vec2(0), 1.f, 2.5f, glm::vec4(0)));
-
+    AddActor(new Box(collPos, glm::vec2(0), 1.f, collSize, 0, glm::vec4(_showBounds)));
+    AddActor(new Box(collPos - glm::vec2(-collSize.x / 2.f, collSize.y), glm::vec2(0), 1.f, glm::vec2(5), DegreeToRadian(45), glm::vec4(_showBounds)));
+    AddActor(new Box(collPos - glm::vec2(-collSize.x / 2.f, -collSize.y), glm::vec2(0), 1.f, glm::vec2(5), DegreeToRadian(45), glm::vec4(_showBounds)));
+    
     // Set colliders to kinematic
     for (int i = 0; i < 18; i++)
     {
@@ -309,8 +308,8 @@ void Pool_Table::MakePoolTable(glm::vec2 _tableCenterOffset, glm::vec2 _tableExt
     // -- Pocket Triggers --
     for (int i = 0; i < 2; i++)
     {
-        glm::vec4 triggerColor = glm::vec4(1, 0, 0, _showTriggers);
-        float triggerRadius = 6.5f;
+        glm::vec4 triggerColor = glm::vec4(1, 0, 0, _showBounds);
+        float triggerRadius = 7.f;
 
         glm::vec2 cornerPos = glm::vec2(_tableExtents.x + 10.f, _tableExtents.y + 4.5f);
         
@@ -322,7 +321,7 @@ void Pool_Table::MakePoolTable(glm::vec2 _tableCenterOffset, glm::vec2 _tableExt
 
         for (int j = 0; j < 3; j++) // set them to triggers, and add a callback
         {
-            Circle* pocketTrigger = dynamic_cast<Circle*>(m_actors.at(m_actors.size() - 1 - i));
+            Circle* pocketTrigger = dynamic_cast<Circle*>(m_actors.at(m_actors.size() - 1 - j));
         
             pocketTrigger->SetTrigger(true);
             pocketTrigger->triggerEnter = std::bind(&Pool_Table::PocketEnter, this, std::placeholders::_1);

@@ -48,7 +48,7 @@ public:
     // Generator functions
     void MakeTriangle(glm::vec2 _startPos, float _spacing = 6.f);
     void MakePoolTable(glm::vec2 _tableCenterOffset, glm::vec2 _tableExtents,
-                        bool _showTriggers = false);
+                        bool _showBounds = false);
 
     void PocketEnter(PhysicsObject* _other);
     void CueBallCollision(PhysicsObject* _other);

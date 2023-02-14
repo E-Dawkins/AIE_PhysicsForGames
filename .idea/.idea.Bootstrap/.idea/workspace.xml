@@ -7,29 +7,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="3f42d6cf-72c4-4b40-a4a1-a632254f03a2" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/bin/textures/ball 1.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bin/textures/ball 2.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bin/textures/ball 3.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bin/textures/ball 4.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bin/textures/ball_10.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bin/textures/ball_11.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bin/textures/ball_12.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bin/textures/ball_13.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bin/textures/ball_14.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bin/textures/ball_15.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bin/textures/ball_16.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bin/textures/ball_5.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bin/textures/ball_6.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bin/textures/ball_7.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bin/textures/ball_8.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bin/textures/ball_9.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bin/textures/cue.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bin/textures/table.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bin/textures/triangle.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Bootstrap/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Bootstrap/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Physics/PhysicsApp.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Physics/PhysicsApp.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Physics/PhysicsScene.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Physics/PhysicsScene.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Physics/PhysicsScene.h" beforeDir="false" afterPath="$PROJECT_DIR$/Physics/PhysicsScene.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Physics/Scenes/Pool_Table.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Physics/Scenes/Pool_Table.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Physics/Scenes/Pool_Table.h" beforeDir="false" afterPath="$PROJECT_DIR$/Physics/Scenes/Pool_Table.h" afterDir="false" />
     </list>
@@ -248,7 +226,7 @@
       <workItem from="1676239299150" duration="24613000" />
       <workItem from="1676279724670" duration="854000" />
       <workItem from="1676281036913" duration="822000" />
-      <workItem from="1676325601227" duration="16388000" />
+      <workItem from="1676325601227" duration="18121000" />
     </task>
     <servers />
   </component>
@@ -270,6 +248,22 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
+          <url>file://$PROJECT_DIR$/Physics/Scenes/Pool_Table.cpp</url>
+          <line>366</line>
+          <option name="timeStamp" value="11" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
+          <url>file://$PROJECT_DIR$/Physics/Scenes/Pool_Table.cpp</url>
+          <line>391</line>
+          <option name="timeStamp" value="12" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
