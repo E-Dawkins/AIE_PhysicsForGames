@@ -38,6 +38,21 @@ void Pool_Table::Update(float _dt)
     
     aie::Input* input = aie::Input::getInstance();
 
+    // Check if any of the balls are off the screen and count it as being pocketed
+    for (int i = m_actors.size() - 1; i >= 0; i--)
+    {
+        Billiard* ball = dynamic_cast<Billiard*>(m_actors.at(i));
+
+        if (ball != nullptr)
+        {
+            if (ball->GetPosition().x >= m_windowExtents.x || ball->GetPosition().x <= -m_windowExtents.x ||
+                ball->GetPosition().y >= m_windowExtents.y || ball->GetPosition().y <= -m_windowExtents.y)
+            {
+                PocketEnter(ball);
+            }
+        }
+    }
+
     if (m_cueBall->GetVelocity() == glm::vec2(0))
     {
         // Check if all balls have stopped moving
@@ -179,8 +194,17 @@ void Pool_Table::Draw()
     // Draw player's turn indicator
     if (AllBallsStopped())
     {
-        aie::Gizmos::add2DAABB(glm::vec2((counterPos.x + 10) * (m_playersTurn == 0 ? -1.f : 1.f),
-                                            counterPos.y), glm::vec2(5), glm::vec4(1));
+        glm::vec2 turnPos = m_windowExtents - 7.5f;
+        turnPos.x *= m_playersTurn == 0 ? -1.f : 1.f;
+        
+        aie::Gizmos::add2DAABB(turnPos, glm::vec2(radius), glm::vec4(0.5f, 0.25f, 1, 1));
+        aie::Gizmos::add2DAABB(turnPos, glm::vec2(radius * 0.75f), glm::vec4(0, 0.75f, 0.5f, 1));
+
+        m_renderer2D->begin();
+
+        glm::vec2 turnPosPixel = ViewToPixelSpace(turnPos) - glm::vec2(8.5f, 10.f);
+        m_renderer2D->drawText(m_font, m_playersTurn == 0 ? "1" : "2", turnPosPixel.x, turnPosPixel.y);
+        m_renderer2D->end();
     }
 }
 
