@@ -73,6 +73,8 @@ bool PhysicsApp::startup() {
 
 	m_physicsScene->SetWindowExtents(glm::vec2(100, 100 / m_aspectRatio));
 	m_physicsScene->SetWindowPixelSize(glm::vec2(getWindowWidth(), getWindowHeight()));
+	m_physicsScene->SetRenderer(m_2dRenderer);
+	
 	m_physicsScene->Startup(this);
 	return true;
 }
@@ -104,12 +106,12 @@ void PhysicsApp::draw() {
 
 	// begin drawing sprites
 	m_2dRenderer->begin();
-	m_physicsScene->Draw();
 	
-	// draw your stuff here!
-	aie::Gizmos::draw2D(glm::ortho<float>(-100, 100,
-		-100 / m_aspectRatio, 100 / m_aspectRatio, -1.f, 1.f));
-
 	// done drawing sprites
 	m_2dRenderer->end();
+	
+	m_physicsScene->Draw();
+
+	aie::Gizmos::draw2D(glm::ortho<float>(-100, 100,
+		-100 / m_aspectRatio, 100 / m_aspectRatio, -1.f, 1.f));
 }

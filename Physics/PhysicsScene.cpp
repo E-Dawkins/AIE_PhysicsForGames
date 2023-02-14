@@ -118,6 +118,16 @@ glm::vec2 PhysicsScene::PixelToViewSpace(glm::vec2 _pixelPos) const
     return newPos - m_windowExtents;
 }
 
+glm::vec2 PhysicsScene::ViewToPixelSpace(glm::vec2 _viewPos) const
+{
+    glm::vec2 newPos = _viewPos + m_windowExtents;
+
+    newPos = glm::vec2(m_windowPixelSize.x * (newPos.x / (m_windowExtents.x * 2.f)),
+                        m_windowPixelSize.y * (newPos.y / (m_windowExtents.y * 2.f)));
+
+    return newPos;
+}
+
 bool PhysicsScene::Circle2Circle(PhysicsObject* _obj1, PhysicsObject* _obj2)
 {
     Circle* circle1 = dynamic_cast<Circle*>(_obj1);

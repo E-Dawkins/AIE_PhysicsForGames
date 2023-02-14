@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include <Renderer2D.h>
 #include <vector>
 #include <glm/vec2.hpp>
 
@@ -33,6 +34,7 @@ public:
     float GetTotalEnergy() const;
     float DegreeToRadian(float _degree) const;
     glm::vec2 PixelToViewSpace(glm::vec2 _pixelPos) const;
+    glm::vec2 ViewToPixelSpace(glm::vec2 _viewPos) const;
 
     // Getters
     static glm::vec2 GetGravity()               { return m_gravity; }
@@ -43,7 +45,8 @@ public:
     void SetGravity(const glm::vec2 _gravity) const { m_gravity = _gravity; }
     void SetTimeStep(const float _timeStep)         { m_timeStep = _timeStep; }
     void SetWindowExtents(const glm::vec2 _size)    { m_windowExtents = _size; }
-    void SetWindowPixelSize(const glm::vec2 _size)    { m_windowPixelSize = _size; }
+    void SetWindowPixelSize(const glm::vec2 _size)  { m_windowPixelSize = _size; }
+    void SetRenderer(aie::Renderer2D*& _renderer)   { m_renderer2D = _renderer; }
     
     // Collision functions
     static bool Circle2Circle(PhysicsObject* _obj1, PhysicsObject* _obj2);
@@ -62,6 +65,8 @@ protected:
     static glm::vec2 m_gravity;
     float m_timeStep;
     vector<PhysicsObject*> m_actors;
+    
     glm::vec2 m_windowExtents;
     glm::vec2 m_windowPixelSize;
+    aie::Renderer2D* m_renderer2D = nullptr;
 };

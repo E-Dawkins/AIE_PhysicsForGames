@@ -1,4 +1,7 @@
 ﻿#pragma once
+#include <Font.h>
+#include <Texture.h>
+
 #include "../PhysicsScene.h"
 
 class Billiard : public Circle
@@ -20,6 +23,21 @@ public:
     BilliardType billiardType = CueBall;
 };
 
+class Sprite
+{
+public:
+    Sprite(aie::Texture*& _texture, glm::vec2 _pos, glm::vec2 _size)
+    {
+        texture = _texture;
+        position = _pos;
+        size = _size;
+    }
+
+    aie::Texture* texture = nullptr;
+    glm::vec2 position = glm::vec2(0);
+    glm::vec2 size = glm::vec2(0);
+};
+
 class Pool_Table : public PhysicsScene
 {
 public:
@@ -28,9 +46,7 @@ public:
     void Draw() override;
 
     // Generator functions
-    vector<Billiard*> MakeTriangle(glm::vec2 _startPos, float _xDiff, int _rows = 5);
-    void ColorTriangle(vector<Billiard*>& _balls, glm::vec4 _color1, glm::vec4 _color2,
-                        glm::vec4 _8BallColor = glm::vec4(0.1f, 0.1f, 0.1f, 1));
+    void MakeTriangle(glm::vec2 _startPos, float _spacing = 6.f);
     void MakePoolTable(glm::vec2 _tableCenterOffset, glm::vec2 _tableExtents,
                         bool _showTriggers = false);
 
@@ -38,6 +54,26 @@ public:
     void CueBallCollision(PhysicsObject* _other);
 
     void EndGame(int _winningTeam);
+
+    // Helper Functions
+    void ExtraTurn()
+    {
+        m_turnAddCountdown = 2;
+        m_playersTurn = 1 - m_playersTurn;
+    }
+
+    bool AllBallsStopped()
+    {
+        for (auto obj : m_actors)
+        {
+            Rigidbody* rb = dynamic_cast<Rigidbody*>(obj);
+
+            if (rb != nullptr && rb->GetVelocity() != glm::vec2(0))
+                return false;
+        }
+
+        return true;
+    }
     
 protected:
     Billiard* m_cueBall = nullptr;
@@ -49,16 +85,8 @@ protected:
     int m_team1Counter = 0;
     int m_team2Counter = 0;
 
-    int m_colorTotal = 0;
-
     int m_playersTurn = 0;
     int m_turnAddCountdown = 1;
-    
-    void ExtraTurn()
-    {
-        m_turnAddCountdown = 2;
-        m_playersTurn = 1 - m_playersTurn;
-    }
     
     Billiard* m_firstHit = nullptr;
 
@@ -70,4 +98,7 @@ protected:
     bool m_dragging = false;
 
     bool m_potted = false;
+
+    aie::Font* m_font = nullptr;
+    Sprite* m_table = nullptr;
 };
