@@ -33,8 +33,8 @@ public:
     void CheckForCollision();
     float GetTotalEnergy() const;
     float DegreeToRadian(float _degree) const;
-    glm::vec2 PixelToViewSpace(glm::vec2 _pixelPos) const;
-    glm::vec2 ViewToPixelSpace(glm::vec2 _viewPos) const;
+    glm::vec2 PixelToViewSpacePos(glm::vec2 _pixelPos) const;
+    glm::vec2 ViewToPixelSpacePos(glm::vec2 _viewPos) const;
 
     // Getters
     static glm::vec2 GetGravity()               { return m_gravity; }

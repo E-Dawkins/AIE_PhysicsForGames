@@ -13,7 +13,7 @@ void Pool_Table::Startup(aie::Application* _app)
     // Load assets
     m_font = new aie::Font("./font/consolas.ttf", 32);
     aie::Texture* tempTable = new aie::Texture("./textures/table.png");
-    m_table = new Sprite(tempTable, ViewToPixelSpace(tableOffset), ViewToPixelSpace(tableExtents));
+    m_table = new Sprite(tempTable, ViewToPixelSpacePos(tableOffset), ViewToPixelSpacePos(tableExtents));
 
     // Pool table colliders and pocket triggers
     MakePoolTable(tableOffset, tableExtents);
@@ -123,6 +123,16 @@ void Pool_Table::Update(float _dt)
 
 void Pool_Table::Draw()
 {
+    for (int i = 0; i < m_actors.size(); i++)
+    {
+        Billiard* ball = dynamic_cast<Billiard*>(m_actors.at(i));
+
+        if (ball != nullptr && ball->billiardSprite != nullptr)
+        {
+            ball->billiardSprite->position = ViewToPixelSpacePos(ball->GetPosition());
+        }
+    }
+    
     // Draw table background texture
     m_renderer2D->begin();
     
@@ -136,8 +146,8 @@ void Pool_Table::Draw()
 
     if (m_dragging) // Draw aim line
     {
-        glm::vec2 dragStart = PixelToViewSpace(m_dragStartPos);
-        glm::vec2 mousePos = PixelToViewSpace(m_dragStartPos - m_dragVector);
+        glm::vec2 dragStart = PixelToViewSpacePos(m_dragStartPos);
+        glm::vec2 mousePos = PixelToViewSpacePos(m_dragStartPos - m_dragVector);
 
         float maxForce = sqrtf(m_windowPixelSize.x * m_windowPixelSize.x +
                                 m_windowPixelSize.y * m_windowPixelSize.y) * 0.5f;
@@ -160,52 +170,6 @@ void Pool_Table::Draw()
         aie::Gizmos::add2DLine(dragStart, mousePos, finalColor);
         aie::Gizmos::add2DLine(m_cueBall->GetPosition(), m_cueBall->GetPosition() - dragVector, glm::vec4(1));
     }
-
-    // -- Draw UI --
-    // Team Counters
-    auto GetTeamCol = [this] (Billiard::BilliardType _type)
-    {
-        for (int i = 0; i < m_actors.size(); i++)
-        {
-            Billiard* ball = dynamic_cast<Billiard*>(m_actors.at(i));
-
-            if (ball != nullptr && ball->billiardType == _type)
-                return ball->GetColor();
-        }
-
-        return glm::vec4(0);
-    };
-
-    glm::vec2 counterPos = glm::vec2(70, 50);
-    float radius = 3.5f;
-
-    for (int i = 0; i < 7 - m_team1Counter; i++)
-    {
-        aie::Gizmos::add2DCircle(glm::vec2(-counterPos.x, counterPos.y)
-            + glm::vec2(radius * i * 2 + 5, 0), radius, 12, GetTeamCol(m_team1Type));
-    }
-    
-    for (int i = 0; i < 7 - m_team2Counter; i++)
-    {
-        aie::Gizmos::add2DCircle(counterPos - glm::vec2(radius * i * 2 + 5, 0),
-                                    radius, 12, GetTeamCol(m_team2Type));
-    }
-
-    // Draw player's turn indicator
-    if (AllBallsStopped())
-    {
-        glm::vec2 turnPos = m_windowExtents - 7.5f;
-        turnPos.x *= m_playersTurn == 0 ? -1.f : 1.f;
-        
-        aie::Gizmos::add2DAABB(turnPos, glm::vec2(radius), glm::vec4(0.5f, 0.25f, 1, 1));
-        aie::Gizmos::add2DAABB(turnPos, glm::vec2(radius * 0.75f), glm::vec4(0, 0.75f, 0.5f, 1));
-
-        m_renderer2D->begin();
-
-        glm::vec2 turnPosPixel = ViewToPixelSpace(turnPos) - glm::vec2(8.5f, 10.f);
-        m_renderer2D->drawText(m_font, m_playersTurn == 0 ? "1" : "2", turnPosPixel.x, turnPosPixel.y);
-        m_renderer2D->end();
-    }
 }
 
 void Pool_Table::MakeTriangle(glm::vec2 _startPos, float _spacing)
@@ -215,61 +179,49 @@ void Pool_Table::MakeTriangle(glm::vec2 _startPos, float _spacing)
     
     float mass = m_cueBall->GetMass() * 1.25f;
     float radius = m_cueBall->GetRadius() * 1.1f;
-
-    glm::vec4 color1 = glm::vec4(1, 0, 0, 1);
-    glm::vec4 color2 = glm::vec4(1, 1, 0, 1);
-    glm::vec4 color8Ball = glm::vec4(0, 0, 0, 1);
-
-    auto GetColor = [=]
-    {
-        static int color1Amount = 0, color2Amount = 0;
-
-        // Random color
-        glm::vec4 ballColor = rand() % 2 == 0 ? color1 : color2;
-
-        // If too much of colorX, set it to colorY
-        ballColor = color1Amount >= 7 ? color2 : ballColor;
-        ballColor = color2Amount >= 7 ? color1 : ballColor;
-
-        // Update totals
-        color1Amount += ballColor == color1;
-        color2Amount += ballColor == color2;
-
-        return ballColor;
-    };
     
-    AddActor(new Billiard(_startPos, glm::vec2(0), mass, radius, GetColor()));
+    AddActor(new Billiard(_startPos, glm::vec2(0), mass, radius, glm::vec4()));
     
-    AddActor(new Billiard(_startPos + offset, glm::vec2(0), mass, radius, GetColor()));
-    AddActor(new Billiard(_startPos + glm::vec2(offset.x, -offset.y), glm::vec2(0), mass, radius, GetColor()));
+    AddActor(new Billiard(_startPos + offset, glm::vec2(0), mass, radius, glm::vec4()));
+    AddActor(new Billiard(_startPos + glm::vec2(offset.x, -offset.y), glm::vec2(0), mass, radius, glm::vec4()));
 
-    AddActor(new Billiard(_startPos + glm::vec2(2.f * offset.x, 2.f * offset.y), glm::vec2(0), mass, radius, GetColor()));
-    AddActor(new Billiard(_startPos + glm::vec2(2.f * offset.x, 0), glm::vec2(0), mass, radius, color8Ball));
-    AddActor(new Billiard(_startPos + glm::vec2(2.f * offset.x, 2.f * -offset.y), glm::vec2(0), mass, radius, GetColor()));
+    AddActor(new Billiard(_startPos + glm::vec2(2.f * offset.x, 2.f * offset.y), glm::vec2(0), mass, radius, glm::vec4()));
+    AddActor(new Billiard(_startPos + glm::vec2(2.f * offset.x, 0), glm::vec2(0), mass, radius, glm::vec4()));
+    AddActor(new Billiard(_startPos + glm::vec2(2.f * offset.x, 2.f * -offset.y), glm::vec2(0), mass, radius, glm::vec4()));
 
-    AddActor(new Billiard(_startPos + glm::vec2(3.f * offset.x, 3.f * offset.y), glm::vec2(0), mass, radius, GetColor()));
-    AddActor(new Billiard(_startPos + glm::vec2(3.f * offset.x, offset.y), glm::vec2(0), mass, radius, GetColor()));
-    AddActor(new Billiard(_startPos + glm::vec2(3.f * offset.x, -offset.y), glm::vec2(0), mass, radius, GetColor()));
-    AddActor(new Billiard(_startPos + glm::vec2(3.f * offset.x, 3.f * -offset.y), glm::vec2(0), mass, radius, GetColor()));
+    AddActor(new Billiard(_startPos + glm::vec2(3.f * offset.x, 3.f * offset.y), glm::vec2(0), mass, radius, glm::vec4()));
+    AddActor(new Billiard(_startPos + glm::vec2(3.f * offset.x, offset.y), glm::vec2(0), mass, radius, glm::vec4()));
+    AddActor(new Billiard(_startPos + glm::vec2(3.f * offset.x, -offset.y), glm::vec2(0), mass, radius, glm::vec4()));
+    AddActor(new Billiard(_startPos + glm::vec2(3.f * offset.x, 3.f * -offset.y), glm::vec2(0), mass, radius, glm::vec4()));
 
-    AddActor(new Billiard(_startPos + glm::vec2(4.f * offset.x, 4.f * offset.y), glm::vec2(0), mass, radius, GetColor()));
-    AddActor(new Billiard(_startPos + glm::vec2(4.f * offset.x, 2.f * offset.y), glm::vec2(0), mass, radius, GetColor()));
-    AddActor(new Billiard(_startPos + glm::vec2(4.f * offset.x, 0), glm::vec2(0), mass, radius, GetColor()));
-    AddActor(new Billiard(_startPos + glm::vec2(4.f * offset.x, 2.f * -offset.y), glm::vec2(0), mass, radius, GetColor()));
-    AddActor(new Billiard(_startPos + glm::vec2(4.f * offset.x, 4.f * -offset.y), glm::vec2(0), mass, radius, GetColor()));
+    AddActor(new Billiard(_startPos + glm::vec2(4.f * offset.x, 4.f * offset.y), glm::vec2(0), mass, radius, glm::vec4()));
+    AddActor(new Billiard(_startPos + glm::vec2(4.f * offset.x, 2.f * offset.y), glm::vec2(0), mass, radius, glm::vec4()));
+    AddActor(new Billiard(_startPos + glm::vec2(4.f * offset.x, 0), glm::vec2(0), mass, radius, glm::vec4()));
+    AddActor(new Billiard(_startPos + glm::vec2(4.f * offset.x, 2.f * -offset.y), glm::vec2(0), mass, radius, glm::vec4()));
+    AddActor(new Billiard(_startPos + glm::vec2(4.f * offset.x, 4.f * -offset.y), glm::vec2(0), mass, radius, glm::vec4()));
 
     // Set billiard type, elasticity and drag
     for (int i = 0; i < 15; i++)
     {
         Billiard* ball = dynamic_cast<Billiard*>(m_actors.at(m_actors.size() - 1 - i));
+
+        std::string textureLocation = "./textures/ball" + std::to_string(15 - i) + ".png";
+        aie::Texture* ballTexture = new aie::Texture(textureLocation.c_str());
         
-        if (ball->GetColor() == color1)
+        ball->billiardSprite = new Sprite(ballTexture, glm::vec2(),
+            glm::vec2(ViewToPixelSpacePos(glm::vec2(ball->GetRadius() - m_windowExtents.x)).x * 2.f));
+        ball->renderer2D = m_renderer2D;
+        
+        // Even - stripe
+        if (i % 2 == 0)
             ball->billiardType = Billiard::ColorBall1;
 
-        else if (ball->GetColor() == color2)
+        // Odd - solid
+        if (i % 2 == 1)
             ball->billiardType = Billiard::ColorBall2;
 
-        else if (ball->GetColor() == color8Ball)
+        // 4 - eight ball
+        if (i == 4)
             ball->billiardType = Billiard::EightBall;
 
         ball->SetElasticity(0.8f);
@@ -387,7 +339,7 @@ void Pool_Table::PocketEnter(PhysicsObject* _other)
         // Team ball went into pocket
         if (type == Billiard::ColorBall1 || type == Billiard::ColorBall2)
         {
-            // First team ball sunk, set team types and team counters
+            // First team ball sunk, set team types and add to team vectors
             if (m_team1Type == Billiard::Null || m_team2Type == Billiard::Null)
             {
                 Billiard::BilliardType otherType = type == Billiard::ColorBall1 ? Billiard::ColorBall2 : Billiard::ColorBall1;
@@ -395,22 +347,27 @@ void Pool_Table::PocketEnter(PhysicsObject* _other)
                 m_team1Type = m_playersTurn == 0 ? type : otherType;
                 m_team2Type = m_playersTurn == 1 ? type : otherType;
                 
-                // Set the billiard counters
+                // Fill the teams vectors
                 for (int i = 0; i < m_actors.size(); i++)
                 {
                     Billiard* temp = dynamic_cast<Billiard*>(m_actors.at(i));
                     
                     if (temp != nullptr)
                     {
-                        m_team1Counter += temp->billiardType == m_team1Type;
-                        m_team2Counter += temp->billiardType == m_team2Type;
+                        if (temp->billiardType == m_team1Type)
+                            m_team1.push_back(temp);
+
+                        else m_team2.push_back(temp);
                     }
                 }
             }
             
-            // Decrement the right team counter
-            m_team1Counter -= type == m_team1Type;
-            m_team2Counter -= type == m_team2Type;
+            // Remove from the teams vector
+            auto team1Found = std::find(m_team1.begin(), m_team1.end(), billiard);
+            if (team1Found != m_team1.end()) m_team1.erase(team1Found);
+
+            auto team2Found = std::find(m_team2.begin(), m_team2.end(), billiard);
+            if (team2Found != m_team2.end()) m_team2.erase(team2Found);
             
             // If the player got one of their own in, keep it their turn
             if (!m_potted)
@@ -422,9 +379,6 @@ void Pool_Table::PocketEnter(PhysicsObject* _other)
                     m_potted = true;
                 }
             }
-
-            // Remove the billiard from the scene
-            RemoveActor(billiard);
         }
     }
 }
@@ -447,8 +401,8 @@ void Pool_Table::CueBallCollision(PhysicsObject* _other)
         // The first hit was of type eight ball, and team still has balls left
         else if (m_firstHit->billiardType == Billiard::EightBall)
         {
-            if ((m_playersTurn == 0 && m_team1Counter != 0) ||
-                (m_playersTurn == 1 && m_team2Counter != 0))
+            if ((m_playersTurn == 0 && !m_team1.empty()) ||
+                (m_playersTurn == 1 && !m_team2.empty()))
             {
                 ExtraTurn();
             }

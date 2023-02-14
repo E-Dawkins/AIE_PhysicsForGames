@@ -6,9 +6,7 @@
     <projectFile>Project3D/Project3D.vcxproj</projectFile>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3f42d6cf-72c4-4b40-a4a1-a632254f03a2" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.Bootstrap/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Bootstrap/.idea/workspace.xml" afterDir="false" />
-    </list>
+    <list default="true" id="3f42d6cf-72c4-4b40-a4a1-a632254f03a2" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -225,6 +223,7 @@
       <workItem from="1676279724670" duration="854000" />
       <workItem from="1676281036913" duration="822000" />
       <workItem from="1676325601227" duration="23884000" />
+      <workItem from="1676361244527" duration="7561000" />
     </task>
     <servers />
   </component>

@@ -4,6 +4,21 @@
 
 #include "../PhysicsScene.h"
 
+class Sprite
+{
+public:
+    Sprite(aie::Texture*& _texture, glm::vec2 _pos, glm::vec2 _size)
+    {
+        texture = _texture;
+        position = _pos;
+        size = _size;
+    }
+
+    aie::Texture* texture = nullptr;
+    glm::vec2 position = glm::vec2(0);
+    glm::vec2 size = glm::vec2(0);
+};
+
 class Billiard : public Circle
 {
 public:
@@ -21,21 +36,23 @@ public:
     };
     
     BilliardType billiardType = CueBall;
-};
+    Sprite* billiardSprite = nullptr;
+    aie::Renderer2D* renderer2D = nullptr;
 
-class Sprite
-{
-public:
-    Sprite(aie::Texture*& _texture, glm::vec2 _pos, glm::vec2 _size)
+    void Draw(float _alpha) override
     {
-        texture = _texture;
-        position = _pos;
-        size = _size;
-    }
+        Circle::Draw(_alpha);
 
-    aie::Texture* texture = nullptr;
-    glm::vec2 position = glm::vec2(0);
-    glm::vec2 size = glm::vec2(0);
+        if (renderer2D != nullptr && billiardSprite  != nullptr)
+        {
+            renderer2D->begin();
+            
+            renderer2D->drawSprite(billiardSprite->texture, billiardSprite->position.x,
+               billiardSprite->position.y, billiardSprite->size.x, billiardSprite->size.y);
+
+            renderer2D->end();
+        }
+    }
 };
 
 class Pool_Table : public PhysicsScene
@@ -82,8 +99,8 @@ protected:
     Billiard::BilliardType m_team1Type = Billiard::Null;
     Billiard::BilliardType m_team2Type = Billiard::Null;
     
-    int m_team1Counter = 0;
-    int m_team2Counter = 0;
+    vector<Billiard*> m_team1;
+    vector<Billiard*> m_team2;
 
     int m_playersTurn = 0;
     int m_turnAddCountdown = 1;

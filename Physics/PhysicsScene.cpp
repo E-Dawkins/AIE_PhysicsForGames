@@ -111,14 +111,14 @@ float PhysicsScene::DegreeToRadian(const float _degree) const
     return _degree * (Pi / 180.f);
 }
 
-glm::vec2 PhysicsScene::PixelToViewSpace(glm::vec2 _pixelPos) const
+glm::vec2 PhysicsScene::PixelToViewSpacePos(glm::vec2 _pixelPos) const
 {
     const glm::vec2 newPos = glm::vec2((m_windowExtents.x * 2.f) * (_pixelPos.x / m_windowPixelSize.x),
                                        (m_windowExtents.y * 2.f) * (_pixelPos.y / m_windowPixelSize.y));
     return newPos - m_windowExtents;
 }
 
-glm::vec2 PhysicsScene::ViewToPixelSpace(glm::vec2 _viewPos) const
+glm::vec2 PhysicsScene::ViewToPixelSpacePos(glm::vec2 _viewPos) const
 {
     glm::vec2 newPos = _viewPos + m_windowExtents;
 
