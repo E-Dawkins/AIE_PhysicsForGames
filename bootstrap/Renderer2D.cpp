@@ -713,6 +713,11 @@ void Renderer2D::setRenderColour(float r, float g, float b, float a) {
 	m_a = a;
 }
 
+glm::vec4 Renderer2D::getRenderColour()
+{
+	return glm::vec4(m_r, m_g, m_b, m_a);
+}
+
 void Renderer2D::setRenderColour(unsigned int colour) {
 	m_r = ((colour & 0xFF000000) >> 24) / 255.0f;
 	m_g = ((colour & 0x00FF0000) >> 16) / 255.0f;

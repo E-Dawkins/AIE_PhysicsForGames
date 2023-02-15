@@ -30,8 +30,8 @@ public:
     {
         Null = -1,
         CueBall,
-        ColorBall1,
-        ColorBall2,
+        Solids,
+        Stripes,
         EightBall
     };
     
@@ -41,18 +41,60 @@ public:
 
     void Draw(float _alpha) override
     {
-        Circle::Draw(_alpha);
-
         if (renderer2D != nullptr && billiardSprite  != nullptr)
         {
             renderer2D->begin();
+
+            glm::vec4 prev = renderer2D->getRenderColour();
+
+            renderer2D->setRenderColour(m_color.r, m_color.g, m_color.b, m_color.a);
             
             renderer2D->drawSprite(billiardSprite->texture, billiardSprite->position.x,
                billiardSprite->position.y, billiardSprite->size.x, billiardSprite->size.y);
 
+            renderer2D->setRenderColour(prev.r, prev.g, prev.b, prev.a);
+            
             renderer2D->end();
         }
     }
+};
+
+class FadingText
+{
+public:
+    FadingText(const char* _text, glm::vec2 _pos, aie::Font*& _font, aie::Renderer2D*& _renderer, glm::vec4 _color = glm::vec4(1))
+    {
+        text = _text;
+        position = _pos;
+        font = _font;
+        renderer2D = _renderer;
+        color = _color;
+    }
+
+    void DrawText()
+    {
+        glm::vec4 prevColor = renderer2D->getRenderColour();
+        
+        renderer2D->setRenderColour(color.r, color.g, color.b, alphaPercent);
+        renderer2D->drawText(font, text, position.x, position.y);
+
+        renderer2D->setRenderColour(prevColor.r, prevColor.g, prevColor.b, prevColor.a);
+    }
+
+    void UpdateText(float _dt)
+    {
+        alphaPercent -= _dt;
+
+        if (alphaPercent < 0) alphaPercent = 0;
+    }
+    
+    float alphaPercent = 1;
+    
+    const char* text = nullptr;
+    glm::vec2 position = glm::vec2();
+    aie::Font* font = nullptr;
+    aie::Renderer2D* renderer2D = nullptr;
+    glm::vec4 color = glm::vec4(0);
 };
 
 class Pool_Table : public PhysicsScene
@@ -64,13 +106,12 @@ public:
 
     // Generator functions
     void MakeTriangle(glm::vec2 _startPos, float _spacing = 6.f);
-    void MakePoolTable(glm::vec2 _tableCenterOffset, glm::vec2 _tableExtents,
-                        bool _showBounds = false);
+    void MakePoolTable(bool _showBounds = false);
 
     void PocketEnter(PhysicsObject* _other);
     void CueBallCollision(PhysicsObject* _other);
 
-    void EndGame(int _winningTeam);
+    void EndGame();
 
     // Helper Functions
     void ExtraTurn()
@@ -91,10 +132,24 @@ public:
 
         return true;
     }
+
+    void AddFadingText(const char* _text, glm::vec2 _pos)
+    {
+        m_fadingTexts.push_back(new FadingText(_text, _pos, m_fontBig, m_renderer2D, glm::vec4(1, 0, 0, 1)));
+    }
+
+    void CheckFadingTexts()
+    {
+        for (int i = m_fadingTexts.size() - 1; i >= 0; i--)
+        {
+            if (m_fadingTexts.at(i)->alphaPercent == 0)
+                m_fadingTexts.erase(m_fadingTexts.begin() + i);
+        }
+    }
     
 protected:
     Billiard* m_cueBall = nullptr;
-    glm::vec2 m_cueBallStartPos = glm::vec2(0);
+    bool m_cueBallSunk = false;
 
     Billiard::BilliardType m_team1Type = Billiard::Null;
     Billiard::BilliardType m_team2Type = Billiard::Null;
@@ -116,6 +171,11 @@ protected:
 
     bool m_potted = false;
 
-    aie::Font* m_font = nullptr;
+    aie::Font* m_fontSmall = nullptr;
+    aie::Font* m_fontBig = nullptr;
     Sprite* m_table = nullptr;
+
+    vector<FadingText*> m_fadingTexts;
+
+    int m_winner = 0;
 };

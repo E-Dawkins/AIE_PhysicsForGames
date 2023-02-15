@@ -1,4 +1,5 @@
 #pragma once
+#include <glm/detail/type_vec.hpp>
 
 namespace aie {
 
@@ -37,6 +38,9 @@ public:
 	// sets the tint colour for all subsequent draw calls
 	void setRenderColour(float r, float g, float b, float a = 1.0f);
 	void setRenderColour(unsigned int colour);
+
+	// get renderer colour
+	glm::vec4 getRenderColour();
 
 	// can be used to set the texture coordinates of sprites using textures
 	// for all subsequent drawSprite calls
