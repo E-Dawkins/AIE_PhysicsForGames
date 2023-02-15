@@ -101,6 +101,7 @@ class Pool_Table : public PhysicsScene
 {
 public:
     void Startup(aie::Application* _app) override;
+    void Shutdown();
     void Update(float _dt) override;
     void Draw() override;
 

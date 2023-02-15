@@ -7,6 +7,20 @@
 
 void Pool_Table::Startup(aie::Application* _app)
 {
+    // Initiate member variables
+    m_cueBallSunk = false;
+    m_team1Type = Billiard::Null;
+    m_team2Type = Billiard::Null;
+    m_playersTurn = 0;
+    m_turnAddCountdown = 1;
+    m_runEndgame = false;
+    m_eightBallFirst = false;
+    m_dragStartPos = glm::vec2(0);
+    m_dragVector = glm::vec2(0);
+    m_dragging = false;
+    m_potted = false;
+    m_winner = 0;
+    
     // Load assets
     m_fontSmall = new aie::Font("./font/consolas_bold.ttf", 16);
     m_fontBig = new aie::Font("./font/consolas_bold.ttf", 32);
@@ -36,12 +50,41 @@ void Pool_Table::Startup(aie::Application* _app)
     MakeTriangle(glm::vec2(32.f, -5), 4.5f);
 }
 
+void Pool_Table::Shutdown()
+{
+    delete m_cueBall;
+    m_team1.clear();
+    m_team2.clear();
+    delete m_firstHit;
+    delete m_fontSmall;
+    delete m_fontBig;
+    delete m_table;
+    m_fadingTexts.clear();
+}
+
 void Pool_Table::Update(float _dt)
 {
     PhysicsScene::Update(_dt);
     
     aie::Input* input = aie::Input::getInstance();
 
+    if(m_winner != 0)
+    {
+        if (input->wasKeyPressed(aie::INPUT_KEY_R))
+        {
+            // Remove all actors
+            for (int i = m_actors.size() - 1; i >= 0; i--)
+            {
+                RemoveActor(m_actors.at(i));
+            }
+
+            Shutdown();
+            Startup(nullptr);
+        }
+
+        return;
+    }
+    
     CheckFadingTexts();
 
     for (auto text : m_fadingTexts)
@@ -229,9 +272,16 @@ void Pool_Table::Draw()
 
     if (m_winner != 0) // draw text displaying winner
     {
-        std::string winnerText = "Player " + std::to_string(m_winner) + " won!";
+        prevCol = m_renderer2D->getRenderColour();
+
+        m_renderer2D->setRenderColour(0.3f, 0.3f, 0.3f, 0.75f);
+        m_renderer2D->drawBox(m_windowPixelSize.x * 0.5f, m_windowPixelSize.y * 0.465f, 350, 100);
+        m_renderer2D->setRenderColour(prevCol.r, prevCol.g, prevCol.b, prevCol.a);
         
-        m_renderer2D->drawText(m_fontBig, winnerText.c_str(), m_windowPixelSize.x * 0.5f, m_windowPixelSize.y * 0.5f);
+        std::string winnerText = "Player " + std::to_string(m_winner) + " won!";
+        m_renderer2D->drawText(m_fontBig, winnerText.c_str(), m_windowPixelSize.x * 0.415f, m_windowPixelSize.y * 0.475f);
+
+        m_renderer2D->drawText(m_fontBig, "Press 'r' to reset", m_windowPixelSize.x * 0.375f, m_windowPixelSize.y * 0.425f);
     }
 
     m_renderer2D->end();
@@ -480,15 +530,6 @@ void Pool_Table::CueBallCollision(PhysicsObject* _other)
 
 void Pool_Table::EndGame()
 {
-    // Remove all billiards from the scene
-    for (int i = m_actors.size() - 1; i >= 0; i--)
-    {
-        if (dynamic_cast<Billiard*>(m_actors.at(i)))
-        {
-            RemoveActor(m_actors.at(i));
-        }
-    }
-
     if (m_playersTurn == 0)
     {
         if (m_team1.size() == 7) // potted eight ball last
