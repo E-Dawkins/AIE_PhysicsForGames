@@ -21,7 +21,6 @@
 #include "Scenes/Bounce_To_Stop.h"
 #include "Scenes/Bounce_Pads.h"
 #include "Scenes/Physics_Bucket.h"
-#include "Scenes/Pool_Table.h"
 #include "Scenes/Spring_Test.h"
 #include "Scenes/SoftBody_Test.h"
 #include "Scenes/Trigger_Test.h"
@@ -61,8 +60,6 @@ bool PhysicsApp::startup() {
 		m_physicsScene = new Bounce_Pads();
 	#elif defined PhysicsBucket
 		m_physicsScene = new Physics_Bucket();
-	#elif defined PoolTable
-		m_physicsScene = new Pool_Table();
 	#elif defined SpringTest
 		m_physicsScene = new Spring_Test();
 	#elif defined SoftbodyTest
@@ -76,6 +73,7 @@ bool PhysicsApp::startup() {
 	m_physicsScene->SetRenderer(m_2dRenderer);
 	
 	m_physicsScene->Startup(this);
+	
 	return true;
 }
 
@@ -83,6 +81,7 @@ void PhysicsApp::shutdown() {
 
 	delete m_font;
 	delete m_2dRenderer;
+	delete m_physicsScene;
 }
 
 void PhysicsApp::update(float deltaTime) {

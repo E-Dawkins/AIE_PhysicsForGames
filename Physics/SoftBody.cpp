@@ -5,7 +5,7 @@
 void SoftBody::Build(PhysicsScene* _scene, glm::vec2 _position, float _damping, float _springForce, float _spacing, std::vector<std::string>& _strings)
 {
     int numColumns = (int)_strings.size();
-    int numRows = _strings[0].length();
+    int numRows = (int)_strings[0].length();
     
     // Traverse across the array and add balls where the ascii art says they should be
     Circle** circles = new Circle*[numRows * numColumns];

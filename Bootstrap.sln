@@ -20,6 +20,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Physics", "Physics\Physics.
 		{AF59BB0B-E059-4773-83DC-728A949647DA} = {AF59BB0B-E059-4773-83DC-728A949647DA}
 	EndProjectSection
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "PoolGame", "PoolGame\PoolGame.vcxproj", "{56B50DBF-7AB2-49AA-BCEA-AAB47D6F9188}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -60,6 +62,14 @@ Global
 		{DEA49362-B428-4215-8D64-4EA0B4FF0858}.Release|x64.Build.0 = Release|x64
 		{DEA49362-B428-4215-8D64-4EA0B4FF0858}.Release|x86.ActiveCfg = Release|Win32
 		{DEA49362-B428-4215-8D64-4EA0B4FF0858}.Release|x86.Build.0 = Release|Win32
+		{56B50DBF-7AB2-49AA-BCEA-AAB47D6F9188}.Debug|x64.ActiveCfg = Debug|x64
+		{56B50DBF-7AB2-49AA-BCEA-AAB47D6F9188}.Debug|x64.Build.0 = Debug|x64
+		{56B50DBF-7AB2-49AA-BCEA-AAB47D6F9188}.Debug|x86.ActiveCfg = Debug|Win32
+		{56B50DBF-7AB2-49AA-BCEA-AAB47D6F9188}.Debug|x86.Build.0 = Debug|Win32
+		{56B50DBF-7AB2-49AA-BCEA-AAB47D6F9188}.Release|x64.ActiveCfg = Release|x64
+		{56B50DBF-7AB2-49AA-BCEA-AAB47D6F9188}.Release|x64.Build.0 = Release|x64
+		{56B50DBF-7AB2-49AA-BCEA-AAB47D6F9188}.Release|x86.ActiveCfg = Release|Win32
+		{56B50DBF-7AB2-49AA-BCEA-AAB47D6F9188}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -29,7 +29,6 @@ public:
     virtual void Update(float _dt);
     virtual void Draw();
 
-    void DebugScene();
     void CheckForCollision();
     float GetTotalEnergy() const;
     float DegreeToRadian(float _degree) const;

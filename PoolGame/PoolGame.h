@@ -1,8 +1,8 @@
-﻿#pragma once
+#pragma once
 #include <Font.h>
 #include <Texture.h>
 
-#include "../PhysicsScene.h"
+#include "PhysicsScene.h"
 
 class Sprite
 {
@@ -23,9 +23,9 @@ class Billiard : public Circle
 {
 public:
     Billiard(glm::vec2 _position, glm::vec2 _velocity, float _mass, float _radius,
-                glm::vec4 _color = glm::vec4(1), float _elasticity = 1) :
-    Circle(_position, _velocity, _mass, _radius, _color, _elasticity) {}
-    
+        glm::vec4 _color = glm::vec4(1), float _elasticity = 1) :
+        Circle(_position, _velocity, _mass, _radius, _color, _elasticity) {}
+
     enum BilliardType
     {
         Null = -1,
@@ -34,26 +34,26 @@ public:
         Stripes,
         EightBall
     };
-    
+
     BilliardType billiardType = CueBall;
     Sprite* billiardSprite = nullptr;
     aie::Renderer2D* renderer2D = nullptr;
 
     void Draw(float _alpha) override
     {
-        if (renderer2D != nullptr && billiardSprite  != nullptr)
+        if (renderer2D != nullptr && billiardSprite != nullptr)
         {
             renderer2D->begin();
 
             glm::vec4 prev = renderer2D->getRenderColour();
 
             renderer2D->setRenderColour(m_color.r, m_color.g, m_color.b, m_color.a);
-            
+
             renderer2D->drawSprite(billiardSprite->texture, billiardSprite->position.x,
-               billiardSprite->position.y, billiardSprite->size.x, billiardSprite->size.y);
+                billiardSprite->position.y, billiardSprite->size.x, billiardSprite->size.y);
 
             renderer2D->setRenderColour(prev.r, prev.g, prev.b, prev.a);
-            
+
             renderer2D->end();
         }
     }
@@ -74,7 +74,7 @@ public:
     void DrawText()
     {
         glm::vec4 prevColor = renderer2D->getRenderColour();
-        
+
         renderer2D->setRenderColour(color.r, color.g, color.b, alphaPercent);
         renderer2D->drawText(font, text, position.x, position.y);
 
@@ -87,9 +87,9 @@ public:
 
         if (alphaPercent < 0) alphaPercent = 0;
     }
-    
+
     float alphaPercent = 1;
-    
+
     const char* text = nullptr;
     glm::vec2 position = glm::vec2();
     aie::Font* font = nullptr;
@@ -97,7 +97,7 @@ public:
     glm::vec4 color = glm::vec4(0);
 };
 
-class Pool_Table : public PhysicsScene
+class PoolGame : public PhysicsScene
 {
 public:
     void Startup(aie::Application* _app) override;
@@ -147,20 +147,20 @@ public:
                 m_fadingTexts.erase(m_fadingTexts.begin() + i);
         }
     }
-    
+
 protected:
     Billiard* m_cueBall = nullptr;
     bool m_cueBallSunk = false;
 
     Billiard::BilliardType m_team1Type = Billiard::Null;
     Billiard::BilliardType m_team2Type = Billiard::Null;
-    
+
     vector<Billiard*> m_team1;
     vector<Billiard*> m_team2;
 
     int m_playersTurn = 0;
     int m_turnAddCountdown = 1;
-    
+
     Billiard* m_firstHit = nullptr;
 
     bool m_runEndgame = false;

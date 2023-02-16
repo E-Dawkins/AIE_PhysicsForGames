@@ -24,9 +24,7 @@
 // #define BouncePads
 // #define PhysicsBucket
 
-#define PoolTable
-
-// #define SpringTest
+#define SpringTest
 
 // #define SoftbodyTest
 
