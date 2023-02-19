@@ -347,6 +347,30 @@ void PoolGame::MakeTriangle(glm::vec2 _startPos, float _spacing)
 
 void PoolGame::MakePoolTable(bool _showBounds)
 {
+    // -- Pocket Triggers --
+    float triggerRadius = 7.f;
+    glm::vec4 triggerCol = glm::vec4(1, 0, 0, _showBounds);
+
+    // Top
+    glm::vec2 cornerPos = m_windowExtents * 0.75f + glm::vec2(10.5f, -0.5f);
+    AddActor(new Circle(glm::vec2(-cornerPos.x, cornerPos.y), glm::vec2(), 1.f, triggerRadius, triggerCol));
+    AddActor(new Circle(glm::vec2(cornerPos.x, cornerPos.y), glm::vec2(), 1.f, triggerRadius, triggerCol));
+    AddActor(new Circle(glm::vec2(0, cornerPos.y + 3.5f), glm::vec2(), 1.f, triggerRadius, triggerCol));
+
+    // Bottom
+    cornerPos.y = -cornerPos.y - 10.f;
+    AddActor(new Circle(glm::vec2(-cornerPos.x, cornerPos.y), glm::vec2(), 1.f, triggerRadius, triggerCol));
+    AddActor(new Circle(glm::vec2(cornerPos.x, cornerPos.y), glm::vec2(), 1.f, triggerRadius, triggerCol));
+    AddActor(new Circle(glm::vec2(0, cornerPos.y - 3.5f), glm::vec2(), 1.f, triggerRadius, triggerCol));
+
+    for (int i = 0; i < 6; i++) // set them to triggers, and add a callback
+    {
+        Circle* pocketTrigger = dynamic_cast<Circle*>(m_actors.at(m_actors.size() - 1 - i));
+
+        pocketTrigger->SetTrigger(true);
+        pocketTrigger->triggerEnter = std::bind(&PoolGame::PocketEnter, this, std::placeholders::_1);
+    }
+    
     // -- Edge colliders --
     glm::vec2 collPos = glm::vec2(-40.f, 41.5f);
     glm::vec2 collSize = glm::vec2(36.f, 5);
@@ -395,29 +419,6 @@ void PoolGame::MakePoolTable(bool _showBounds)
     {
         Rigidbody* rb = dynamic_cast<Rigidbody*>(m_actors.at(m_actors.size() - 1 - i));
         rb->SetKinematic(true);
-    }
-
-    // -- Pocket Triggers --
-    float triggerRadius = 7.f;
-
-    // Top
-    glm::vec2 cornerPos = m_windowExtents * 0.75f + glm::vec2(10.5f, -0.5f);
-    AddActor(new Circle(glm::vec2(-cornerPos.x, cornerPos.y), glm::vec2(), 1.f, triggerRadius, glm::vec4(_showBounds)));
-    AddActor(new Circle(glm::vec2(cornerPos.x, cornerPos.y), glm::vec2(), 1.f, triggerRadius, glm::vec4(_showBounds)));
-    AddActor(new Circle(glm::vec2(0, cornerPos.y + 3.5f), glm::vec2(), 1.f, triggerRadius, glm::vec4(_showBounds)));
-
-    // Bottom
-    cornerPos.y = -cornerPos.y - 10.f;
-    AddActor(new Circle(glm::vec2(-cornerPos.x, cornerPos.y), glm::vec2(), 1.f, triggerRadius, glm::vec4(_showBounds)));
-    AddActor(new Circle(glm::vec2(cornerPos.x, cornerPos.y), glm::vec2(), 1.f, triggerRadius, glm::vec4(_showBounds)));
-    AddActor(new Circle(glm::vec2(0, cornerPos.y - 3.5f), glm::vec2(), 1.f, triggerRadius, glm::vec4(_showBounds)));
-
-    for (int i = 0; i < 6; i++) // set them to triggers, and add a callback
-    {
-        Circle* pocketTrigger = dynamic_cast<Circle*>(m_actors.at(m_actors.size() - 1 - i));
-
-        pocketTrigger->SetTrigger(true);
-        pocketTrigger->triggerEnter = std::bind(&PoolGame::PocketEnter, this, std::placeholders::_1);
     }
 }
 
@@ -469,7 +470,7 @@ void PoolGame::PocketEnter(PhysicsObject* _other)
             // Add to the right teams vector
             if (type == m_team1Type)
             {
-                billiard->SetPosition(glm::vec2(-70 + m_team1.size() * billiard->GetRadius(), 50));
+                billiard->SetPosition(glm::vec2(-70 + m_team1.size() * (2.5f + billiard->GetRadius() * 2.f), 50));
                 billiard->SetVelocity(glm::vec2(0));
                 billiard->SetTrigger(true);
 
@@ -478,7 +479,7 @@ void PoolGame::PocketEnter(PhysicsObject* _other)
 
             if (type == m_team2Type)
             {
-                billiard->SetPosition(glm::vec2(70 - m_team1.size() * billiard->GetRadius(), 50));
+                billiard->SetPosition(glm::vec2(70 - m_team1.size() * (2.5f + billiard->GetRadius() * 2.f), 50));
                 billiard->SetVelocity(glm::vec2(0));
                 billiard->SetTrigger(true);
 
