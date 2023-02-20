@@ -1,6 +1,8 @@
 #pragma once
 #include "PhysicsScene.h"
 
+struct Simplex;
+
 class MainScene : public PhysicsScene
 {
 public:
@@ -9,11 +11,11 @@ public:
     void Draw() override;
 
 protected:
-    glm::vec2 m_shapePos1 = glm::vec2();
-    glm::vec2 m_shapePos2 = glm::vec2();
+    std::vector<glm::vec2> m_shapeAVerts;
+    std::vector<glm::vec2> m_shapeBVerts;
 
-    vector<glm::vec2> m_shapePts1;
-    vector<glm::vec2> m_shapePts2;
+    glm::vec2 m_shapeAPos = glm::vec2();
+    glm::vec2 m_shapeBPos = glm::vec2();
     
     vector<glm::vec2> m_points;
 };
