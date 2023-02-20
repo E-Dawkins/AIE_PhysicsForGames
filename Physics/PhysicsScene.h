@@ -30,12 +30,12 @@ public:
     virtual void Draw();
 
     void CheckForCollision();
-    float GetTotalEnergy() const;
     float DegreeToRadian(float _degree) const;
     glm::vec2 PixelToViewSpacePos(glm::vec2 _pixelPos) const;
     glm::vec2 ViewToPixelSpacePos(glm::vec2 _viewPos) const;
 
     // Getters
+    float GetTotalEnergy() const;
     static glm::vec2 GetGravity()               { return m_gravity; }
     float GetTimeStep() const                   { return m_timeStep; }
     std::vector<PhysicsObject*>* GetActors()    { return &m_actors; }

@@ -172,12 +172,17 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Application2D.cpp" />
+    <ClCompile Include="Billiard.cpp" />
+    <ClCompile Include="FadingText.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="PoolGame.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application2D.h" />
+    <ClInclude Include="Billiard.h" />
+    <ClInclude Include="FadingText.h" />
     <ClInclude Include="PoolGame.h" />
+    <ClInclude Include="Sprite.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

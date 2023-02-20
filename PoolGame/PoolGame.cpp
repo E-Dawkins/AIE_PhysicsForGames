@@ -470,7 +470,7 @@ void PoolGame::PocketEnter(PhysicsObject* _other)
             // Add to the right teams vector
             if (type == m_team1Type)
             {
-                billiard->SetPosition(glm::vec2(-70 + m_team1.size() * (2.5f + billiard->GetRadius() * 2.f), 50));
+                billiard->SetPosition(glm::vec2(-70 + (m_team1.size() * (2.5f + (billiard->GetRadius() * 2.f))), 50));
                 billiard->SetVelocity(glm::vec2(0));
                 billiard->SetTrigger(true);
 
@@ -479,7 +479,7 @@ void PoolGame::PocketEnter(PhysicsObject* _other)
 
             if (type == m_team2Type)
             {
-                billiard->SetPosition(glm::vec2(70 - m_team1.size() * (2.5f + billiard->GetRadius() * 2.f), 50));
+                billiard->SetPosition(glm::vec2(70 - (m_team2.size() * (2.5f + (billiard->GetRadius() * 2.f))), 50));
                 billiard->SetVelocity(glm::vec2(0));
                 billiard->SetTrigger(true);
 
