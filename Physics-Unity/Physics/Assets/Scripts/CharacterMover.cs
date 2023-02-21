@@ -54,7 +54,8 @@ public class CharacterMover : MonoBehaviour
 		Vector3 delta = (_moveInput.x * camRight + _moveInput.y * camForward) * movementSpeed;
 
 		// Face the player to the movement direction
-		transform.forward = Vector3.Lerp(transform.forward, delta, rotateSpeed);
+		if (delta != Vector3.zero)
+			transform.forward = Vector3.Lerp(transform.forward, delta, rotateSpeed);
 
 		// Only add movement when the player is grounded or inputs in the air
 		if(_isGrounded || _moveInput.x != 0 || _moveInput.y != 0)
@@ -87,9 +88,17 @@ public class CharacterMover : MonoBehaviour
 			horizontalHitDirection.y = 0;
 
 			float displacement = horizontalHitDirection.magnitude;
-			
+
 			if(displacement > 0)
-				_velocity -= horizontalHitDirection / displacement;
+			{
+				Ray ray = new Ray(transform.position + _characterController.center, -transform.up);
+
+				if(!Physics.SphereCast(ray, _characterController.radius * 0.2f, _characterController.height * 0.5f))
+				{
+					_velocity -= horizontalHitDirection / displacement;
+					Debug.Log(_velocity);
+				}
+			}
 		}
 
 		_characterController.Move(_velocity * Time.deltaTime);
