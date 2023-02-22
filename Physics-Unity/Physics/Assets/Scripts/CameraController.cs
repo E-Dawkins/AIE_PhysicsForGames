@@ -1,29 +1,25 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class CameraController : MonoBehaviour
 {
     [SerializeField] private Transform target;
     [SerializeField] private float heightOffset = 1.5f;
-    [SerializeField, Tooltip("Degrees per second")] 
-    private float lookSpeed = 180;
-    [SerializeField, Tooltip("How fast the camera relaxes to zoom distance")]
-    private float relaxSpeed = 0.1f;
+    [SerializeField] private float lookSpeed = 180;
+    [SerializeField] private float relaxSpeed = 0.1f;
     
     [Header("Zooming")]
     [SerializeField] private float zoomSpeed = 1;
     [SerializeField] private float minZoomDist = 2;
     [SerializeField] private float maxZoomDist = 10;
 
-    private float _currentDistance;
-    private float _distanceBack;
+    private float m_currentDistance;
+    private float m_distanceBack;
 
     // Start is called before the first frame update
     private void Start()
     {
-        _distanceBack = minZoomDist;
-        _currentDistance = _distanceBack;
+        m_distanceBack = minZoomDist;
+        m_currentDistance = m_distanceBack;
     }
 
     // Update is called once per frame
@@ -45,22 +41,24 @@ public class CameraController : MonoBehaviour
             transform.eulerAngles = angles;
         }
 
-        if(Physics.Raycast(GetTargetPosition(), -transform.forward, out RaycastHit hit, _distanceBack))
+        Ray ray = new Ray(GetTargetPosition(), -transform.forward);
+        
+        if(Physics.Raycast(ray, out RaycastHit hit, m_distanceBack, -1, QueryTriggerInteraction.Ignore))
         {
             // Snap the camera right in to where the collision happened
-            _currentDistance = hit.distance;
+            m_currentDistance = hit.distance;
         }
         else
         {
             // Relax the camera back to the desired distance
-            _currentDistance = Mathf.Lerp(_currentDistance, _distanceBack, relaxSpeed);
+            m_currentDistance = Mathf.Lerp(m_currentDistance, m_distanceBack, relaxSpeed);
         }
 
         // Zoom in / out with scroll wheel
-        _distanceBack = Mathf.Clamp(_distanceBack - Input.GetAxis("Mouse ScrollWheel") * zoomSpeed, minZoomDist, maxZoomDist);
+        m_distanceBack = Mathf.Clamp(m_distanceBack - Input.GetAxis("Mouse ScrollWheel") * zoomSpeed, minZoomDist, maxZoomDist);
         
         // Look at target point
-        transform.position = GetTargetPosition() - _currentDistance * transform.forward;
+        transform.position = GetTargetPosition() - m_currentDistance * transform.forward;
     }
 
     Vector3 GetTargetPosition()

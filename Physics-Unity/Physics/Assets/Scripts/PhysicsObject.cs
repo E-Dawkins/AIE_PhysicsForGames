@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
@@ -8,27 +6,27 @@ public class PhysicsObject : MonoBehaviour
     [SerializeField] private Material awakeMat;
     [SerializeField] private Material asleepMat;
 
-    private Rigidbody _rb = null;
-    private bool _isSleeping;
+    private Rigidbody m_rb = null;
+    private bool m_isSleeping;
 
     // Start is called before the first frame update
     private void Start()
     {
-        _rb = GetComponent<Rigidbody>();
+        m_rb = GetComponent<Rigidbody>();
     }
 
     // Update is called once per frame
     private void FixedUpdate()
     {
-        if(_rb.IsSleeping() && _isSleeping && asleepMat != null)
+        if(m_rb.IsSleeping() && m_isSleeping && asleepMat != null)
         {
-            _isSleeping = false;
+            m_isSleeping = false;
             GetComponent<MeshRenderer>().material = asleepMat;
         }
 
-        if(!_rb.IsSleeping() && !_isSleeping && awakeMat != null)
+        if(!m_rb.IsSleeping() && !m_isSleeping && awakeMat != null)
         {
-            _isSleeping = true;
+            m_isSleeping = true;
             GetComponent<MeshRenderer>().material = awakeMat;
         }
     }
