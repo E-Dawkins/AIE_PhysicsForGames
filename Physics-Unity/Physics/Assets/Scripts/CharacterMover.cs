@@ -52,9 +52,8 @@ public class CharacterMover : MonoBehaviour
 		// Get the movement delta using camera forward / right and the movement speed
 		Vector3 delta = (m_moveInput.x * camRight + m_moveInput.y * camForward) * movementSpeed * (m_crouchInput ? crouchSpeedMulti : 1);
 
-		// Face the player to the movement direction
-		if (delta != Vector3.zero)
-			transform.forward = Vector3.Lerp(transform.forward, delta, rotateSpeed);
+		// Face the player to the cameras forward
+		transform.forward = camForward;
 
 		// Only add movement when the player is grounded or inputs in the air
 		if(m_isGrounded || m_moveInput.x != 0 || m_moveInput.y != 0)
