@@ -26,7 +26,7 @@ public class CameraController : MonoBehaviour
         float dy = Input.GetAxis("Mouse X") * lookSpeed * Time.deltaTime;
             
         // Look up and down by rotating around the X-axis
-        m_xRot = Mathf.Clamp(m_xRot - dx, -70f, 70f);
+        m_xRot = Mathf.Clamp(m_xRot - dx, -70f, 55f);
         angles.x = m_xRot;
 
         // Spin the camera on the Y-axis
@@ -34,12 +34,17 @@ public class CameraController : MonoBehaviour
         transform.eulerAngles = angles;
 
         // Move camera with target
-        transform.position = target.position + camOffset;
+        transform.position = target.position + ComputeOffset();
+    }
+
+    private Vector3 ComputeOffset()
+    {
+        return camOffset.x * target.right + camOffset.y * target.up + camOffset.z * target.forward;
     }
 
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.magenta;
-        Gizmos.DrawSphere(target.position + camOffset, 0.03f);
+        Gizmos.DrawSphere(target.position + ComputeOffset(), 0.03f);
     }
 }
