@@ -5,7 +5,6 @@ public class CharacterMover : MonoBehaviour
 {
 	[SerializeField] private float movementSpeed = 10;
 	[SerializeField] private float jumpHeight = 3;
-	[SerializeField] private float rotateSpeed = 0.1f;
 	[SerializeField] private float crouchSpeedMulti = 0.25f;
 
 	private CharacterController m_characterController;
