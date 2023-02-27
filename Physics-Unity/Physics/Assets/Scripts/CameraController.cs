@@ -5,7 +5,7 @@ using UnityEngine;
 public class CameraController : MonoBehaviour
 {
     [SerializeField] private Transform target;
-    [SerializeField] private Vector3 camOffset = new Vector3(0, 1.7f, 0);
+    [SerializeField] private Vector3 camOffset = new Vector3(0, 1.7f, 0.05f);
     [SerializeField] private float lookSpeed = 270;
 
     private float m_xRot;

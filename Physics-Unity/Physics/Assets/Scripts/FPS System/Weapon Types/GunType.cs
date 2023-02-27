@@ -3,7 +3,8 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "Gun", menuName = "ScriptableObjects/GunType", order = 1)]
 public class GunType : ScriptableObject
 {
-    public float damage = 10;
+    public float bodyDamage = 10;
+    public float headDamage = 40;
     [Tooltip("Bullets / Second")]
     public float fireRate = 3;
     [Tooltip("Max degree offset")]

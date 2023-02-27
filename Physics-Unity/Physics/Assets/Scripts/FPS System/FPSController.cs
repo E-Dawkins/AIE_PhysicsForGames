@@ -1,11 +1,14 @@
+using System;
+
 using UnityEngine;
+
+using Random = UnityEngine.Random;
 
 public class FPSController : MonoBehaviour
 {
     public float health = 100;
     public GunType currentGun;
-
-    [SerializeField] private GameObject debugHitPoint;
+    
     private Transform m_camTransform;
     
     private float m_maxDelay;
@@ -37,6 +40,10 @@ public class FPSController : MonoBehaviour
 
         // Increment the fire delay
         m_currentDelay += Time.deltaTime;
+        
+        // No health, player has died
+        if (health <= 0)
+            OnDeath();
     }
 
     private bool CanShoot()
@@ -65,23 +72,24 @@ public class FPSController : MonoBehaviour
         if(Input.GetMouseButton(0) && CanShoot())
         {
             Vector3 shotOffset = new Vector3(1, 1, 0) * Random.Range(-currentGun.bulletSpread, currentGun.bulletSpread);
-
-            Ray ray = new Ray(m_camTransform.position, m_camTransform.forward);
-            ray.direction = Quaternion.Euler(shotOffset) * ray.direction;
             
-            // Checks if we are aiming at an object, using the random degree offset
-            if(Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, -1, QueryTriggerInteraction.Ignore))
-            {
-                // TODO - remove later
-                GameObject test = Instantiate(debugHitPoint, hit.point, Quaternion.identity);
-                test.SetActive(true);
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            // ray.direction = Quaternion.Euler(shotOffset) * ray.direction;
 
+            // Checks if we are aiming at an object, using the random degree offset
+            if(Physics.Raycast(ray, out RaycastHit hit, 500, -1, QueryTriggerInteraction.Ignore))
+            {
                 // Bullet hit an enemy
                 Enemy enemy = hit.collider.GetComponentInParent<Enemy>();
+
+                Debug.Log(hit.collider.name);
                 
                 if(enemy != null)
                 {
-                    enemy.DoDamage(currentGun.damage);
+                    float damage = hit.collider == enemy.HeadCollider ? 
+                                       currentGun.headDamage : currentGun.bodyDamage;
+
+                    enemy.DoDamage(damage);
                 }
             }
         }
@@ -89,9 +97,6 @@ public class FPSController : MonoBehaviour
 
     private void GrenadeLogic()
     {
-        // Move held grenade with player
-        m_grenade.transform.position = grenadeHoldPt.position;
-
         // Sets grenade to cook
         if(Input.GetMouseButtonDown(0))
             m_grenade.ShouldCook = true;
@@ -114,7 +119,7 @@ public class FPSController : MonoBehaviour
             // If there is grenade ammo, spawn a new grenade
             if(grenadeCount > 0)
             {
-                m_grenade = Instantiate(grenadePrefab, grenadeHoldPt.position, grenadeHoldPt.rotation);
+                m_grenade = Instantiate(grenadePrefab, grenadeHoldPt);
                 m_grenade.gameObject.SetActive(true);
             
                 // Set it to not collide until thrown
@@ -128,5 +133,10 @@ public class FPSController : MonoBehaviour
             Destroy(m_grenade.gameObject);
             m_grenade = null;
         }
+    }
+
+    private void OnDeath()
+    {
+        
     }
 }

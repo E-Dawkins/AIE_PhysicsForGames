@@ -26,7 +26,7 @@ public class RaycastImpulse : MonoBehaviour
                 Ragdoll ragdoll = hitPoint.collider.GetComponentInParent<Ragdoll>();
 
                 if(ragdoll != null)
-                    ragdoll.ragdollOn = true;
+                    ragdoll.RagdollOn = true;
 
                 Rigidbody rb = hitPoint.collider.GetComponent<Rigidbody>();
 

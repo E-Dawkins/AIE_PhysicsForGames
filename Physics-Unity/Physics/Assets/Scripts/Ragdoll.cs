@@ -6,8 +6,9 @@ using UnityEngine;
 public class Ragdoll : MonoBehaviour
 {
     [SerializeField] private List<Rigidbody> rigidbodies = new List<Rigidbody>();
+    public Rigidbody rdCenterRb;
 
-    public bool ragdollOn
+    public bool RagdollOn
     {
         get => !m_animator.enabled;
         set
@@ -19,14 +20,34 @@ public class Ragdoll : MonoBehaviour
         }
     }
 
-    private Animator m_animator;
+    public float TotalMovement
+    {
+        get
+        {
+            float temp = 0;
 
-    // Start is called before the first frame update
+            foreach(Rigidbody rb in rigidbodies)
+                temp += rb.velocity.magnitude;
+
+            return temp;
+        }
+    }
+
+    private Animator m_animator;
+    
     private void Start()
     {
         m_animator = GetComponent<Animator>();
         
         foreach(Rigidbody rb in rigidbodies)
             rb.isKinematic = false;
+    }
+
+    public void AddExplosionForce(float _forceAmount, Vector3 _position, float _radius)
+    {
+        foreach(Rigidbody rb in rigidbodies)
+        {
+            rb.AddExplosionForce(_forceAmount, _position, _radius, _radius * 0.25f, ForceMode.Impulse);
+        }
     }
 }

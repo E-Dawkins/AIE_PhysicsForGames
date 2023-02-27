@@ -7,6 +7,6 @@ public class RagdollTrigger : MonoBehaviour
         Ragdoll ragdoll = _other.GetComponentInParent<Ragdoll>();
 
         if(ragdoll != null)
-            ragdoll.ragdollOn = true;
+            ragdoll.RagdollOn = true;
     }
 }

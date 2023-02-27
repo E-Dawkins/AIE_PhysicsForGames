@@ -5,18 +5,16 @@ public class CharacterMover : MonoBehaviour
 {
 	[SerializeField] private float movementSpeed = 10;
 	[SerializeField] private float jumpHeight = 3;
-	[SerializeField] private float crouchSpeedMulti = 0.25f;
 
+	public Animator animator;
 	private CharacterController m_characterController;
 	private Transform m_mainCam;
-	private Animator m_animator;
 	
 	private Vector2 m_moveInput;
 	private Vector3 m_velocity;
 	private Vector3 m_hitDirection;
 	
 	private bool m_jumpInput;
-	private bool m_crouchInput;
 	private bool m_isGrounded;
 
 	private void Awake()
@@ -24,7 +22,7 @@ public class CharacterMover : MonoBehaviour
 		m_characterController = GetComponent<CharacterController>();
 		m_mainCam = Camera.main.transform;
 
-		m_animator = GetComponentInChildren<Animator>();
+		animator = GetComponentInChildren<Animator>();
 	}
 
 	private void Update()
@@ -32,11 +30,9 @@ public class CharacterMover : MonoBehaviour
 		m_moveInput.x = Input.GetAxis("Horizontal");
 		m_moveInput.y = Input.GetAxis("Vertical");
 		m_jumpInput = Input.GetButton("Jump");
-		m_crouchInput = Input.GetButton("Crouch");
 
-		m_animator.SetFloat("Forwards", m_moveInput.magnitude);
-		m_animator.SetBool("Jump", !m_isGrounded);
-		m_animator.SetBool("Crouch", m_crouchInput);
+		animator.SetFloat("Forwards", m_moveInput.magnitude);
+		animator.SetBool("Jump", !m_isGrounded);
 	}
 
 	private void FixedUpdate()
@@ -49,7 +45,7 @@ public class CharacterMover : MonoBehaviour
 		Vector3 camRight = m_mainCam.right;
 		
 		// Get the movement delta using camera forward / right and the movement speed
-		Vector3 delta = (m_moveInput.x * camRight + m_moveInput.y * camForward) * movementSpeed * (m_crouchInput ? crouchSpeedMulti : 1);
+		Vector3 delta = (m_moveInput.x * camRight + m_moveInput.y * camForward) * movementSpeed;
 
 		// Face the player to the cameras forward
 		transform.forward = camForward;
