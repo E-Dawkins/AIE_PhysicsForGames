@@ -5,8 +5,7 @@ using UnityEngine;
 [RequireComponent(typeof(Ragdoll))]
 public class Enemy : MonoBehaviour
 {
-    public float health = 100;
-
+    [SerializeField] private float health = 100;
     [SerializeField] private Collider headCollider;
 
     public Collider HeadCollider => headCollider;
@@ -22,7 +21,7 @@ public class Enemy : MonoBehaviour
     {
         if(health <= 0)
             return;
-        
+
         // If ragdolling and movement is slow enough, un-ragdoll
         if(rd.RagdollOn && rd.TotalMovement < 1)
             rd.RagdollOn = false;

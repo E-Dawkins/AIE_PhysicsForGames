@@ -1,12 +1,11 @@
+using System;
 using System.Collections.Generic;
 
 using UnityEngine;
 
-[RequireComponent(typeof(Animator))]
 public class Ragdoll : MonoBehaviour
 {
     [SerializeField] private List<Rigidbody> rigidbodies = new List<Rigidbody>();
-    public Rigidbody rdCenterRb;
 
     public bool RagdollOn
     {
@@ -14,9 +13,11 @@ public class Ragdoll : MonoBehaviour
         set
         {
             m_animator.enabled = !value;
-            
+
             foreach(Rigidbody rb in rigidbodies)
                 rb.isKinematic = !value;
+            
+            if (!value) AlignPosToHips();
         }
     }
 
@@ -33,11 +34,13 @@ public class Ragdoll : MonoBehaviour
         }
     }
 
+    private Transform m_hipsBone;
     private Animator m_animator;
-    
-    private void Start()
+
+    private void Awake()
     {
         m_animator = GetComponent<Animator>();
+        m_hipsBone = m_animator.GetBoneTransform(HumanBodyBones.Hips);
         
         foreach(Rigidbody rb in rigidbodies)
             rb.isKinematic = false;
@@ -49,5 +52,18 @@ public class Ragdoll : MonoBehaviour
         {
             rb.AddExplosionForce(_forceAmount, _position, _radius, _radius * 0.25f, ForceMode.Impulse);
         }
+    }
+
+    private void AlignPosToHips()
+    {
+        Vector3 originalHipPos = m_hipsBone.position;
+        transform.position = m_hipsBone.position;
+
+        if(Physics.Raycast(transform.position, Vector3.down, out RaycastHit hit))
+        {
+            transform.position = new Vector3(transform.position.x, hit.point.y, transform.position.z);
+        }
+
+        m_hipsBone.position = originalHipPos;
     }
 }
