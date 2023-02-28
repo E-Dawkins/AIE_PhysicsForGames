@@ -36,7 +36,7 @@ public class Grenade : MonoBehaviour
 		if(m_curCookTime >= cookTime)
 		{
 			// Effect
-			Debug.Log("kaboom");
+			
 			
 			// Sound
 

@@ -74,7 +74,7 @@ public class FPSController : MonoBehaviour
             Vector3 shotOffset = new Vector3(1, 1, 0) * Random.Range(-currentGun.bulletSpread, currentGun.bulletSpread);
             
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            // ray.direction = Quaternion.Euler(shotOffset) * ray.direction;
+            ray.direction = Quaternion.Euler(shotOffset) * ray.direction;
 
             // Checks if we are aiming at an object, using the random degree offset
             if(Physics.Raycast(ray, out RaycastHit hit, 500, -1, QueryTriggerInteraction.Ignore))

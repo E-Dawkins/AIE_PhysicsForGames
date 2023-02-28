@@ -8,10 +8,9 @@ using UnityEngine.AI;
 public class Enemy : MonoBehaviour
 {
     [SerializeField] private float health = 100;
-    [SerializeField] private Collider headCollider;
     [SerializeField, Tooltip("Degree/Second")] private float turnSpeed = 3;
 
-    public Collider HeadCollider => headCollider;
+    public Collider HeadCollider => m_rd.Animator.GetBoneTransform(HumanBodyBones.Head).GetComponent<Collider>();
 
     private Coroutine m_deathCR;
     private Ragdoll m_rd;
@@ -23,7 +22,7 @@ public class Enemy : MonoBehaviour
         m_rd = GetComponent<Ragdoll>();
 
         m_agent = GetComponent<NavMeshAgent>();
-        m_agent.speed = m_rd.Animator.GetFloat("ZombieSpeed");
+        m_agent.speed = 0;
         m_agent.angularSpeed = turnSpeed;
         
         foreach(FPSController player in FindObjectsOfType<FPSController>())
@@ -34,18 +33,25 @@ public class Enemy : MonoBehaviour
     
     private void Update()
     {
-        if(health <= 0)
-            return;
-
-        // If ragdolling and movement is slow enough, un-ragdoll
-        if(m_rd.RagdollOn && m_rd.TotalMovement < 1)
-            m_rd.RagdollOn = false;
-        
         // Set target to be nearest player, if not ragdolling
         SetTarget();
+        
+        // If dead, run death coroutine
+        if(health <= 0)
+        {
+            m_deathCR ??= StartCoroutine(OnDeath());
+            return;
+        }
 
         // Agent is off if ragdolling
         m_agent.enabled = !m_rd.RagdollOn;
+
+        if (m_agent.speed == 0)
+            m_agent.speed = m_rd.Animator.GetFloat("ZombieSpeed");
+        
+        // If ragdolling and movement is slow enough, un-ragdoll
+        if(m_rd.RagdollOn && m_rd.TotalMovement < 1)
+            m_rd.RagdollOn = false;
     }
 
     public void DoDamage(float _damage)
@@ -54,15 +60,12 @@ public class Enemy : MonoBehaviour
         
         // Spawn hit effect
         
-        
-        // If dead, run death coroutine
-        if (health <= 0 && m_deathCR == null)
-            m_deathCR = StartCoroutine(OnDeath());
     }
 
     private IEnumerator OnDeath()
     {
         m_rd.RagdollOn = true;
+        m_agent.ResetPath();
 
         yield return new WaitForSeconds(3);
         

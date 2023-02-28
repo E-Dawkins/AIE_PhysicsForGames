@@ -41,6 +41,7 @@ public class Ragdoll : MonoBehaviour
     private void Awake()
     {
         m_animator = GetComponent<Animator>();
+
         m_hipsBone = m_animator.GetBoneTransform(HumanBodyBones.Hips);
         
         foreach(Rigidbody rb in rigidbodies)
@@ -57,9 +58,11 @@ public class Ragdoll : MonoBehaviour
 
     private void AlignPosToHips()
     {
+        // Store the original hip position
         Vector3 originalHipPos = m_hipsBone.position;
         transform.position = m_hipsBone.position;
 
+        // Setting the y-pos to the grounds height
         if(Physics.Raycast(transform.position, Vector3.down, out RaycastHit hit))
         {
             transform.position = new Vector3(transform.position.x, hit.point.y, transform.position.z);
