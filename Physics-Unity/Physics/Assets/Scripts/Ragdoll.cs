@@ -1,8 +1,7 @@
-using System;
 using System.Collections.Generic;
-
 using UnityEngine;
 
+[RequireComponent(typeof(Animator))]
 public class Ragdoll : MonoBehaviour
 {
     [SerializeField] private List<Rigidbody> rigidbodies = new List<Rigidbody>();
@@ -33,6 +32,8 @@ public class Ragdoll : MonoBehaviour
             return temp;
         }
     }
+
+    public Animator Animator => m_animator;
 
     private Transform m_hipsBone;
     private Animator m_animator;
