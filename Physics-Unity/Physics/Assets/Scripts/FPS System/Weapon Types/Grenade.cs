@@ -73,7 +73,7 @@ public class Grenade : MonoBehaviour
 			
 			if(enemy != null && !damagedEnemies.Contains(enemy))
 			{
-				enemy.DoDamage(damage);
+				enemy.health -= damage;
 
 				// Set enemy to ragdoll
 				Ragdoll enemyRd = enemy.GetComponent<Ragdoll>();

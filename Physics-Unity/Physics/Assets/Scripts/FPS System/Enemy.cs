@@ -7,8 +7,10 @@ using UnityEngine.AI;
 [RequireComponent(typeof(Ragdoll), typeof(NavMeshAgent))]
 public class Enemy : MonoBehaviour
 {
-    [SerializeField] private float health = 100;
-    [SerializeField, Tooltip("Degree/Second")] private float turnSpeed = 3;
+    public float health = 100;
+    [SerializeField] private float damage = 10;
+    [SerializeField, Tooltip("Degree/Second")] private float turnSpeed = 360;
+    [SerializeField] private float attackRadius = 1;
 
     public Collider HeadCollider => m_rd.Animator.GetBoneTransform(HumanBodyBones.Head).GetComponent<Collider>();
 
@@ -24,6 +26,7 @@ public class Enemy : MonoBehaviour
         m_agent = GetComponent<NavMeshAgent>();
         m_agent.speed = 0;
         m_agent.angularSpeed = turnSpeed;
+        m_agent.stoppingDistance = attackRadius;
         
         foreach(FPSController player in FindObjectsOfType<FPSController>())
         {
@@ -42,24 +45,38 @@ public class Enemy : MonoBehaviour
             m_deathCR ??= StartCoroutine(OnDeath());
             return;
         }
+        
+        AttackLogic();
 
         // Agent is off if ragdolling
         m_agent.enabled = !m_rd.RagdollOn;
+        m_agent.speed = m_rd.Animator.GetFloat("ZombieSpeed");
 
-        if (m_agent.speed == 0)
-            m_agent.speed = m_rd.Animator.GetFloat("ZombieSpeed");
-        
         // If ragdolling and movement is slow enough, un-ragdoll
         if(m_rd.RagdollOn && m_rd.TotalMovement < 1)
             m_rd.RagdollOn = false;
     }
 
-    public void DoDamage(float _damage)
+    private void AttackLogic()
     {
-        health -= _damage;
+        GetClosestPlayer(out FPSController closestPlayer, out float distance);
         
-        // Spawn hit effect
+        // Player is in attack radius, start the attack
+        if(distance <= attackRadius)
+        {
+            // Set start attack to true
+            if (!m_rd.Animator.GetBool("StartAttack"))
+                m_rd.Animator.SetBool("StartAttack", true);
+        }
         
+        // End of attack triggered
+        if(m_rd.Animator.GetBool("EndAttack"))
+        {
+            if (distance <= attackRadius) // player within radius, damage them
+                closestPlayer.health -= damage;
+            
+            m_rd.Animator.SetBool("EndAttack", false);
+        }
     }
 
     private IEnumerator OnDeath()
@@ -71,26 +88,7 @@ public class Enemy : MonoBehaviour
         
         Destroy(gameObject);
     }
-
-    private FPSController GetClosestPlayer()
-    {
-        float closestDistance = float.MaxValue;
-        FPSController closestPlayer = null;
-
-        foreach(FPSController player in m_players)
-        {
-            float playerDist = Vector3.Distance(player.transform.position, transform.position);
-
-            if(playerDist < closestDistance)
-            {
-                closestPlayer = player;
-                closestDistance = playerDist;
-            }
-        }
-
-        return closestPlayer;
-    }
-
+    
     private void SetTarget()
     {
         if(!m_agent.enabled)
@@ -98,7 +96,7 @@ public class Enemy : MonoBehaviour
 
         if(!m_rd.RagdollOn)
         {
-            FPSController closestPlayer = GetClosestPlayer();
+            GetClosestPlayer(out FPSController closestPlayer);
         
             if(closestPlayer != null)
             {
@@ -107,4 +105,25 @@ public class Enemy : MonoBehaviour
         }
         else m_agent.ResetPath();
     }
+
+    private void GetClosestPlayer(out FPSController _closestPlayer, out float _distance)
+    {
+        _distance = float.MaxValue;
+        _closestPlayer = null;
+
+        foreach(FPSController player in m_players)
+        {
+            float playerDist = Vector3.Distance(player.transform.position, transform.position);
+
+            if(playerDist < _distance)
+            {
+                _closestPlayer = player;
+                _distance = playerDist;
+            }
+        }
+    }
+
+    private void GetClosestPlayer(out float _distance) => GetClosestPlayer(out FPSController closestPlayer, out _distance);
+
+    private void GetClosestPlayer(out FPSController _closestPlayer) => GetClosestPlayer(out _closestPlayer, out float distance);
 }

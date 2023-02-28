@@ -1,16 +1,11 @@
-using System;
-
 using UnityEngine;
-
 using Random = UnityEngine.Random;
 
 public class FPSController : MonoBehaviour
 {
     public float health = 100;
     public GunType currentGun;
-    
-    private Transform m_camTransform;
-    
+
     private float m_maxDelay;
     private float m_currentDelay;
     
@@ -21,7 +16,6 @@ public class FPSController : MonoBehaviour
 
     private void Start()
     {
-        m_camTransform = Camera.main.transform;
         m_maxDelay = 1f / currentGun.fireRate;
     }
     
@@ -77,7 +71,7 @@ public class FPSController : MonoBehaviour
             ray.direction = Quaternion.Euler(shotOffset) * ray.direction;
 
             // Checks if we are aiming at an object, using the random degree offset
-            if(Physics.Raycast(ray, out RaycastHit hit, 500, -1, QueryTriggerInteraction.Ignore))
+            if(Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, -1, QueryTriggerInteraction.Ignore))
             {
                 // Bullet hit an enemy
                 Enemy enemy = hit.collider.GetComponentInParent<Enemy>();
@@ -87,7 +81,7 @@ public class FPSController : MonoBehaviour
                     float damage = hit.collider == enemy.HeadCollider ? 
                                        currentGun.headDamage : currentGun.bodyDamage;
 
-                    enemy.DoDamage(damage);
+                    enemy.health -= damage;
                 }
             }
         }
