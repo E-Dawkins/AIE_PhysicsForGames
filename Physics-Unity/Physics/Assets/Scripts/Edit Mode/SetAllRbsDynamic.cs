@@ -1,7 +1,6 @@
 ﻿using UnityEditor.SceneManagement;
-
-using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine;
 
 [ExecuteInEditMode]
 public class SetAllRbsDynamic : MonoBehaviour
