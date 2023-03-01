@@ -1,17 +1,17 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(Animator))]
 public class Ragdoll : MonoBehaviour
 {
+    public Animator animator;
     [SerializeField] private List<Rigidbody> rigidbodies = new List<Rigidbody>();
 
     public bool RagdollOn
     {
-        get => !m_animator.enabled;
+        get => !animator.enabled;
         set
         {
-            m_animator.enabled = !value;
+            animator.enabled = !value;
 
             foreach(Rigidbody rb in rigidbodies)
                 rb.isKinematic = !value;
@@ -33,16 +33,11 @@ public class Ragdoll : MonoBehaviour
         }
     }
 
-    public Animator Animator => m_animator;
-
     private Transform m_hipsBone;
-    private Animator m_animator;
 
     private void Awake()
     {
-        m_animator = GetComponent<Animator>();
-
-        m_hipsBone = m_animator.GetBoneTransform(HumanBodyBones.Hips);
+        m_hipsBone = animator.GetBoneTransform(HumanBodyBones.Hips);
         
         foreach(Rigidbody rb in rigidbodies)
             rb.isKinematic = false;

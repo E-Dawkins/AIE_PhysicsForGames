@@ -11,8 +11,9 @@ public class Enemy : MonoBehaviour
     [SerializeField] private float damage = 10;
     [SerializeField, Tooltip("Degree/Second")] private float turnSpeed = 360;
     [SerializeField] private float attackRadius = 1;
+    [SerializeField] private Transform playerCollider;
 
-    public Collider HeadCollider => m_rd.Animator.GetBoneTransform(HumanBodyBones.Head).GetComponent<Collider>();
+    public Collider HeadCollider => m_rd.animator.GetBoneTransform(HumanBodyBones.Head).GetComponent<Collider>();
 
     private Coroutine m_deathCR;
     private Ragdoll m_rd;
@@ -27,7 +28,7 @@ public class Enemy : MonoBehaviour
         m_agent.speed = 0;
         m_agent.angularSpeed = turnSpeed;
         m_agent.stoppingDistance = attackRadius;
-        
+
         foreach(FPSController player in FindObjectsOfType<FPSController>())
         {
             m_players.Add(player);
@@ -36,6 +37,15 @@ public class Enemy : MonoBehaviour
     
     private void Update()
     {
+        Debug.Log("test");
+        
+        // Move the player collider, only for walk type 2 (crawl-run)
+        if(m_rd.animator.GetInteger("WalkType") != -1)
+        {
+            playerCollider.transform.localPosition = new Vector3(0, 0.25f, 0);
+            playerCollider.transform.localEulerAngles = new Vector3(90, 0, 0);
+        }
+        
         // Set target to be nearest player, if not ragdolling
         SetTarget();
         
@@ -50,7 +60,7 @@ public class Enemy : MonoBehaviour
 
         // Agent is off if ragdolling
         m_agent.enabled = !m_rd.RagdollOn;
-        m_agent.speed = m_rd.Animator.GetFloat("ZombieSpeed");
+        m_agent.speed = m_rd.animator.GetFloat("ZombieSpeed");
 
         // If ragdolling and movement is slow enough, un-ragdoll
         if(m_rd.RagdollOn && m_rd.TotalMovement < 1)
@@ -65,17 +75,17 @@ public class Enemy : MonoBehaviour
         if(distance <= attackRadius)
         {
             // Set start attack to true
-            if (!m_rd.Animator.GetBool("StartAttack"))
-                m_rd.Animator.SetBool("StartAttack", true);
+            if (!m_rd.animator.GetBool("StartAttack"))
+                m_rd.animator.SetBool("StartAttack", true);
         }
         
         // End of attack triggered
-        if(m_rd.Animator.GetBool("EndAttack"))
+        if(m_rd.animator.GetBool("EndAttack"))
         {
             if (distance <= attackRadius) // player within radius, damage them
                 closestPlayer.health -= damage;
             
-            m_rd.Animator.SetBool("EndAttack", false);
+            m_rd.animator.SetBool("EndAttack", false);
         }
     }
 

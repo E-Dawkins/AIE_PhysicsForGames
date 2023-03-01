@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bodyDamage: 30
   headDamage: 75
-  fireRate: 100
+  fireRate: 3
   bulletSpread: 0.2
   reloadSpeed: 0.8
   automatic: 0

@@ -14,6 +14,8 @@ public class FPSController : MonoBehaviour
     [SerializeField] private int grenadeCount = 1;
     private Grenade m_grenade;
 
+    [SerializeField] private LayerMask shotLayerMask;
+
     private void Start()
     {
         m_maxDelay = 1f / currentGun.fireRate;
@@ -71,11 +73,13 @@ public class FPSController : MonoBehaviour
             ray.direction = Quaternion.Euler(shotOffset) * ray.direction;
 
             // Checks if we are aiming at an object, using the random degree offset
-            if(Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, -1, QueryTriggerInteraction.Ignore))
+            if(Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, shotLayerMask.value, QueryTriggerInteraction.Ignore))
             {
                 // Bullet hit an enemy
                 Enemy enemy = hit.collider.GetComponentInParent<Enemy>();
 
+                Debug.Log(hit.collider.name);
+                
                 if(enemy != null)
                 {
                     float damage = hit.collider == enemy.HeadCollider ? 

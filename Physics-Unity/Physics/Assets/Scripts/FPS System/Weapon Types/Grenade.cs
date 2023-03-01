@@ -11,6 +11,7 @@ public class Grenade : MonoBehaviour
 	[SerializeField] private float maxDamage = 150;
 	[SerializeField] private float explosionRadius = 5;
 	[SerializeField] private float explosionForce = 100;
+	[SerializeField] private LayerMask grenadeLayerMask;
 
 	public bool ShouldCook
 	{
@@ -39,6 +40,7 @@ public class Grenade : MonoBehaviour
 			
 			
 			// Sound
+			
 
 			// Check each collider in explosion radius to see if they are enemy or player
 			CheckExplosionRadius();
@@ -63,7 +65,7 @@ public class Grenade : MonoBehaviour
 	{
 		List<Enemy> damagedEnemies = new List<Enemy>();
 
-		foreach(Collider coll in Physics.OverlapSphere(transform.position, explosionRadius))
+		foreach(Collider coll in Physics.OverlapSphere(transform.position, explosionRadius, grenadeLayerMask, QueryTriggerInteraction.Ignore))
 		{
 			float percentFromCenter = Vector3.Distance(coll.transform.position, transform.position) / explosionRadius;
 			float damage = Mathf.Clamp01(1 - percentFromCenter) * maxDamage;
