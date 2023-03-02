@@ -37,13 +37,13 @@ public class Enemy : MonoBehaviour
     
     private void Update()
     {
-        // Move the player collider, only for walk type 2 (crawl-run)
-        if(m_rd.animator.GetInteger("WalkType") != -1)
+        // Move the player collider, only for walk type 3 (crawl-run)
+        if(m_rd.animator.GetInteger("WalkType") == 3)
         {
             playerCollider.transform.localPosition = new Vector3(0, 0.25f, 0);
             playerCollider.transform.localEulerAngles = new Vector3(90, 0, 0);
         }
-        
+
         // Set target to be nearest player, if not ragdolling
         SetTarget();
         
