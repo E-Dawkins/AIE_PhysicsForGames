@@ -301,6 +301,7 @@ GameObject:
   m_Component:
   - component: {fileID: 490552}
   - component: {fileID: 20592644}
+  - component: {fileID: 7909303219915006752}
   m_Layer: 0
   m_Name: Struct_Fence2_Mid_A
   m_TagString: Untagged
@@ -353,3 +354,19 @@ LODGroup:
     renderers:
     - renderer: {fileID: 2327090}
   m_Enabled: 1
+--- !u!208 &7909303219915006752
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 182002}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 3.3126874, y: 0.6741747, z: 0.10412847}
+  m_MoveThreshold: 0.1
+  m_Carve: 1
+  m_CarveOnlyStationary: 1
+  m_Center: {x: -3.2194433, y: 0.66581154, z: 0.06567007}
+  m_TimeToStationary: 0.5

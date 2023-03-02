@@ -37,8 +37,6 @@ public class Enemy : MonoBehaviour
     
     private void Update()
     {
-        Debug.Log("test");
-        
         // Move the player collider, only for walk type 2 (crawl-run)
         if(m_rd.animator.GetInteger("WalkType") != -1)
         {

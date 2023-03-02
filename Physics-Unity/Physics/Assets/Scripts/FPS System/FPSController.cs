@@ -78,8 +78,6 @@ public class FPSController : MonoBehaviour
                 // Bullet hit an enemy
                 Enemy enemy = hit.collider.GetComponentInParent<Enemy>();
 
-                Debug.Log(hit.collider.name);
-                
                 if(enemy != null)
                 {
                     float damage = hit.collider == enemy.HeadCollider ? 
