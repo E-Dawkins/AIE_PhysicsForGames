@@ -50,6 +50,12 @@ public class Ragdoll : MonoBehaviour
             rb.AddExplosionForce(_forceAmount, _position, _radius, _radius * 0.25f, ForceMode.Impulse);
         }
     }
+    
+    public void SetConstraints(RigidbodyConstraints _constraints)
+    {
+        foreach(Rigidbody rb in rigidbodies)
+            rb.constraints = _constraints;
+    }
 
     private void AlignPosToHips()
     {

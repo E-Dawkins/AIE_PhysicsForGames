@@ -37,6 +37,24 @@ public class Enemy : MonoBehaviour
     
     private void Update()
     {
+        // Agent is off if ragdolling
+        m_agent.enabled = !m_rd.RagdollOn;
+        m_agent.speed = m_rd.animator.GetFloat("ZombieSpeed");
+        
+        // Set target to be nearest player, if not ragdolling
+        SetTarget();
+        
+        // If dead, run death coroutine
+        if(health <= 0)
+        {
+            m_rd.RagdollOn = true;
+            
+            if (m_rd.TotalMovement < 1)
+                m_deathCR ??= StartCoroutine(OnDeath());
+            
+            return;
+        }
+        
         // Move the player collider, only for walk type 3 (crawl-run)
         if(m_rd.animator.GetInteger("WalkType") == 3)
         {
@@ -44,21 +62,7 @@ public class Enemy : MonoBehaviour
             playerCollider.transform.localEulerAngles = new Vector3(90, 0, 0);
         }
 
-        // Set target to be nearest player, if not ragdolling
-        SetTarget();
-        
-        // If dead, run death coroutine
-        if(health <= 0)
-        {
-            m_deathCR ??= StartCoroutine(OnDeath());
-            return;
-        }
-        
         AttackLogic();
-
-        // Agent is off if ragdolling
-        m_agent.enabled = !m_rd.RagdollOn;
-        m_agent.speed = m_rd.animator.GetFloat("ZombieSpeed");
 
         // If ragdolling and movement is slow enough, un-ragdoll
         if(m_rd.RagdollOn && m_rd.TotalMovement < 1)
@@ -89,17 +93,27 @@ public class Enemy : MonoBehaviour
 
     private IEnumerator OnDeath()
     {
-        m_rd.RagdollOn = true;
-        m_agent.ResetPath();
-
-        yield return new WaitForSeconds(3);
+        m_rd.SetConstraints(RigidbodyConstraints.FreezeAll);
         
+        float t = 0;
+        float waitTime = 5;
+        Vector3 targetPos = transform.position + Vector3.down * 2;
+
+        while(t < waitTime)
+        {
+            transform.position = Vector3.Lerp(transform.position, targetPos, t / waitTime);
+            
+            yield return null;
+            
+            t += Time.deltaTime;
+        }
+
         Destroy(gameObject);
     }
     
     private void SetTarget()
     {
-        if(!m_agent.enabled)
+        if(!m_agent.enabled || !m_agent.isOnNavMesh)
             return;
 
         if(!m_rd.RagdollOn)
