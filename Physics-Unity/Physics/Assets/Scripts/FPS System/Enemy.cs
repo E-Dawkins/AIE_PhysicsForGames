@@ -93,15 +93,18 @@ public class Enemy : MonoBehaviour
 
     private IEnumerator OnDeath()
     {
+        float waitTime = 3;
+        yield return new WaitForSeconds(waitTime);
+        
         m_rd.SetConstraints(RigidbodyConstraints.FreezeAll);
         
         float t = 0;
-        float waitTime = 5;
+        float sinkTime = 5;
         Vector3 targetPos = transform.position + Vector3.down * 2;
 
-        while(t < waitTime)
+        while(t < sinkTime)
         {
-            transform.position = Vector3.Lerp(transform.position, targetPos, t / waitTime);
+            transform.position = Vector3.Lerp(transform.position, targetPos, t / sinkTime);
             
             yield return null;
             
