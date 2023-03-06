@@ -13,7 +13,6 @@ GameObject:
   - component: {fileID: 7984069619931363262}
   - component: {fileID: 7984069619931363261}
   - component: {fileID: 7984069619931363260}
-  - component: {fileID: 7984069619931363251}
   m_Layer: 2
   m_Name: Cylinder
   m_TagString: Untagged
@@ -64,7 +63,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: fa3b418599852594c8d15fb4d9ce097e, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -116,20 +115,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 14
   m_CollisionDetection: 0
---- !u!114 &7984069619931363251
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7984069619931363249}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f6e9e989ecc716a4f8ecba1dcf3958a0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  awakeMat: {fileID: 2100000, guid: 3548fd384ea5ee24eb021e501ee6ee05, type: 2}
-  asleepMat: {fileID: 2100000, guid: 99df99ce114827e47905955e96ea5a59, type: 2}
 --- !u!1 &7984069619977161330
 GameObject:
   m_ObjectHideFlags: 0
@@ -154,7 +139,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7984069619977161330}
-  m_LocalRotation: {x: -0.70710677, y: -0, z: -0, w: 0.7071068}
+  m_LocalRotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071068}
   m_LocalPosition: {x: -2.5, y: 8.42, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -183,7 +168,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pendulumEnd: {fileID: 7984069620555186525}
-  releaseKey: 13
+  pendulumTrigger: {fileID: 0}
 --- !u!1 &7984069620216909965
 GameObject:
   m_ObjectHideFlags: 0
@@ -197,7 +182,6 @@ GameObject:
   - component: {fileID: 7984069620216909962}
   - component: {fileID: 7984069620216909961}
   - component: {fileID: 7984069620216909960}
-  - component: {fileID: 7984069620216909967}
   - component: {fileID: 7984069620216910196}
   m_Layer: 2
   m_Name: Capsule (5)
@@ -249,7 +233,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: fa3b418599852594c8d15fb4d9ce097e, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -301,20 +285,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &7984069620216909967
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7984069620216909965}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f6e9e989ecc716a4f8ecba1dcf3958a0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  awakeMat: {fileID: 2100000, guid: 3548fd384ea5ee24eb021e501ee6ee05, type: 2}
-  asleepMat: {fileID: 2100000, guid: 99df99ce114827e47905955e96ea5a59, type: 2}
 --- !u!144 &7984069620216910196
 CharacterJoint:
   m_ObjectHideFlags: 0
@@ -374,7 +344,6 @@ GameObject:
   - component: {fileID: 7984069620264451491}
   - component: {fileID: 7984069620264451490}
   - component: {fileID: 7984069620264451502}
-  - component: {fileID: 7984069620264451501}
   - component: {fileID: 7984069620264451503}
   m_Layer: 2
   m_Name: Capsule (1)
@@ -426,7 +395,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: fa3b418599852594c8d15fb4d9ce097e, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -478,20 +447,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &7984069620264451501
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7984069620264451488}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f6e9e989ecc716a4f8ecba1dcf3958a0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  awakeMat: {fileID: 2100000, guid: 3548fd384ea5ee24eb021e501ee6ee05, type: 2}
-  asleepMat: {fileID: 2100000, guid: 99df99ce114827e47905955e96ea5a59, type: 2}
 --- !u!144 &7984069620264451503
 CharacterJoint:
   m_ObjectHideFlags: 0
@@ -551,7 +506,6 @@ GameObject:
   - component: {fileID: 7984069620491750829}
   - component: {fileID: 7984069620491750828}
   - component: {fileID: 7984069620491750824}
-  - component: {fileID: 7984069620491750831}
   - component: {fileID: 7984069620491750825}
   m_Layer: 2
   m_Name: Capsule (2)
@@ -603,7 +557,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: fa3b418599852594c8d15fb4d9ce097e, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -655,20 +609,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &7984069620491750831
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7984069620491750818}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f6e9e989ecc716a4f8ecba1dcf3958a0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  awakeMat: {fileID: 2100000, guid: 3548fd384ea5ee24eb021e501ee6ee05, type: 2}
-  asleepMat: {fileID: 2100000, guid: 99df99ce114827e47905955e96ea5a59, type: 2}
 --- !u!144 &7984069620491750825
 CharacterJoint:
   m_ObjectHideFlags: 0
@@ -726,9 +666,10 @@ GameObject:
   - component: {fileID: 7984069620555186515}
   - component: {fileID: 7984069620555186520}
   - component: {fileID: 7984069620555186527}
-  - component: {fileID: 7984069620555186526}
+  - component: {fileID: 5285096559668903428}
   - component: {fileID: 7984069620555186525}
   - component: {fileID: 7984069620555186524}
+  - component: {fileID: 4152076370513593113}
   m_Layer: 0
   m_Name: Sphere
   m_TagString: Untagged
@@ -779,7 +720,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: fa3b418599852594c8d15fb4d9ce097e, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -801,7 +742,7 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!135 &7984069620555186526
+--- !u!135 &5285096559668903428
 SphereCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -809,7 +750,7 @@ SphereCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7984069620555186514}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 0.5
@@ -876,6 +817,20 @@ CharacterJoint:
   m_EnablePreprocessing: 1
   m_MassScale: 1
   m_ConnectedMassScale: 1
+--- !u!114 &4152076370513593113
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7984069620555186514}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 665a8ee7de837944da694221e40faf37, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  applyForce: 1
+  forceMag: 20
 --- !u!1 &7984069620601499178
 GameObject:
   m_ObjectHideFlags: 0
@@ -890,7 +845,6 @@ GameObject:
   - component: {fileID: 7984069620601499158}
   - component: {fileID: 7984069620601499157}
   - component: {fileID: 7984069620601499156}
-  - component: {fileID: 7984069620601499153}
   m_Layer: 2
   m_Name: Capsule
   m_TagString: Untagged
@@ -941,7 +895,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: fa3b418599852594c8d15fb4d9ce097e, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1029,20 +983,6 @@ HingeJoint:
   m_EnablePreprocessing: 1
   m_MassScale: 1
   m_ConnectedMassScale: 1
---- !u!114 &7984069620601499153
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7984069620601499178}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f6e9e989ecc716a4f8ecba1dcf3958a0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  awakeMat: {fileID: 2100000, guid: 3548fd384ea5ee24eb021e501ee6ee05, type: 2}
-  asleepMat: {fileID: 2100000, guid: 99df99ce114827e47905955e96ea5a59, type: 2}
 --- !u!1 &7984069620611868717
 GameObject:
   m_ObjectHideFlags: 0
@@ -1057,7 +997,6 @@ GameObject:
   - component: {fileID: 7984069620611868714}
   - component: {fileID: 7984069620611868713}
   - component: {fileID: 7984069620611868712}
-  - component: {fileID: 7984069620611868719}
   - component: {fileID: 7984069620611868693}
   m_Layer: 2
   m_Name: Capsule (3)
@@ -1109,7 +1048,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: fa3b418599852594c8d15fb4d9ce097e, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1197,20 +1136,6 @@ HingeJoint:
   m_EnablePreprocessing: 1
   m_MassScale: 1
   m_ConnectedMassScale: 1
---- !u!114 &7984069620611868719
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7984069620611868717}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f6e9e989ecc716a4f8ecba1dcf3958a0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  awakeMat: {fileID: 2100000, guid: 3548fd384ea5ee24eb021e501ee6ee05, type: 2}
-  asleepMat: {fileID: 2100000, guid: 99df99ce114827e47905955e96ea5a59, type: 2}
 --- !u!144 &7984069620611868693
 CharacterJoint:
   m_ObjectHideFlags: 0
@@ -1270,7 +1195,6 @@ GameObject:
   - component: {fileID: 7984069621413834521}
   - component: {fileID: 7984069621413834520}
   - component: {fileID: 7984069621413834527}
-  - component: {fileID: 7984069621413834526}
   - component: {fileID: 7984069621413834523}
   m_Layer: 2
   m_Name: Capsule (4)
@@ -1322,7 +1246,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: fa3b418599852594c8d15fb4d9ce097e, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1374,20 +1298,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &7984069621413834526
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7984069621413834524}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f6e9e989ecc716a4f8ecba1dcf3958a0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  awakeMat: {fileID: 2100000, guid: 3548fd384ea5ee24eb021e501ee6ee05, type: 2}
-  asleepMat: {fileID: 2100000, guid: 99df99ce114827e47905955e96ea5a59, type: 2}
 --- !u!144 &7984069621413834523
 CharacterJoint:
   m_ObjectHideFlags: 0

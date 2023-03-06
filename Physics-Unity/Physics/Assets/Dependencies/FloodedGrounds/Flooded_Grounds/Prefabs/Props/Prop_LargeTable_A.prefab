@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 474812}
   - component: {fileID: 3343556}
   - component: {fileID: 2317598}
-  - component: {fileID: 6521508}
   m_Layer: 8
   m_Name: lo_Prop_LargeTable_A_LOD0
   m_TagString: Untagged
@@ -84,19 +83,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &6521508
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 110066}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 5, y: 1.1891838, z: 2}
-  m_Center: {x: 0, y: 0.605782, z: -0.000000029802322}
 --- !u!1 &165168
 GameObject:
   m_ObjectHideFlags: 0
@@ -108,7 +94,6 @@ GameObject:
   - component: {fileID: 479680}
   - component: {fileID: 3344366}
   - component: {fileID: 2318758}
-  - component: {fileID: 6527436}
   m_Layer: 8
   m_Name: lo_Prop_LargeTable_A_LOD1
   m_TagString: Untagged
@@ -181,19 +166,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &6527436
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 165168}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 5, y: 1.1891838, z: 2}
-  m_Center: {x: 0, y: 0.605782, z: -0.000000029802322}
 --- !u!1 &172672
 GameObject:
   m_ObjectHideFlags: 0
@@ -204,6 +176,8 @@ GameObject:
   m_Component:
   - component: {fileID: 429048}
   - component: {fileID: 20565128}
+  - component: {fileID: 413456987}
+  - component: {fileID: 413456988}
   m_Layer: 8
   m_Name: Prop_LargeTable_A
   m_TagString: Untagged
@@ -220,7 +194,7 @@ Transform:
   m_GameObject: {fileID: 172672}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 245.82945, y: 25.123604, z: 407.56085}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.9000003, y: 0.9, z: 0.9000003}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 474812}
@@ -251,3 +225,32 @@ LODGroup:
     renderers:
     - renderer: {fileID: 2318758}
   m_Enabled: 1
+--- !u!65 &413456987
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 172672}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 5, y: 1.1891838, z: 2}
+  m_Center: {x: 0, y: 0.605782, z: -0.000000029802322}
+--- !u!208 &413456988
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 172672}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 2.5, y: 0.594592, z: 1}
+  m_MoveThreshold: 0.1
+  m_Carve: 1
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 0, y: 0.605782, z: -0.00000002980232}
+  m_TimeToStationary: 0.5

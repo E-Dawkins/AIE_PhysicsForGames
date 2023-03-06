@@ -65,7 +65,7 @@ public class Enemy : MonoBehaviour
         AttackLogic();
 
         // If ragdolling and movement is slow enough, un-ragdoll
-        if(m_rd.RagdollOn && m_rd.TotalMovement < 1)
+        if(m_rd.RagdollOn && m_rd.TotalMovement < 0.25f)
             m_rd.RagdollOn = false;
     }
 
