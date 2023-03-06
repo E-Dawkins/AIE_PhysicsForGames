@@ -20,6 +20,8 @@ public class Enemy : MonoBehaviour
     private NavMeshAgent m_agent;
     private List<FPSController> m_players = new List<FPSController>();
 
+    private Coroutine m_unRagdoll;
+
     private void Start()
     {
         m_rd = GetComponent<Ragdoll>();
@@ -50,7 +52,7 @@ public class Enemy : MonoBehaviour
             m_rd.RagdollOn = true;
             
             if (m_rd.TotalMovement < 1)
-                m_deathCR ??= StartCoroutine(OnDeath());
+                m_deathCR ??= StartCoroutine(OnDeath().GetEnumerator());
             
             return;
         }
@@ -64,9 +66,9 @@ public class Enemy : MonoBehaviour
 
         AttackLogic();
 
-        // If ragdolling and movement is slow enough, un-ragdoll
-        if(m_rd.RagdollOn && m_rd.TotalMovement < 0.25f)
-            m_rd.RagdollOn = false;
+        // Run un-ragdoll coroutine, only if not already running
+        if (m_unRagdoll == null && m_rd.RagdollOn)
+            m_unRagdoll = StartCoroutine(StopRagdoll().GetEnumerator());
     }
 
     private void AttackLogic()
@@ -91,7 +93,7 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    private IEnumerator OnDeath()
+    private IEnumerable OnDeath()
     {
         float waitTime = 3;
         yield return new WaitForSeconds(waitTime);
@@ -112,6 +114,14 @@ public class Enemy : MonoBehaviour
         }
 
         Destroy(gameObject);
+    }
+
+    private IEnumerable StopRagdoll()
+    {
+        yield return new WaitForSeconds(3);
+
+        m_rd.RagdollOn = false;
+        m_unRagdoll = null;
     }
     
     private void SetTarget()

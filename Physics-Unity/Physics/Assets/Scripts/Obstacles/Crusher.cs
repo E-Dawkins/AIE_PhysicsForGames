@@ -7,13 +7,13 @@ public class Crusher : MonoBehaviour
 {
 	[SerializeField] private Vector3 jointTargetPos;
 	
-	private ConfigurableJoint joint;
+	private ConfigurableJoint m_joint;
 
 	private bool m_canCrush = true;
 
 	private void Awake()
 	{
-		joint = GetComponent<ConfigurableJoint>();
+		m_joint = GetComponent<ConfigurableJoint>();
 	}
 
 	public void StartCrush()
@@ -26,20 +26,20 @@ public class Crusher : MonoBehaviour
 	{
 		m_canCrush = false;
 		
-		joint.targetPosition = jointTargetPos;
+		m_joint.targetPosition = jointTargetPos;
 
 		yield return new WaitForSeconds(2);
 			
-		joint.targetPosition = new Vector3();
+		m_joint.targetPosition = new Vector3();
 			
-		JointDrive zDrive = joint.zDrive;
+		JointDrive zDrive = m_joint.zDrive;
 		zDrive.positionSpring *= 0.5f;
-		joint.zDrive = zDrive;
+		m_joint.zDrive = zDrive;
 
 		yield return new WaitForSeconds(1);
 
 		zDrive.positionSpring *= 2f;
-		joint.zDrive = zDrive;
+		m_joint.zDrive = zDrive;
 
 		m_canCrush = true;
 	}
