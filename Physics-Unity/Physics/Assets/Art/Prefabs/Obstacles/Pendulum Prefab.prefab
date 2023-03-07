@@ -110,7 +110,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2890257cc2084b7abc03d54d7a9498fe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  onTrigger:
+  onActivation:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 7721186483458831885}
@@ -125,8 +125,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  ui: {fileID: 0}
-  clickDistance: 5
+  interactDistance: 5
 --- !u!1 &426213820269078173
 GameObject:
   m_ObjectHideFlags: 0

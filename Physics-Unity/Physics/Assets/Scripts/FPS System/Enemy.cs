@@ -12,15 +12,19 @@ public class Enemy : MonoBehaviour
     [SerializeField, Tooltip("Degree/Second")] private float turnSpeed = 360;
     [SerializeField] private float attackRadius = 1;
     [SerializeField] private Transform playerCollider;
-
+    
     public Collider HeadCollider => m_rd.animator.GetBoneTransform(HumanBodyBones.Head).GetComponent<Collider>();
 
-    private Coroutine m_deathCR;
+    public Ragdoll Ragdoll => m_rd;
     private Ragdoll m_rd;
+    
+    public NavMeshAgent Agent => m_agent;
     private NavMeshAgent m_agent;
+    
     private List<FPSController> m_players = new List<FPSController>();
 
-    private Coroutine m_unRagdoll;
+    private Coroutine m_unRagdoll_CR;
+    private Coroutine m_death_CR;
 
     private void Start()
     {
@@ -45,15 +49,14 @@ public class Enemy : MonoBehaviour
         
         // Set target to be nearest player, if not ragdolling
         SetTarget();
-        
+
         // If dead, run death coroutine
         if(health <= 0)
         {
             m_rd.RagdollOn = true;
-            
-            if (m_rd.TotalMovement < 1)
-                m_deathCR ??= StartCoroutine(OnDeath().GetEnumerator());
-            
+
+            m_death_CR ??= StartCoroutine(OnDeath().GetEnumerator());
+
             return;
         }
         
@@ -67,8 +70,8 @@ public class Enemy : MonoBehaviour
         AttackLogic();
 
         // Run un-ragdoll coroutine, only if not already running
-        if (m_unRagdoll == null && m_rd.RagdollOn)
-            m_unRagdoll = StartCoroutine(StopRagdoll().GetEnumerator());
+        if (m_unRagdoll_CR == null && m_rd.RagdollOn)
+            m_unRagdoll_CR = StartCoroutine(UnRagdoll().GetEnumerator());
     }
 
     private void AttackLogic()
@@ -93,37 +96,27 @@ public class Enemy : MonoBehaviour
         }
     }
 
+    private IEnumerable UnRagdoll()
+    {
+        yield return new WaitForSeconds(3);
+
+        while(m_rd.TotalMovement() > 1)
+            yield return null;
+
+        m_rd.RagdollOn = false;
+        m_unRagdoll_CR = null;
+    }
+
     private IEnumerable OnDeath()
     {
-        float waitTime = 3;
-        yield return new WaitForSeconds(waitTime);
-        
-        m_rd.SetConstraints(RigidbodyConstraints.FreezeAll);
-        
-        float t = 0;
-        float sinkTime = 5;
-        Vector3 targetPos = transform.position + Vector3.down * 2;
+        yield return new WaitForSeconds(3);
 
-        while(t < sinkTime)
-        {
-            transform.position = Vector3.Lerp(transform.position, targetPos, t / sinkTime);
-            
+        while(m_rd.TotalMovement() > 1)
             yield return null;
-            
-            t += Time.deltaTime;
-        }
 
         Destroy(gameObject);
     }
 
-    private IEnumerable StopRagdoll()
-    {
-        yield return new WaitForSeconds(3);
-
-        m_rd.RagdollOn = false;
-        m_unRagdoll = null;
-    }
-    
     private void SetTarget()
     {
         if(!m_agent.enabled || !m_agent.isOnNavMesh)

@@ -16,13 +16,19 @@ public class FPSController : MonoBehaviour
 
     [SerializeField] private LayerMask shotLayerMask;
 
-    private void Start()
+    [SerializeField] private GameObject interactUi;
+
+    private void Awake()
     {
         m_maxDelay = 1f / currentGun.fireRate;
+        interactUi.SetActive(false);
     }
     
     private void Update()
     {
+        // Toggle interact ui state
+        ToggleUI();
+        
         // Holding a grenade
         if(m_grenade != null)
             GrenadeLogic();
@@ -40,6 +46,19 @@ public class FPSController : MonoBehaviour
         // No health, player has died
         if (health <= 0)
             OnDeath();
+    }
+
+    private void ToggleUI()
+    {
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+
+        if(Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, -1, QueryTriggerInteraction.Ignore))
+        {
+            bool uiOn = hit.collider.TryGetComponent(out Interactable interactable) &&
+                        hit.distance <= interactable.interactDistance;
+            
+            interactUi.SetActive(uiOn);
+        }
     }
 
     private bool CanShoot()

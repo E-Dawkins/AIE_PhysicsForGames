@@ -20,27 +20,17 @@ public class Ragdoll : MonoBehaviour
         }
     }
 
-    public float TotalMovement
-    {
-        get
-        {
-            float temp = 0;
-
-            foreach(Rigidbody rb in rigidbodies)
-                temp += rb.velocity.magnitude;
-
-            return temp;
-        }
-    }
-
     private Transform m_hipsBone;
 
     private void Awake()
     {
         m_hipsBone = animator.GetBoneTransform(HumanBodyBones.Hips);
-        
+
         foreach(Rigidbody rb in rigidbodies)
+        {
             rb.isKinematic = false;
+            rb.detectCollisions = true;
+        }
     }
 
     public void AddExplosionForce(float _forceAmount, Vector3 _position, float _radius)
@@ -58,12 +48,6 @@ public class Ragdoll : MonoBehaviour
             rb.AddForce(_force, _forceMode);
         }
     }
-    
-    public void SetConstraints(RigidbodyConstraints _constraints)
-    {
-        foreach(Rigidbody rb in rigidbodies)
-            rb.constraints = _constraints;
-    }
 
     private void AlignPosToHips()
     {
@@ -78,5 +62,17 @@ public class Ragdoll : MonoBehaviour
         }
 
         m_hipsBone.position = originalHipPos;
+    }
+
+    public float TotalMovement()
+    {
+        float movement = 0;
+        
+        foreach(Rigidbody rb in rigidbodies)
+        {
+            movement += rb.velocity.magnitude;
+        }
+
+        return movement;
     }
 }

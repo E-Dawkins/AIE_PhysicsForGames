@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using UnityEngine;
 
 [RequireComponent(typeof(ConfigurableJoint))]
@@ -9,7 +8,7 @@ public class Crusher : MonoBehaviour
 	
 	private ConfigurableJoint m_joint;
 
-	private bool m_canCrush = true;
+	private Coroutine m_crushCR;
 
 	private void Awake()
 	{
@@ -18,30 +17,20 @@ public class Crusher : MonoBehaviour
 
 	public void StartCrush()
 	{
-		if (m_canCrush)
-			StartCoroutine(Crush().GetEnumerator());
+		m_crushCR ??= StartCoroutine(Crush().GetEnumerator());
 	}
 
 	public IEnumerable Crush()
 	{
-		m_canCrush = false;
-		
 		m_joint.targetPosition = jointTargetPos;
 
 		yield return new WaitForSeconds(2);
 			
 		m_joint.targetPosition = new Vector3();
-			
-		JointDrive zDrive = m_joint.zDrive;
-		zDrive.positionSpring *= 0.5f;
-		m_joint.zDrive = zDrive;
 
 		yield return new WaitForSeconds(1);
 
-		zDrive.positionSpring *= 2f;
-		m_joint.zDrive = zDrive;
-
-		m_canCrush = true;
+		m_crushCR = null;
 	}
 
 	private void OnCollisionEnter(Collision _collision)
