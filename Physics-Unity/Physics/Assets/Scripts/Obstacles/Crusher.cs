@@ -35,11 +35,11 @@ public class Crusher : MonoBehaviour
 
 	private void OnCollisionEnter(Collision _collision)
 	{
-		Ragdoll rd = _collision.gameObject.GetComponentInParent<Ragdoll>();
+		Enemy enemy = _collision.gameObject.GetComponentInParent<Enemy>();
 
-		if(rd != null)
+		if(enemy != null)
 		{
-			rd.RagdollOn = true;
+			enemy.health = -1;
 		}
 	}
 }

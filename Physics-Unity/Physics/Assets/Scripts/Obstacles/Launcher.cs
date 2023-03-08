@@ -1,11 +1,13 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class Launcher : MonoBehaviour
 {
-	public List<Enemy> enemiesInArea = new List<Enemy>();
+	[SerializeField] private NavMeshObstacle navMeshObstacle;
+	
+	private List<Enemy> m_enemiesInArea = new List<Enemy>();
 
 	private HingeJoint m_joint;
 	private Coroutine m_launchCR;
@@ -14,22 +16,23 @@ public class Launcher : MonoBehaviour
 	{
 		m_joint = GetComponent<HingeJoint>();
 		GetComponent<Rigidbody>().isKinematic = true;
+		navMeshObstacle.enabled = false;
 	}
 
 	private void OnTriggerEnter(Collider _other)
 	{
 		Enemy enemy = _other.GetComponentInParent<Enemy>();
 		
-		if (enemy != null && !enemiesInArea.Contains(enemy))
-			enemiesInArea.Add(enemy);
+		if (enemy != null && !m_enemiesInArea.Contains(enemy))
+			m_enemiesInArea.Add(enemy);
 	}
 	
 	private void OnTriggerExit(Collider _other)
 	{
 		Enemy enemy = _other.GetComponentInParent<Enemy>();
 		
-		if (enemy != null && enemiesInArea.Contains(enemy))
-			enemiesInArea.Remove(enemy);
+		if (enemy != null && m_enemiesInArea.Contains(enemy))
+			m_enemiesInArea.Remove(enemy);
 	}
 
 	public void StartLaunch(float _angle)
@@ -40,8 +43,9 @@ public class Launcher : MonoBehaviour
 	private IEnumerable Launch(float _angle)
 	{
 		GetComponent<Rigidbody>().isKinematic = false;
+		navMeshObstacle.enabled = true;
 
-		foreach(Enemy enemy in enemiesInArea)
+		foreach(Enemy enemy in m_enemiesInArea)
 		{
 			enemy.Ragdoll.RagdollOn = true;
 			enemy.Agent.enabled = false;
@@ -63,5 +67,6 @@ public class Launcher : MonoBehaviour
 		m_launchCR = null;
 		
 		GetComponent<Rigidbody>().isKinematic = true;
+		navMeshObstacle.enabled = false;
 	}
 }
