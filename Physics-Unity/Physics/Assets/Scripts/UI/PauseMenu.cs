@@ -24,6 +24,14 @@ public class PauseMenu : MonoBehaviour
                 go.SetActive(pauseScreenActive);
 
             Time.timeScale = pauseScreenActive ? 1 : 0;
+
+            Cursor.lockState = pauseScreenActive ? CursorLockMode.Locked : CursorLockMode.None;
+            Cursor.visible = !pauseScreenActive;
         }
+    }
+
+    public void UnPause()
+    {
+        Time.timeScale = 1;
     }
 }

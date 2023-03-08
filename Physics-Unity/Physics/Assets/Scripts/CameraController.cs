@@ -1,12 +1,11 @@
-using System;
-
 using UnityEngine;
 
 public class CameraController : MonoBehaviour
 {
     [SerializeField] private Transform target;
     [SerializeField] private Vector3 camOffset = new Vector3(0, 1.7f, 0.05f);
-    [SerializeField] private float lookSpeed = 270;
+    [SerializeField] private float maxLookSpeed = 270;
+    [SerializeField] private string sensDataName = "sensitivity";
 
     private float m_xRot;
 
@@ -19,18 +18,20 @@ public class CameraController : MonoBehaviour
 
     private void Update()
     {
+        float actualLookSpeed = PlayerPrefs.GetFloat(sensDataName, 0.5f) * maxLookSpeed;
+
         // Rotate the camera with the mouse movement
         Vector3 angles = transform.eulerAngles;
         
-        float dx = Input.GetAxis("Mouse Y") * lookSpeed * Time.deltaTime;
-        float dy = Input.GetAxis("Mouse X") * lookSpeed * Time.deltaTime;
+        float dx = Input.GetAxis("Mouse Y") * actualLookSpeed * Time.deltaTime;
+        float dy = Input.GetAxis("Mouse X") * actualLookSpeed * Time.deltaTime;
             
         // Look up and down by rotating around the X-axis
         m_xRot = Mathf.Clamp(m_xRot - dx, -70f, 55f);
         angles.x = m_xRot;
 
         // Spin the camera on the Y-axis
-        angles.y += dy * lookSpeed * Time.deltaTime;
+        angles.y += dy * actualLookSpeed * Time.deltaTime;
         transform.eulerAngles = angles;
 
         // Move camera with target
