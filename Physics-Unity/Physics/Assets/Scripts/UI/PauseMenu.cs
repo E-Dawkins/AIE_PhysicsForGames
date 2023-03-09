@@ -30,8 +30,5 @@ public class PauseMenu : MonoBehaviour
         }
     }
 
-    public void UnPause()
-    {
-        Time.timeScale = 1;
-    }
+    public void SetTimeScale(float _scale) => Time.timeScale = _scale;
 }

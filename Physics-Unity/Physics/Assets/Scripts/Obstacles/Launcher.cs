@@ -7,7 +7,7 @@ public class Launcher : MonoBehaviour
 {
 	[SerializeField] private NavMeshObstacle navMeshObstacle;
 	
-	private List<Enemy> m_enemiesInArea = new List<Enemy>();
+	private List<Zombie> m_enemiesInArea = new List<Zombie>();
 
 	private HingeJoint m_joint;
 	private Coroutine m_launchCR;
@@ -21,18 +21,18 @@ public class Launcher : MonoBehaviour
 
 	private void OnTriggerEnter(Collider _other)
 	{
-		Enemy enemy = _other.GetComponentInParent<Enemy>();
+		Zombie zombie = _other.GetComponentInParent<Zombie>();
 		
-		if (enemy != null && !m_enemiesInArea.Contains(enemy))
-			m_enemiesInArea.Add(enemy);
+		if (zombie != null && !m_enemiesInArea.Contains(zombie))
+			m_enemiesInArea.Add(zombie);
 	}
 	
 	private void OnTriggerExit(Collider _other)
 	{
-		Enemy enemy = _other.GetComponentInParent<Enemy>();
+		Zombie zombie = _other.GetComponentInParent<Zombie>();
 		
-		if (enemy != null && m_enemiesInArea.Contains(enemy))
-			m_enemiesInArea.Remove(enemy);
+		if (zombie != null && m_enemiesInArea.Contains(zombie))
+			m_enemiesInArea.Remove(zombie);
 	}
 
 	public void StartLaunch(float _angle)
@@ -45,7 +45,7 @@ public class Launcher : MonoBehaviour
 		GetComponent<Rigidbody>().isKinematic = false;
 		navMeshObstacle.enabled = true;
 
-		foreach(Enemy enemy in m_enemiesInArea)
+		foreach(Zombie enemy in m_enemiesInArea)
 		{
 			enemy.Ragdoll.RagdollOn = true;
 			enemy.Agent.enabled = false;

@@ -19,10 +19,10 @@ public class Damager : MonoBehaviour
 		{
 			if(damageEnemy)
 			{
-				Enemy enemy = _collider.gameObject.GetComponentInParent<Enemy>();
+				Zombie zombie = _collider.gameObject.GetComponentInParent<Zombie>();
 				
-				if(enemy != null)
-					enemy.health -= damage;
+				if(zombie != null)
+					zombie.health -= damage;
 			}
 
 			if(damagePlayer)

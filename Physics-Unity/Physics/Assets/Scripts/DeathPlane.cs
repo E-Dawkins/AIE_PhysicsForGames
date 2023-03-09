@@ -9,7 +9,7 @@ public class DeathPlane : MonoBehaviour
 		if(_collision.gameObject.TryGetComponent(out FPSController player))
 			player.transform.position = playerResetPos;
 
-		if(_collision.gameObject.TryGetComponent(out Enemy enemy))
+		if(_collision.gameObject.TryGetComponent(out Zombie enemy))
 			Destroy(enemy);
 	}
 }

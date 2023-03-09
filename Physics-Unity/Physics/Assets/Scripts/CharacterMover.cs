@@ -5,8 +5,7 @@ public class CharacterMover : MonoBehaviour
 {
 	[SerializeField] private float movementSpeed = 10;
 	[SerializeField] private float jumpHeight = 3;
-
-	public Animator animator;
+	
 	private CharacterController m_characterController;
 	private Transform m_mainCam;
 	
@@ -21,8 +20,6 @@ public class CharacterMover : MonoBehaviour
 	{
 		m_characterController = GetComponent<CharacterController>();
 		m_mainCam = Camera.main.transform;
-
-		animator = GetComponentInChildren<Animator>();
 	}
 
 	private void Update()
@@ -30,9 +27,6 @@ public class CharacterMover : MonoBehaviour
 		m_moveInput.x = Input.GetAxis("Horizontal");
 		m_moveInput.y = Input.GetAxis("Vertical");
 		m_jumpInput = Input.GetButton("Jump");
-
-		animator.SetFloat("Forwards", m_moveInput.magnitude);
-		animator.SetBool("Jump", !m_isGrounded);
 	}
 
 	private void FixedUpdate()

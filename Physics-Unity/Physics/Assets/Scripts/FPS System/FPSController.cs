@@ -1,48 +1,48 @@
+using TMPro;
 using UnityEngine;
-using Random = UnityEngine.Random;
+using UnityEngine.Events;
 
 public class FPSController : MonoBehaviour
 {
     public float health = 100;
-    public GunType currentGun;
+    public int score;
 
-    private float m_maxDelay;
-    private float m_currentDelay;
+    [SerializeField] private TextMeshProUGUI scoreText;
     
+    [SerializeField] private Gun currentGun;
     [SerializeField] private Grenade grenadePrefab;
+
     [SerializeField] private Transform grenadeHoldPt;
-    [SerializeField] private int grenadeCount = 1;
     private Grenade m_grenade;
 
-    [SerializeField] private LayerMask shotLayerMask;
-
     [SerializeField] private GameObject interactUi;
-
-    private void Awake()
-    {
-        m_maxDelay = 1f / currentGun.fireRate;
-        interactUi.SetActive(false);
-    }
     
+    [SerializeField] private TextMeshProUGUI deathScoreText;
+    [SerializeField] private UnityEvent onDeath;
+
+    private void Awake() => interactUi.SetActive(false);
+
     private void Update()
     {
         // Toggle interact ui state
         ToggleUI();
         
+        // If no grenade is held, gun must be active, and vice versa
+        currentGun.gameObject.SetActive(m_grenade == null);
+
         // Holding a grenade
         if(m_grenade != null)
             GrenadeLogic();
 
         // Not holding grenade, i.e. gun
-        else ShootLogic();
+        else currentGun.GunLogic();
 
         // Switch grenade out state
         if(Input.GetKeyDown(KeyCode.G))
             SwitchGrenadeState();
-
-        // Increment the fire delay
-        m_currentDelay += Time.deltaTime;
         
+        scoreText.text = $"Score : {score}";
+
         // No health, player has died
         if (health <= 0)
             OnDeath();
@@ -61,53 +61,6 @@ public class FPSController : MonoBehaviour
         }
     }
 
-    private bool CanShoot()
-    {
-        bool canShoot = false;
-
-        if(m_currentDelay >= m_maxDelay)
-        {
-            // Gun is automatic, so can shoot
-            if (currentGun.automatic)
-                canShoot = true;
-
-            // Gun is not automatic, player has to re-click to shoot
-            if (Input.GetMouseButtonDown(0))
-                canShoot = true;
-
-            // Only reset the delay if the player is about to shoot
-            if(canShoot) m_currentDelay = 0;
-        }
-
-        return canShoot;
-    }
-
-    private void ShootLogic()
-    {
-        if(Input.GetMouseButton(0) && CanShoot())
-        {
-            Vector3 shotOffset = new Vector3(1, 1, 0) * Random.Range(-currentGun.bulletSpread, currentGun.bulletSpread);
-            
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            ray.direction = Quaternion.Euler(shotOffset) * ray.direction;
-
-            // Checks if we are aiming at an object, using the random degree offset
-            if(Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, shotLayerMask.value, QueryTriggerInteraction.Ignore))
-            {
-                // Bullet hit an enemy
-                Enemy enemy = hit.collider.GetComponentInParent<Enemy>();
-
-                if(enemy != null)
-                {
-                    float damage = hit.collider == enemy.HeadCollider ? 
-                                       currentGun.headDamage : currentGun.bodyDamage;
-
-                    enemy.health -= damage;
-                }
-            }
-        }
-    }
-
     private void GrenadeLogic()
     {
         // Sets grenade to cook
@@ -119,25 +72,19 @@ public class FPSController : MonoBehaviour
         {
             m_grenade.ThrowGrenade();
             m_grenade = null;
-
-            grenadeCount--;
         }
     }
 
     private void SwitchGrenadeState()
     {
-        // No grenade being held
+        // No grenade being held, spawn one
         if(m_grenade == null)
         {
-            // If there is grenade ammo, spawn a new grenade
-            if(grenadeCount > 0)
-            {
-                m_grenade = Instantiate(grenadePrefab, grenadeHoldPt);
-                m_grenade.gameObject.SetActive(true);
+            m_grenade = Instantiate(grenadePrefab, grenadeHoldPt);
+            m_grenade.gameObject.SetActive(true);
             
-                // Set it to not collide until thrown
-                m_grenade.GetComponent<Collider>().enabled = false;
-            }
+            // Set it to not collide until thrown
+            m_grenade.GetComponent<Collider>().enabled = false;
         }
         
         // If a grenade is currently being held, destroy it
@@ -150,6 +97,12 @@ public class FPSController : MonoBehaviour
 
     private void OnDeath()
     {
-        
+        deathScoreText.text = $"Score : {score}";
+        onDeath.Invoke();
+
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+
+        enabled = false;
     }
 }

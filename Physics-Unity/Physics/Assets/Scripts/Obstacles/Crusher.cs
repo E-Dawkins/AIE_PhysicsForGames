@@ -35,11 +35,11 @@ public class Crusher : MonoBehaviour
 
 	private void OnCollisionEnter(Collision _collision)
 	{
-		Enemy enemy = _collision.gameObject.GetComponentInParent<Enemy>();
+		Zombie zombie = _collision.gameObject.GetComponentInParent<Zombie>();
 
-		if(enemy != null)
+		if(zombie != null)
 		{
-			enemy.health = -1;
+			zombie.health = -1;
 		}
 	}
 }
