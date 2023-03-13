@@ -47,12 +47,12 @@ public class Gun : MonoBehaviour
 	{
 		if(Input.GetMouseButton(0) && CanShoot())
 		{
-			// Spawn muzzle flash effect
-			m_muzzleFlashCR ??= StartCoroutine(MuzzleFlash().GetEnumerator());
-			
 			if(shootAnimation.isPlaying)
 				return;
 			
+			// Spawn muzzle flash effect
+			m_muzzleFlashCR ??= StartCoroutine(MuzzleFlash().GetEnumerator());
+
 			// Play shot animation
 			shootAnimation.Play();
 

@@ -2,7 +2,9 @@
     "name": "Dependencies",
     "rootNamespace": "",
     "references": [
-        ""
+        "",
+        "UnityEditor.UI",
+        "UnityEngine.UI"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
