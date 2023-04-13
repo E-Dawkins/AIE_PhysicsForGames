@@ -8,6 +8,7 @@ public class SetAnimFloat : MonoBehaviour
 
     private void Awake()
     {
+        // Sets animators float using its name and a value
         GetComponent<Animator>().SetFloat(floatName, floatValue);
     }
 }

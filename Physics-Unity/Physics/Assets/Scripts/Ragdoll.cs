@@ -24,8 +24,10 @@ public class Ragdoll : MonoBehaviour
 
     private void Awake()
     {
+        // Store reference to the animators' hip bone
         m_hipsBone = animator.GetBoneTransform(HumanBodyBones.Hips);
 
+        // Set each rigidbody in ragdoll to non-kinematic and detect collisions
         foreach(Rigidbody rb in rigidbodies)
         {
             rb.isKinematic = false;
@@ -33,6 +35,7 @@ public class Ragdoll : MonoBehaviour
         }
     }
 
+    // Helper function to add explosion force to every rigidbody in ragdoll
     public void AddExplosionForce(float _forceAmount, Vector3 _position, float _radius)
     {
         foreach(Rigidbody rb in rigidbodies)
@@ -41,6 +44,7 @@ public class Ragdoll : MonoBehaviour
         }
     }
 
+    // Helper function to add force to every rigidbody in ragdoll
     public void AddForce(Vector3 _force, ForceMode _forceMode)
     {
         foreach(Rigidbody rb in rigidbodies)
@@ -61,9 +65,11 @@ public class Ragdoll : MonoBehaviour
             transform.position = new Vector3(transform.position.x, hit.point.y, transform.position.z);
         }
 
+        // Reset the hip bone position
         m_hipsBone.position = originalHipPos;
     }
 
+    // Helper function to get total movement of ragdoll
     public float TotalMovement()
     {
         float movement = 0;

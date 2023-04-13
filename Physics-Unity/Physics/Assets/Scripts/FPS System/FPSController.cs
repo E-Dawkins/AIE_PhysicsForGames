@@ -50,13 +50,16 @@ public class FPSController : MonoBehaviour
 
     private void ToggleUI()
     {
+        // Ray from screen center
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
+        // We are looking at an interactable...
         if(Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, -1, QueryTriggerInteraction.Ignore))
         {
             bool uiOn = hit.collider.TryGetComponent(out Interactable interactable) &&
                         hit.distance <= interactable.interactDistance;
             
+            // ...so toggle the interact UI
             interactUi.SetActive(uiOn);
         }
     }
@@ -97,12 +100,15 @@ public class FPSController : MonoBehaviour
 
     private void OnDeath()
     {
+        // Turn the death screen UI on and run the death coroutine
         deathScoreText.text = $"Score : {score}";
         onDeath.Invoke();
 
+        // Cursor set to visible
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
 
+        // And turn the controller script off
         enabled = false;
     }
 }

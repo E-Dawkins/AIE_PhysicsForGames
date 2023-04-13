@@ -35,6 +35,7 @@ public class Zombie : MonoBehaviour
         m_agent.angularSpeed = turnSpeed;
         m_agent.stoppingDistance = attackRadius;
 
+        // Add each player to a list of player controllers
         foreach(FPSController player in FindObjectsOfType<FPSController>())
         {
             m_players.Add(player);
@@ -98,30 +99,33 @@ public class Zombie : MonoBehaviour
 
     private IEnumerable UnRagdoll()
     {
+        // Wait for delay
         yield return new WaitForSeconds(3);
 
+        // Then wait until total movement is low enough
         while(m_rd.TotalMovement() > 1)
             yield return null;
 
+        // Then un-ragdoll
         m_rd.RagdollOn = false;
         m_unRagdoll_CR = null;
     }
 
     private IEnumerable OnDeath()
     {
+        // Wait for delay
         yield return new WaitForSeconds(3);
 
-        while(m_rd.TotalMovement() > 1)
-            yield return null;
-
+        // Then destroy the game object
         Destroy(gameObject);
     }
 
-    private void SetTarget()
+    private void SetTarget() // set nav mesh agent target to nearest player
     {
         if(!m_agent.enabled || !m_agent.isOnNavMesh)
             return;
 
+        // Only if not ragdolling
         if(!m_rd.RagdollOn)
         {
             GetClosestPlayer(out FPSController closestPlayer);
@@ -131,9 +135,12 @@ public class Zombie : MonoBehaviour
                 m_agent.SetDestination(closestPlayer.transform.position);
             }
         }
+        
+        // If ragdolling, reset agent path
         else m_agent.ResetPath();
     }
 
+    // Helper function to get closest player, outputting the closest player and distance to player
     private void GetClosestPlayer(out FPSController _closestPlayer, out float _distance)
     {
         _distance = float.MaxValue;
@@ -151,7 +158,9 @@ public class Zombie : MonoBehaviour
         }
     }
 
+    // Same function but only to get the distance
     private void GetClosestPlayer(out float _distance) => GetClosestPlayer(out FPSController closestPlayer, out _distance);
 
+    // Same function but only to get the player
     private void GetClosestPlayer(out FPSController _closestPlayer) => GetClosestPlayer(out _closestPlayer, out float distance);
 }

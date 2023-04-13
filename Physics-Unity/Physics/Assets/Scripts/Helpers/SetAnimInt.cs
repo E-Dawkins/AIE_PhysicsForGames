@@ -8,6 +8,7 @@ public class SetAnimInt : MonoBehaviour
 
 	private void Awake()
 	{
+		// Set animators int with its name and a value
 		GetComponent<Animator>().SetInteger(intName, intValue);
 	}
 }

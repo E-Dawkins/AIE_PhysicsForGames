@@ -10,11 +10,13 @@ public class ButtonExtension : MonoBehaviour, IPointerEnterHandler, IPointerExit
 
 	public void OnPointerEnter(PointerEventData _eventData)
 	{
+		// On hover, invoke onHover delegate
 		onHover.Invoke();
 	}
 
 	public void OnPointerExit(PointerEventData _eventData)
 	{
+		// On un-hover, invoke onUnHover delegate
 		onUnHover.Invoke();
 	}
 }

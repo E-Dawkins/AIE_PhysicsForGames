@@ -9,20 +9,25 @@ public class PauseMenu : MonoBehaviour
 
     private void Start()
     {
+        // Set pause screen to inactive by default
         pauseScreen.SetActive(false);
     }
     
     private void Update()
     {
+        // If pause key is pressed...
         if(Input.GetKeyDown(pauseKey))
         {
             bool pauseScreenActive = pauseScreen.activeInHierarchy;
             
+            // ...toggle pause screen active state
             pauseScreen.SetActive(!pauseScreenActive);
             
+            // Foreach object in other ui elements list, set them active
             foreach (GameObject go in otherUIElements)
                 go.SetActive(pauseScreenActive);
 
+            // Toggle time scale, and cursor state
             Time.timeScale = pauseScreenActive ? 1 : 0;
 
             Cursor.lockState = pauseScreenActive ? CursorLockMode.Locked : CursorLockMode.None;
@@ -30,5 +35,6 @@ public class PauseMenu : MonoBehaviour
         }
     }
 
+    // Helper function to set time scale
     public void SetTimeScale(float _scale) => Time.timeScale = _scale;
 }

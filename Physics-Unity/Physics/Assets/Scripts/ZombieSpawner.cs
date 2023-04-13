@@ -31,6 +31,7 @@ public class ZombieSpawner : MonoBehaviour
 
 	private void SpawnZombies()
 	{
+		// Spawn zombies at random x and z values on the map
 		for(int i = 0; i < zombiesInWave; i++)
 		{
 			float randX = Random.Range(minXZ.x, maxXZ.x);

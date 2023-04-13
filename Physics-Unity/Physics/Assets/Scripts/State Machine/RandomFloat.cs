@@ -8,6 +8,7 @@ public class RandomFloat : StateMachineBehaviour
 
     public override void OnStateEnter(Animator _animator, AnimatorStateInfo _stateInfo, int _layerIndex)
     {
+        // When animator enters this state, set float to random value
         _animator.SetFloat(floatName, Random.Range(minInclusive, maxInclusive));
     }
 }

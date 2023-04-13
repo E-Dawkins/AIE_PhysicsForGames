@@ -15,6 +15,7 @@ public class RaycastImpulse : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
+        // When LMB pressed, add force to ragdoll / rigidbody we are looking at
         if(Input.GetMouseButton(0))
         {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);

@@ -8,6 +8,7 @@ public class RandomInt : StateMachineBehaviour
 
     public override void OnStateEnter(Animator _animator, AnimatorStateInfo _stateInfo, int _layerIndex)
     {
+        // when animator enters state, set int to random value
         _animator.SetInteger(intName, Random.Range(minInclusive, maxExclusive));
     }
 }

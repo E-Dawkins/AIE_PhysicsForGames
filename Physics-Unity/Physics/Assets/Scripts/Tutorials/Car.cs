@@ -19,6 +19,7 @@ public class Car : MonoBehaviour
 
 	private void Awake()
 	{
+		// Store a list of hinge joints in car object
 		foreach(HingeJoint joint in carObject.GetComponents<HingeJoint>())
 		{
 			joints.Add(joint);
@@ -27,6 +28,7 @@ public class Car : MonoBehaviour
 
 	private void Update()
 	{
+		// Target pos and target speed set by player input
 		float targetPos = 0;
 		float targetSpeed = 0;
 
@@ -41,9 +43,10 @@ public class Car : MonoBehaviour
 
 		if(Input.GetKey(KeyCode.S))
 			targetSpeed = backwardVelocity;
-
+		
 		foreach (HingeJoint joint in joints)
 		{
+			// If joint use spring on, set its target position
 			if(joint.useSpring)
 			{
 				JointSpring spring = joint.spring;
@@ -51,6 +54,7 @@ public class Car : MonoBehaviour
 				joint.spring = spring;
 			}
 
+			// If joint use motor on, set its target velocity
 			if(joint.useMotor)
 			{
 				JointMotor motor = joint.motor;
@@ -59,6 +63,7 @@ public class Car : MonoBehaviour
 			}
 		}
 
+		// Foreach extra pivot, set its target position
 		foreach(HingeJoint joint in extraPivots)
 		{
 			JointSpring spring = joint.spring;
@@ -66,6 +71,7 @@ public class Car : MonoBehaviour
 			joint.spring = spring;
 		}
 
+		// Foreach extra joint, set its target velocity and force
 		foreach(HingeJoint joint in extraMotors)
 		{
 			JointMotor motor = joint.motor;

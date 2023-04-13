@@ -11,6 +11,7 @@ public class CannonShot : MonoBehaviour
     // Start is called before the first frame update
     private void Awake()
     {
+        // Store reference to rigidbody component, and set it to kinematic
         m_rb = GetComponent<Rigidbody>();
         m_rb.isKinematic = true;
     }
@@ -18,6 +19,7 @@ public class CannonShot : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
+        // If any key is pressed and can fire, shoot cannon
         if(Input.anyKeyDown && m_canFire)
         {
             m_rb.isKinematic = false;

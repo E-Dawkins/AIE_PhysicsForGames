@@ -38,11 +38,13 @@ public class CameraController : MonoBehaviour
         transform.position = target.position + ComputeOffset();
     }
 
+    // Helper function to compute the offset of the camera, just looks cleaner
     private Vector3 ComputeOffset()
     {
         return camOffset.x * target.right + camOffset.y * target.up + camOffset.z * target.forward;
     }
 
+    // Draw sphere where camera will be in-game, for editor use
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.magenta;

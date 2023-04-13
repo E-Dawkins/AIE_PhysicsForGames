@@ -45,8 +45,10 @@ public class Gun : MonoBehaviour
 	
 	public void GunLogic()
 	{
+		// Only shoot if fire button is pressed and can shoot
 		if(Input.GetMouseButton(0) && CanShoot())
 		{
+			// Don't shoot if recoil animation is playing
 			if(shootAnimation.isPlaying)
 				return;
 			
@@ -56,8 +58,10 @@ public class Gun : MonoBehaviour
 			// Play shot animation
 			shootAnimation.Play();
 
+			// Shot offset
 			Vector3 shotOffset = new Vector3(1, 1, 0) * Random.Range(-gunType.bulletSpread, gunType.bulletSpread);
             
+			// Ray from screen center is offset by a few degrees
 			Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 			ray.direction = Quaternion.Euler(shotOffset) * ray.direction;
 
@@ -69,11 +73,13 @@ public class Gun : MonoBehaviour
 
 				if(zombie != null)
 				{
+					// Damage multiplier for body / head shot
 					float damage = hit.collider == zombie.HeadCollider ? 
 						               gunType.headDamage : gunType.bodyDamage;
 
 					zombie.health -= damage;
 
+					// Player score for damaging the enemy or killing the enemy
 					player.score += zombie.health > 0 ? 10 : 100;
 				}
 			}
@@ -82,13 +88,17 @@ public class Gun : MonoBehaviour
 
 	private IEnumerable MuzzleFlash()
 	{
+		// Spawn muzzle flash effect
 		ParticleSystem effect = Instantiate(muzzleFlash, muzzleFlashTransform);
 		effect.Play();
 
+		// Wait until the effect finishes
 		yield return new WaitForSeconds(effect.main.duration);
 		
+		// Then destroy the effect gameobject
 		Destroy(effect.gameObject);
 
+		// And set the coroutine to null
 		m_muzzleFlashCR = null;
 	}
 }

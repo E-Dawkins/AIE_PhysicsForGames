@@ -18,12 +18,14 @@ public class CharacterMover : MonoBehaviour
 
 	private void Awake()
 	{
+		// Store references for player controller, and main camera
 		m_characterController = GetComponent<CharacterController>();
 		m_mainCam = Camera.main.transform;
 	}
 
 	private void Update()
 	{
+		// Store input values
 		m_moveInput.x = Input.GetAxis("Horizontal");
 		m_moveInput.y = Input.GetAxis("Vertical");
 		m_jumpInput = Input.GetButton("Jump");
@@ -88,6 +90,7 @@ public class CharacterMover : MonoBehaviour
 			}
 		}
 
+		// Move the character controller and store is grounded value
 		m_characterController.Move(m_velocity * Time.deltaTime);
 		m_isGrounded = m_characterController.isGrounded;
 	}
